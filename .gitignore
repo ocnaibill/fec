@@ -1,0 +1,23 @@
+# Ambiente virtual Python
+venv/
+
+# Pycache
+__pycache__/
+*.py[cod]
+
+# BD local 
+db.sqlite3
+
+# React - Node
+frontend/node_modules/
+frontend/dist/
+
+# Vite cache
+frontend/.vite/
+
+# VSCode
+.vscode/
+
+# Arquivos temporários
+.DS_Store
+.env
