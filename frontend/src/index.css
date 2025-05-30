@@ -72,3 +72,7 @@ button:focus-visible {
   font-weight: 700 !important;
   font-style: normal !important;
 }
+
+html, body {
+  overflow-x: hidden;
+}
