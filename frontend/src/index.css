@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -15,17 +17,15 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #e0e0e0;
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: #e0e0e0;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -60,9 +60,15 @@ button:focus-visible {
     background-color: #ffffff;
   }
   a:hover {
-    color: #747bff;
+    color: #e0e0e0;
   }
   button {
     background-color: #f9f9f9;
   }
+}
+
+.header-font{
+  font-family: "all-round-gothic", sans-serif !important;
+  font-weight: 700 !important;
+  font-style: normal !important;
 }
