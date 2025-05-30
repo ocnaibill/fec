@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 export default function Header() {
   return (
     
-    <header className="w-full bg-[#2b3722] flex flex-row-reverse lg:flex-row items-center justify-between px-4 h-[62px] lg:h-[100px] lg:px-[175px]">
+  <header className="w-full bg-[#2b3722] flex flex-row-reverse lg:flex-row items-center justify-between px-4 lg:px-[175px] h-[62px] lg:h-[100px]">
       
       {/* Logo + Texto */}
      <Link to="/" className="hidden lg:flex items-center cursor-pointer" style={{ fontFamily: '"all-round-gothic", sans-serif', fontWeight: 700, fontStyle: 'normal' }}>

@@ -5,9 +5,9 @@ export default function Footer() {
     <footer
       className="w-full bg-[#2B3722] relative"
       style={{
-        minWidth: '100vw',
+        minWidth: 0,
         height: '405px',
-        maxWidth: '1440px',
+        maxWidth: 'none',
       }}
     >
       {/* Desktop */}
@@ -42,13 +42,16 @@ export default function Footer() {
       </div>
 
       {/* Mobile */}
-      <div
-        className="flex md:hidden flex-col items-start w-[430px] h-[479px] mx-auto relative"
-        style={{
-          color: '#E0E0E0',
-          fontFamily: '"Inter", sans-serif',
-        }}
-      >
+        <div
+          className="flex md:hidden flex-col items-start w-full h-[479px] mx-auto relative"
+          style={{
+            color: '#E0E0E0',
+            fontFamily: '"Inter", sans-serif',
+            paddingLeft: 16,
+            paddingRight: 16,
+            boxSizing: 'border-box',
+          }}
+        >
         <div style={{ marginTop: '94px', marginLeft: '32px' }}>
           <div style={{ fontWeight: 500, fontSize: '20px', letterSpacing: '1px' }}>CONTATO</div>
           <div style={{ height: '12px' }} />
