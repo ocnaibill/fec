@@ -1,20 +1,15 @@
-import { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import MainLayout from './layouts/MainLayout'
+import Home from './pages/Home'
+import NotFound from './pages/NotFound'
 
-function App() {
-  const [mensagem, setMensagem] = useState("");
-
-  useEffect(() => {
-    fetch("http://localhost:8000/api/hello/")
-      .then((res) => res.json())
-      .then((data) => setMensagem(data.mensagem));
-  }, []);
-
+export default function App() {
   return (
-    <div>
-      <h1>Hello World from React!</h1>
-      <h2>{mensagem}</h2>
-    </div>
-  );
+    <Router>
+      <Routes>
+        <Route path="/" element={<MainLayout><Home /></MainLayout>} />
+        <Route path="*" element={<MainLayout><NotFound /></MainLayout>} />
+      </Routes>
+    </Router>
+  )
 }
-
-export default App;
