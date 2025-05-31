@@ -6,9 +6,50 @@ import logoOlfato from '../assets/images/logoOlfato.svg'
 import logoMatriz from '../assets/images/logoMatriz.svg'
 import logoFap from '../assets/images/logoFapDF.svg'
 import logoCatolicaDark from '../assets/images/logoCatolicaDark.svg'
+import IconeProgramacao from '../assets/images/icone-programacao.svg'
+import ScheduleBoard from '../components/ScheduleBoard'
 import { Link } from 'react-router-dom'
 
 export default function Home() {
+  const schedule = [
+    {
+      date: '23/06',
+      weekday: 'SEGUNDA-FEIRA',
+      events: [
+        {
+          time: '09:00',
+          title: 'Abertura do festival',
+          local: 'Auditório Central',
+        }
+      ]
+    },
+    {
+      date: '24/06',
+      weekday: 'TERÇA-FEIRA',
+      events: [
+      ]
+    },
+    {
+      date: '25/06',
+      weekday: 'QUARTA-FEIRA',
+      events: [
+      ]
+    },
+    {
+      date: '26/06',
+      weekday: 'QUINTA-FEIRA',
+      events: [
+      ]
+    },
+    {
+      date: '27/06',
+      weekday: 'SEXTA-FEIRA',
+      events: [
+      ]
+    },
+    
+  ]
+
   return (
     <div className="flex flex-col items-center home-bg-root">
        {/* HERO */}
@@ -92,6 +133,29 @@ export default function Home() {
               VER PROGRAMAÇÃO
             </Link>
           </div>
+        </div>
+
+      {/* PROGRAMAÇÃO */}
+          
+        <div className='bg-[#FAF9F6] h-[791px] w-full flex flex-col justify-center items-center gap-14'>
+          <div className='flex flex-col justify-center items-start gap-14'>
+            <div className='h-[55px] flex flex-row items-center gap-8'>
+                <img className='h-[34px]' src={IconeProgramacao}/>
+                <h2 className='font-bold text-[46px]' 
+                style={{
+                  color: '#2B3722',
+                  fontFamily: '"all-round-gothic", sans-serif'
+                }}
+                >Programação</h2>
+            </div>
+
+            <div 
+              className='w-[1290px] h-[555px] bg-[#2B3722] rounded-2xl p-8'
+              style={{boxShadow: '12px -10px 15px rgba(0, 0, 0, 0.25)'}}
+            >
+              <ScheduleBoard schedule={schedule}/>
+            </div>
+          </div>        
         </div>
 
       {/* INSCRIÇÃO */}
