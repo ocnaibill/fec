@@ -1,5 +1,6 @@
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper/modules'
+import { useState } from 'react'
 
 import 'swiper/css'
 
@@ -7,6 +8,8 @@ import setaDireita from '../assets/images/setaDireita.svg'
 import setaEsquerda from '../assets/images/setaEsquerda.svg'
 
 export default function ScheduleBoard({ schedule }) {
+    const [activeColumnIndex, setActiveColumnIndex] = useState(0)
+ 
     return (
         <>
             <div className="hidden lg:flex w-full h-full justify-between">
@@ -15,10 +18,14 @@ export default function ScheduleBoard({ schedule }) {
                 )}
             </div>
             <div className="block relative lg:hidden w-full h-ful">
-                <button id='schedule-prev' className='flex absolute z-10 left-[10px] top-0 justify-center items-center w-[34px] h-[64px] !bg-[#E0E0E0] !p-0 !rounded-[37px] !border-none'>
+                <button id='schedule-prev' className={`flex absolute z-10 left-[20px] top-0 justify-center items-center w-[34px] h-[64px] !bg-[#E0E0E0] !p-0 !rounded-[37px] !border-none ${
+                    activeColumnIndex === 0 ? 'hidden' : ''
+                }`}>
                     <img src={setaEsquerda} className='w-[13px] h-[22px]'></img>
                 </button>
-                <button id='schedule-next' className='flex absolute z-10 right-[10px] top-0 justify-center items-center w-[34px] h-[64px] !bg-[#E0E0E0] !p-0 !rounded-[37px] !border-none'>
+                
+                    
+                <button id='schedule-next' className={`flex absolute z-10 right-[20px] top-0 justify-center items-center w-[34px] h-[64px] !bg-[#E0E0E0] !p-0 !rounded-[37px] !border-none ${activeColumnIndex === schedule.length-1 ? 'hidden' : ''}`}>
                     <img src={setaDireita} className='w-[13px] h-[22px]'></img>
                 </button>
 
@@ -29,6 +36,7 @@ export default function ScheduleBoard({ schedule }) {
                         nextEl: '#schedule-next'
                     }}
                     slidesPerView={1}
+                    onSlideChange={(swiper) => setActiveColumnIndex(swiper.activeIndex)}
                     className='w-full h-full'
                 >
                     {schedule.map(({ date, events }, index) => {
@@ -64,7 +72,7 @@ function ScheduleColumn({ date, events, index, isMobile }) {
             className="px-4 flex-1"
         >
             <div
-                className="flex lg:flex-col flex-row justify-center lg:gap-0 gap-3 text-[18px] font-bold lg:mb-3 lg:mt-0 mt-4 mb-10"
+                className="flex lg:flex-col flex-row justify-center lg:gap-0 gap-3 text-[18px] font-bold lg:mb-3 lg:mt-0 mt-4 mb-10 text-[#e0e0e0]"
             >
                 <p>{ date }</p>
                 <p>{ weekday }</p>
@@ -80,7 +88,7 @@ function ScheduleColumn({ date, events, index, isMobile }) {
 
 function ScheduleItem({ time, title, local }) {
     return (
-        <div className="text-[16px] flex w-full">
+        <div className="text-[16px] text-[#e0e0e0] flex w-full">
             <p className="absolute font-bold">{ time }</p>
             <div className="flex-1 lg:text-end text-center">
                 <p className="font-medium">{ title }</p>

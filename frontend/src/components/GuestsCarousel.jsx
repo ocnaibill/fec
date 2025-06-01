@@ -34,23 +34,23 @@ export default function GuestsCarousel({ guests }) {
             ))}
           </Swiper>
         </div>
-        <div className='w-[1214px] relative lg:mx-[118px] lg:block hidden'>
+        <div className='w-[1280px] relative lg:mx-[138px] lg:block hidden'>
           <button id='guest-prev' 
             className='z-10 flex absolute top-1/2 translate-x-[-50%] translate-y-[-50%] justify-center items-center w-[34px] h-[64px] !bg-[#E0E0E0] !p-0 !rounded-[37px] !border-none'
-            style={{ left: `calc(100% * 1/2 - 666px)` }}
+            style={{ left: `calc(100% * 1/2 - 711px)` }}
           >
               <img src={setaEsquerda} className='w-[13px] h-[22px]'></img>
           </button>
           <button id='guest-next' 
             className='z-10 flex absolute top-1/2 translate-x-[50%] translate-y-[-50%] justify-center items-center w-[34px] h-[64px] !bg-[#E0E0E0] !p-0 !rounded-[37px] !border-none'
-            style={{ right: `calc(100% * 1/2 - 666px)` }}
+            style={{ right: `calc(100% * 1/2 - 711px)` }}
           >
               <img src={setaDireita} className='w-[13px] h-[22px]'></img>
           </button>
           <Swiper
             initialSlide={0}
             slidesPerView={4}
-            spaceBetween={58}
+            spaceBetween={80}
             allowTouchMove={false}
             loop={true}
 
