@@ -91,8 +91,8 @@ function ScheduleItem({ time, title, local }) {
         <div className="text-[16px] text-[#e0e0e0] flex w-full">
             <p className="absolute font-bold">{ time }</p>
             <div className="flex-1 lg:text-end text-center">
-                <p className="font-medium">{ title }</p>
-                <p className="font-light">&#128205; { local }</p>
+                <p className="font-medium font-quicksand">{ title }</p>
+                <p className="font-light font-quicksand">&#128205; { local }</p>
             </div>
         </div>
     )

@@ -83,3 +83,7 @@ input:focus, input:active {
   outline: none !important;
   box-shadow: none !important;
 }
+
+.font-quicksand {
+  font-family: 'Quicksand', sans-serif;
+}
