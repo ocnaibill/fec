@@ -137,8 +137,8 @@ export default function Home() {
 
       {/* PROGRAMAÇÃO */}
           
-        <div className='bg-[#FAF9F6] h-[791px] w-full flex flex-col justify-center items-center gap-14'>
-          <div className='flex flex-col justify-center items-start gap-14'>
+        <div className='lg:bg-[#FAF9F6] h-[791px] w-full flex flex-col justify-center items-center gap-14 mb-226'>
+          <div className='flex flex-col justify-center lg:items-start items-center gap-14'>
             <div className='h-[55px] flex flex-row items-center gap-8'>
                 <img className='h-[34px]' src={IconeProgramacao}/>
                 <h2 className='font-bold text-[46px]' 
@@ -150,7 +150,7 @@ export default function Home() {
             </div>
 
             <div 
-              className='w-[1290px] h-[555px] bg-[#2B3722] rounded-2xl p-8'
+              className='lg:w-[1290px] w-[397px] h-[555px] bg-[#2B3722] rounded-2xl lg:px-8 px-4 py-8'
               style={{boxShadow: '12px -10px 15px rgba(0, 0, 0, 0.25)'}}
             >
               <ScheduleBoard schedule={schedule}/>
