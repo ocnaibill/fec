@@ -76,3 +76,14 @@ button:focus-visible {
 html, body {
   overflow-x: hidden;
 }
+
+button:focus, button:active,
+a:focus, a:active,
+input:focus, input:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.font-quicksand {
+  font-family: 'Quicksand', sans-serif;
+}
