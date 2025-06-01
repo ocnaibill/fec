@@ -7,7 +7,11 @@ import logoMatriz from '../assets/images/logoMatriz.svg'
 import logoFap from '../assets/images/logoFapDF.svg'
 import logoCatolicaDark from '../assets/images/logoCatolicaDark.svg'
 import IconeProgramacao from '../assets/images/icone-programacao.svg'
+import IconeConvidados1 from '../assets/images/icone-convidados-1.svg'
+import IconeConvidados2 from '../assets/images/icone-convidados-2.svg'
+import IconeConvidados3 from '../assets/images/icone-convidados-3.svg'
 import ScheduleBoard from '../components/ScheduleBoard'
+import GuestsCarousel from '../components/GuestsCarousel'
 import { Link } from 'react-router-dom'
 
 export default function Home() {
@@ -47,11 +51,62 @@ export default function Home() {
       events: [
       ]
     },
-    
+  ]
+
+  const guests = [
+    {
+      avatar: {
+        src: IconeConvidados1,
+        alt: 'Foto do convidado 1'
+      },
+      name: 'nome1',
+      description: 'Lorem ipsum in nulla dis sed amet in orci cursus venenatis quam rhoncus erat eget eu aliquet est est in phasellus tincidunt amet purus nibh elementum nunc laoreet a pharetra.'
+    },
+    {
+      avatar: {
+        src: IconeConvidados2,
+        alt: 'Foto do convidado 2'
+      },
+      name: 'nome2',
+      description: 'Lorem ipsum in nulla dis sed amet in orci cursus venenatis quam rhoncus erat eget eu aliquet est est in phasellus tincidunt amet purus nibh elementum nunc laoreet a pharetra.'
+    },
+    {
+      avatar: {
+        src: IconeConvidados3,
+        alt: 'Foto do convidado 3'
+      },
+      name: 'nome3',
+      description: 'Lorem ipsum in nulla dis sed amet in orci cursus venenatis quam rhoncus erat eget eu aliquet est est in phasellus tincidunt amet purus nibh elementum nunc laoreet a pharetra.'
+    },
+    {
+      avatar: {
+        src: IconeConvidados1,
+        alt: 'Foto do convidado 1'
+      },
+      name: 'nome4',
+      description: 'Lorem ipsum in nulla dis sed amet in orci cursus venenatis quam rhoncus erat eget eu aliquet est est in phasellus tincidunt amet purus nibh elementum nunc laoreet a pharetra.'
+    },
+    {
+      avatar: {
+        src: IconeConvidados2,
+        alt: 'Foto do convidado 2'
+      },
+      name: 'nome5',
+      description: 'Lorem ipsum in nulla dis sed amet in orci cursus venenatis quam rhoncus erat eget eu aliquet est est in phasellus tincidunt amet purus nibh elementum nunc laoreet a pharetra.'
+    },
+    {
+      avatar: {
+        src: IconeConvidados3,
+        alt: 'Foto do convidado 3'
+      },
+      name: 'nome6',
+      description: 'Lorem ipsum in nulla dis sed amet in orci cursus venenatis quam rhoncus erat eget eu aliquet est est in phasellus tincidunt amet purus nibh elementum nunc laoreet a pharetra.'
+    },
   ]
 
   return (
-    <div className="flex flex-col items-center home-bg-root">
+
+    <div className="flex flex-col items-center lg:bg-black home-bg-root">
        {/* HERO */}
         <div
           className="w-full flex justify-center bg-no-repeat bg-cover bg-center home-bg text-center min-h-screen"
@@ -137,7 +192,7 @@ export default function Home() {
 
       {/* PROGRAMAÇÃO */}
           
-        <div className='lg:bg-[#FAF9F6] h-[791px] w-full flex flex-col justify-center items-center gap-14 mb-226'>
+        <div className='lg:bg-[#FAF9F6] h-[791px] w-full flex flex-col justify-center items-center gap-14 mb-[226px]'>
           <div className='flex flex-col justify-center lg:items-start items-center gap-14'>
             <div className='h-[55px] flex flex-row items-center gap-8'>
                 <img className='h-[34px]' src={IconeProgramacao}/>
@@ -146,7 +201,7 @@ export default function Home() {
                   color: '#2B3722',
                   fontFamily: '"all-round-gothic", sans-serif'
                 }}
-                >Programação</h2>
+                >PROGRAMAÇÃO</h2>
             </div>
 
             <div 
@@ -157,6 +212,25 @@ export default function Home() {
             </div>
           </div>        
         </div>
+      
+      {/* CONVIDADOS */}
+
+      <div className='h-[791px] w-full flex flex-col justify-center items-center gap-14 mb-[82px]'>
+        <div 
+          className='lg:bg-[radial-gradient(ellipse_at_center,_#FFFFFF_0%,_#FFF1BF_100%)] bg-[#FFF1BF] flex flex-col justify-center items-center w-full gap-[62px] py-[62px]'
+          style={{ boxShadow: '0px 0px 15px 4px rgba(0, 0, 0, 0.25)' }}
+        >
+          <h2 
+            className='font-bold text-[46px]' 
+            style={{
+              color: '#2B3722',
+              fontFamily: '"all-round-gothic", sans-serif'
+            }}
+          >CONVIDADOS</h2>
+          <GuestsCarousel guests={guests} />  
+        </div>   
+      </div>
+      
 
       {/* INSCRIÇÃO */}
         <div
@@ -963,7 +1037,6 @@ export default function Home() {
                   </div>
             </div>
 
-
       <style>{`
         .home-bg {
           background: radial-gradient(ellipse at center, #FFFFFF 0%, #FFF1BF 100%);
@@ -979,6 +1052,9 @@ export default function Home() {
             background-size: cover;
             background-position: center 0px;
             background-repeat: no-repeat;
+          }
+          .home-bg-root {
+            background: #FAF9F6
           }
           .inscricao-mobile {
             display: none;
@@ -1012,7 +1088,6 @@ export default function Home() {
           }
         }
       `}</style>
-
   </div>
 )
 }
