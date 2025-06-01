@@ -13,9 +13,10 @@ export default function GuestsCarousel({ guests }) {
       <div className='lg:flex hidden'>
         <div className='w-[1214px] relative lg:block hidden'>
           <Swiper
-            initialSlide={3}
+            initialSlide={2}
             slidesPerView={4}
             spaceBetween={58}
+            allowTouchMove={false}
             loop={true}
 
             modules={[ Navigation ]}
@@ -50,6 +51,7 @@ export default function GuestsCarousel({ guests }) {
             initialSlide={0}
             slidesPerView={4}
             spaceBetween={58}
+            allowTouchMove={false}
             loop={true}
 
             modules={[ Navigation ]}
@@ -72,6 +74,7 @@ export default function GuestsCarousel({ guests }) {
             initialSlide={4}
             slidesPerView={4}
             spaceBetween={58}
+            allowTouchMove={false}
             loop={true}
 
             modules={[ Navigation ]}
@@ -138,7 +141,10 @@ function GuestCard({ avatar, name, description }) {
         <img src={avatar?.src} alt={avatar?.alt} className="w-24 h-24 object-cover" />
       </div>
       <p className="font-bold text-[18px] text-white">{name}</p>
-      <p className="text-[14px] font-medium text-white text-center">{description}</p>
+      <p 
+        className="text-[14px] font-medium text-white text-left"
+        style={{ fontFamily: 'Quicksand' }}
+      >{description}</p>
     </div>
   );
 }
