@@ -12,7 +12,244 @@ import IconeConvidados2 from '../assets/images/icone-convidados-2.svg'
 import IconeConvidados3 from '../assets/images/icone-convidados-3.svg'
 import ScheduleBoard from '../components/ScheduleBoard'
 import GuestsCarousel from '../components/GuestsCarousel'
+import carrossel1 from '../assets/images/carrossel1.png'
+import carrossel2 from '../assets/images/carrossel2.png'
+import carrossel3 from '../assets/images/carrossel3.png'
+import setaEsquerda from '../assets/images/setaEsquerda.svg'
+import setaDireita from '../assets/images/setaDireita.svg'
 import { Link } from 'react-router-dom'
+import React from 'react';
+
+
+const carouselImages = [
+  carrossel1,
+  carrossel2,
+  carrossel3,
+];
+
+function Carousel({ mobile = false }) {
+  const [index, setIndex] = React.useState(1);
+
+  const total = carouselImages.length;
+  const left = (index - 1 + total) % total;
+  const center = index;
+  const right = (index + 1) % total;
+
+  const handlePrev = () => setIndex((prev) => (prev - 1 + total) % total);
+  const handleNext = () => setIndex((prev) => (prev + 1) % total);
+
+  // Tamanhos proporcionais para mobile e desktop
+  const carouselStyle = mobile
+    ? {
+        width: '100%',
+        maxWidth: 320,
+        aspectRatio: '320/220',
+        height: 'auto',
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: '0 auto',
+      }
+    : {
+        width: 396,
+        height: 437,
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: '0 auto',
+      };
+
+  const sideImgWidth = mobile ? 147 : 236;
+  const sideImgHeight = mobile ? 162 : 260;
+  const centerImgWidth = mobile ? 248 : 396;
+  const centerImgHeight = mobile ? 273 : 437;
+
+  return (
+    <div className="relative flex justify-center items-center w-full" style={carouselStyle}>
+      {/* Imagem da esquerda */}
+      <div
+        className="absolute left-1/2"
+        style={{
+          transform: mobile ? 'translateX(-120%)' : 'translateX(-135%)',
+          width: sideImgWidth,
+          height: sideImgHeight,
+          zIndex: 1,
+          filter: 'blur(4px)',
+          top: '50%',
+          marginTop: mobile ? -sideImgHeight / 2 : -sideImgHeight / 2,
+          overflow: 'hidden',
+          borderRadius: 12,
+        }}
+      >
+        <img
+          src={carouselImages[left]}
+          alt="Foto esquerda"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            borderRadius: 12,
+          }}
+        />
+      </div>
+      {/* Imagem da direita */}
+      <div
+        className="absolute left-1/2"
+        style={{
+          transform: mobile ? 'translateX(20%)' : 'translateX(35%)',
+          width: sideImgWidth,
+          height: sideImgHeight,
+          zIndex: 1,
+          filter: 'blur(4px)',
+          top: '50%',
+          marginTop: mobile ? -sideImgHeight / 2 : -sideImgHeight / 2,
+          overflow: 'hidden',
+          borderRadius: 12,
+        }}
+      >
+        <img
+          src={carouselImages[right]}
+          alt="Foto direita"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            borderRadius: 12,
+          }}
+        />
+      </div>
+      {/* Imagem central e botões */}
+      <div
+        className="relative flex items-center justify-between"
+        style={{
+          width: centerImgWidth,
+          height: centerImgHeight,
+          zIndex: 2,
+        }}
+      >
+        {/* Botão esquerda */}
+        <button
+          onClick={handlePrev}
+          style={{
+            width: mobile ? 55 : 64,
+            height: mobile ? 31 : 28,
+            background: '#E0E0E0',
+            border: 'none',
+            borderRadius: 36.65,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'absolute',
+            left: mobile ? -8 : -4,
+            top: '50%',
+            transform: 'translateY(-50%) rotate(-90deg)',
+            cursor: 'pointer',
+            zIndex: 3,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+          }}
+          aria-label="Anterior"
+        >
+          <img
+            src={setaEsquerda}
+            alt="Anterior"
+            width={12}
+            height={10}
+            style={{ transform: 'rotate(90deg)' }}
+          />
+        </button>
+        {/* Imagem central */}
+        <img
+          src={carouselImages[center]}
+          alt="Foto central"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            borderRadius: 12,
+            display: 'block',
+          }}
+        />
+        {/* Botão direita */}
+        <button
+          onClick={handleNext}
+          style={{
+            width: mobile ? 55 : 64,
+            height: mobile ? 31 : 28,
+            background: '#E0E0E0',
+            border: 'none',
+            borderRadius: 36.65,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'absolute',
+            right: mobile ? -8 : -4,
+            top: '50%',
+            transform: 'translateY(-50%) rotate(90deg)',
+            cursor: 'pointer',
+            zIndex: 3,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+          }}
+          aria-label="Próximo"
+        >
+          <img
+            src={setaDireita}
+            alt="Próximo"
+            width={12}
+            height={10}
+            style={{ transform: 'rotate(-90deg)' }}
+          />
+        </button>
+        {/* Indicador de páginas */}
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            bottom: mobile ? -8 : -12,
+            transform: 'translateY(50%)',
+            marginTop: 8,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 8,
+            zIndex: 4,
+            pointerEvents: 'none',
+            
+          }}
+        >
+          {carouselImages.map((_, i) =>
+            i === center ? (
+              <div
+                key={i}
+                style={{
+                  width: 24,
+                  height: 8,
+                  borderRadius: 8,
+                  background: '#333333',
+                  transition: 'background 0.2s, width 0.2s',
+                }}
+              />
+            ) : (
+              <div
+                key={i}
+                style={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: '50%',
+                  background: '#828282',
+                  transition: 'background 0.2s',
+                }}
+              />
+            )
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 
 export default function Home() {
   const schedule = [
@@ -105,8 +342,11 @@ export default function Home() {
   ]
 
   return (
+    <div className="flex flex-col items-center lg:bg-[#FAF9F6] radial-gradient(ellipse_at_center,_#FFFFFF_0%,_#FFF1BF_100%)" style={{
+      minHeight: '100vh',
+      width: '100%',
+    }}>
 
-    <div className="flex flex-col items-center lg:bg-black home-bg-root">
        {/* HERO */}
         <div
           className="w-full flex justify-center bg-no-repeat bg-cover bg-center home-bg text-center min-h-screen"
@@ -188,6 +428,165 @@ export default function Home() {
               VER PROGRAMAÇÃO
             </Link>
           </div>
+        </div>  
+
+       {/* CARROSSEL E SOBRE O FESTIVAL DESKTOP */}
+          <div
+            className="hidden lg:flex"
+            style={{
+              width: '100%',
+              marginTop: 164,
+              justifyContent: 'center',
+              alignItems: 'center',
+              position: 'relative',
+              height: 600,
+              background:'#FAF9F6',
+              marginBottom: 142
+            }}
+          >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center', // Centraliza verticalmente o carrossel e o texto
+              justifyContent: 'center', // Centraliza horizontalmente
+              height: 453,
+              maxWidth: 1150, // ajuste conforme o layout desejado
+              width: '100%',
+              margin: '0 auto', // Centraliza o bloco todo
+            }}
+          >
+        {/* Carrossel */}
+        <div
+          style={{
+            marginTop:30,
+            width: 680,
+            height: 500,
+            position: 'relative',
+            flexShrink: 0,
+            overflow: 'hidden',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Carousel />
+        </div>
+        {/* Sobre o Festival */}
+        <div
+          style={{
+            marginLeft: 60,
+            width: 398,
+            minWidth: 398,
+            maxWidth: 398,
+            height: 453,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <h1
+            style={{
+              fontFamily: '"all-round-gothic", sans-serif',
+              color: '#2B3722',
+              fontWeight: 700,
+              fontSize: '2.1rem',
+              letterSpacing: '1px',
+              margin: 0,
+              width: 398,
+              maxWidth: 398,
+              height: 55,
+              lineHeight: '55px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            SOBRE O FESTIVAL
+          </h1>
+          <p
+            style={{
+              fontFamily: '"Quicksand", sans-serif',
+              fontWeight: 500,
+              color: '#2B3722',
+              fontSize: '1rem',
+              margin: 0,
+              marginTop: 30,
+              width: 398,
+              maxWidth: 398,
+              height: 150,
+              lineHeight: '1.5',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            Lorem ipsum cras tempus tortor at rhoncus volutpat feugiat in erat non id orci pellentesque adipiscing vestibulum egestas tellus nulla neque lorem fringilla tortor proin ut habitant id non blandit lorem at fringilla et fermentum lacus vulputate pharetra arcu nunc feugiat aliquam amet mauris netus.
+          </p>
+        </div>
+      </div>
+    </div>
+
+      {/* SOBRE O FESTIVAL + CARROSSEL MOBILE */}
+        <div className="w-full flex flex-col items-center lg:hidden"
+          style={{
+            marginTop: 2, // 220px abaixo do botão
+            paddingLeft: 16,
+            paddingRight: 16,
+            marginBottom: 225
+          }}
+        >
+          <h1
+            style={{
+              fontFamily: '"all-round-gothic", sans-serif',
+              color: '#2B3722',
+              fontWeight: 700,
+              fontSize: '2.1rem',
+              letterSpacing: '1px',
+              textAlign: 'center',
+              margin: 0,
+              width: '100%',
+              maxWidth: 430,
+            }}
+          >
+            SOBRE O FESTIVAL
+          </h1>
+          <div
+            style={{
+              marginTop: 20,
+              width: '100%',
+              maxWidth: 396,
+              aspectRatio: '396/273.82', // Mantém proporção
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Carousel
+              mobile 
+            />
+          </div>
+          <p
+            style={{
+              marginTop: 24,
+              fontFamily: '"Quicksand", sans-serif',
+              fontWeight: 500,
+              color: '#2B3722',
+              fontSize: '0.9rem',
+              width: '100%',
+              maxWidth: 398,
+              height: 180,
+              lineHeight: '1.5',
+              paddingLeft: 18,
+              paddingRight: 18,
+              boxSizing: 'border-box',
+              textAlign: 'left',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            Lorem ipsum cras tempus tortor at rhoncus volutpat feugiat in erat non id orci pellentesque adipiscing vestibulum egestas tellus nulla neque lorem fringilla tortor proin ut habitant id non blandit lorem at fringilla et fermentum lacus vulputate pharetra arcu nunc feugiat aliquam amet mauris netus.
+          </p>
         </div>
 
       {/* PROGRAMAÇÃO */}
@@ -279,27 +678,31 @@ export default function Home() {
           >
             Lorem ipsum cras tempus tortor at rhoncus volutpat feugiat in erat non id orci pellentesque adipiscing vestibulum egestas tellus nulla neque lorem fringilla tortor proin ut habitant id non blandit lorem.
           </p>
-          <button
-            style={{
-              width: '124px',
-              height: '42px',
-              background: '#C43934',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '6px',
-              fontFamily: '"all-round-gothic", sans-serif',
-              fontWeight: 700,
-              fontSize: '0.8rem',
-              cursor: 'pointer',
-              letterSpacing: '1px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            INSCREVA-SE
-          </button>
-
+            <Link
+              to="/inscricao"
+              style={{
+                width: '124px',
+                height: '42px',
+                background: '#C43934',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '6px',
+                fontFamily: '"all-round-gothic", sans-serif',
+                fontWeight: 700,
+                fontSize: '0.8rem',
+                cursor: 'pointer',
+                letterSpacing: '1px',
+                display: 'flex', // garante altura
+                alignItems: 'center',
+                justifyContent: 'center',
+                textDecoration: 'none',
+                boxSizing: 'border-box', // garante altura exata
+                lineHeight: '42px', // garante alinhamento vertical
+                padding: 0, // remove padding padrão
+              }}
+            >
+              INSCREVA-SE
+            </Link>
            {/* Bloco do mapa e informações */}
             <div
               style={{
@@ -379,7 +782,7 @@ export default function Home() {
       </div>
 
 
-        {/* INSCRIÇÃO MOBILE */}
+      {/* INSCRIÇÃO MOBILE */}
         <div className="inscricao-mobile">
           <div
             style={{
@@ -433,7 +836,8 @@ export default function Home() {
             >
               Lorem ipsum cras tempus tortor at rhoncus volutpat feugiat in erat non id orci pellentesque adipiscing vestibulum egestas tellus nulla neque lorem fringilla tortor proin ut habitant id non blandit lorem.
             </p>
-            <button
+            <Link
+              to="/inscricao"
               style={{
                 width: 224,
                 height: 42,
@@ -450,10 +854,11 @@ export default function Home() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                textDecoration: 'none'
               }}
             >
               INSCREVA-SE
-            </button>
+            </Link>
           </div>
 
           {/* BLOCO LOCAL E ACESSO MOBILE */}
@@ -527,8 +932,8 @@ export default function Home() {
           </div>
         </div>
 
-          {/* SEÇÃO REALIZAÇÃO DESKTOP */}
-          <div className="hidden lg:flex w-full justify-center" style={{ background: '#FAF9F6' }}>
+      {/* SEÇÃO REALIZAÇÃO DESKTOP */}
+        <div className="hidden lg:flex w-full justify-center" style={{ background: '#FAF9F6' }}>
             <div className="flex flex-col items-center w-full" style={{ marginTop: 90, marginBottom: -70 }}>
               <h1
                 style={{
@@ -636,10 +1041,10 @@ export default function Home() {
             ))}
               </div>
             </div>
-          </div>
+        </div>
 
       {/* SEÇÃO APOIO DESKTOP */}
-          <div className="hidden lg:flex w-full justify-center" style={{ background: '#FAF9F6' }}>
+        <div className="hidden lg:flex w-full justify-center" style={{ background: '#FAF9F6' }}>
             <div className="flex flex-col items-center w-full" style={{ marginTop: 90, marginBottom: 60 }}>
               <h1
                 style={{
@@ -800,14 +1205,13 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </div>
+        </div>
 
-            {/* REALIZAÇÃO E APOIO MOBILE */}
-            <div
+      {/* REALIZAÇÃO E APOIO MOBILE */}
+        <div
               className="inscricao-mobile"
               style={{
                 width: '100%',
-                background: 'radial-gradient(ellipse at center, #FFFFFF 0%, #FFF1BF 100%)',
                 paddingBottom: 60,
                 minHeight: '100vh',
               }}
@@ -926,16 +1330,19 @@ export default function Home() {
                     >
                       APOIO
                     </span>
-                    <div
-                      style={{
-                        marginTop: 24,
-                        width: '100%',
-                        maxWidth: 398,
-                        height: 4,
-                        background: '#2B3722',
-                        borderRadius: 2,
-                      }}
-                    />
+                      <div
+                        style={{
+                          marginTop: 24,
+                          width: 'calc(100% - 28px)',
+                          height: 4,
+                          background: '#2B3722',
+                          borderRadius: 2,
+                          alignSelf: 'center',
+                          marginLeft: 14,
+                          marginRight: 14,
+                          maxWidth: 398,
+                        }}
+                      />
                     <div
                       style={{
                         marginTop: 32,
@@ -1035,17 +1442,10 @@ export default function Home() {
                       </span>
                     </div>
                   </div>
-            </div>
+        </div>
 
       <style>{`
-        .home-bg {
-          background: radial-gradient(ellipse at center, #FFFFFF 0%, #FFF1BF 100%);
-        }
-        .home-bg-root {
-          background: radial-gradient(ellipse at center, #FFFFFF 0%, #FFF1BF 100%);
-          min-height: 100vh;
-          width: 100%;
-        }
+
         @media (min-width: 1024px) {
           .home-bg {
             background-image: url(${HomeBg});
@@ -1087,7 +1487,14 @@ export default function Home() {
             max-width: 500px;
           }
         }
-      `}</style>
+          body {
+            background: radial-gradient(ellipse at center, #FFFFFF 0%, #FFF1BF 100%);
+            min-height: 100vh;
+            width: 100vw;
+          }
+      `
+      }</style>
+
   </div>
 )
 }
