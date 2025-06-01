@@ -15,18 +15,18 @@ export default function ScheduleBoard({ schedule }) {
                 )}
             </div>
             <div className="block relative lg:hidden w-full h-ful">
-                <button id='prev' className='flex absolute z-10 left-[10px] top-0 justify-center items-center w-[34px] h-[64px] !bg-[#E0E0E0] !p-0 !rounded-[37px]'>
+                <button id='schedule-prev' className='flex absolute z-10 left-[10px] top-0 justify-center items-center w-[34px] h-[64px] !bg-[#E0E0E0] !p-0 !rounded-[37px] !border-none'>
                     <img src={setaEsquerda} className='w-[13px] h-[22px]'></img>
                 </button>
-                <button id='next' className='flex absolute z-10 right-[10px] top-0 justify-center items-center w-[34px] h-[64px] !bg-[#E0E0E0] !p-0 !rounded-[37px]'>
+                <button id='schedule-next' className='flex absolute z-10 right-[10px] top-0 justify-center items-center w-[34px] h-[64px] !bg-[#E0E0E0] !p-0 !rounded-[37px] !border-none'>
                     <img src={setaDireita} className='w-[13px] h-[22px]'></img>
                 </button>
 
                 <Swiper
                     modules={[ Navigation ]}
                     navigation={{
-                        prevEl: '#prev',
-                        nextEl: '#next'
+                        prevEl: '#schedule-prev',
+                        nextEl: '#schedule-next'
                     }}
                     slidesPerView={1}
                     className='w-full h-full'
