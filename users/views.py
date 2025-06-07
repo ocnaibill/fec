@@ -14,7 +14,15 @@ def login(request):
 
 @api_view(['POST'])
 def signup(request):
-    return Response({})
+    serializer = UserSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+
+        user = CustomUser.objects.get(email=request.data['email'])
+        token, _ = Token.objects.get_or_create(user=user)
+
+        return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def logout(request):
