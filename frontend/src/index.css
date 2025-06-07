@@ -88,7 +88,16 @@ input:focus, input:active {
   font-family: 'Quicksand', sans-serif;
 }
 
+
+
+/* login.jsx */
 .login-password-input::placeholder {
     color: #2B3722;
     opacity: 1;
+}
+
+.login-button {
+  background-color: #F06F37 !important; /* Força a cor correta */
+  border: none !important;
+  border-radius: 12px !important;
 }
