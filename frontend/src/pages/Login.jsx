@@ -24,7 +24,6 @@ export default function Login() {
             if (response.ok) {
                 setSuccess('Login realizado com sucesso!');
                 alert(`Token: ${data.token}`);
-                // Salvar o token no localStorage ou em um contexto global
                 localStorage.setItem('authToken', data.token);
             } else {
                 setError(data.error || 'Erro ao realizar login.');
@@ -36,80 +35,35 @@ export default function Login() {
 
     return (
         <div
+            className="min-h-screen w-full flex items-center justify-center"
             style={{
-                minHeight: '100vh',
-                width: '100vw',
                 backgroundImage: `url(${fundo})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
             }}
         >
             <div
-                style={{
-                    width: 471,
-                    height: 491,
-                    background: '#2B3722',
-                    borderRadius: 12,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    paddingTop: 24,
-                    position: 'relative',
-                    boxShadow: `
-                        0 4px 4px 0 rgba(0,0,0,0.25), /* drop shadow */
-                        inset 0 4px 4px 0 rgba(0,0,0,0.25) /* inner shadow */
-                    `,
-                }}
+                className="bg-[#2B3722] rounded-lg flex flex-col items-center pt-6 relative shadow-lg 
+                           w-[398px] h-[491px] md:w-[471px] md:h-[491px]"
             >
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        width: '100%',
-                    }}
-                >
+                <div className="flex flex-col items-center w-full">
                     <span
-                        style={{
-                            fontFamily: '"all-round-gothic", sans-serif',
-                            fontWeight: 700,
-                            fontSize: 24,
-                            marginTop: 4,
-                            color: '#FFF1BF',
-                            textAlign: 'center',
-                        }}
+                        className="font-bold text-[24px] mt-1 text-[#FFF1BF] text-center"
+                        style={{ fontFamily: '"all-round-gothic", sans-serif' }}
                     >
                         Faça Login
                     </span>
                     <span
-                        style={{
-                            fontFamily: '"Quicksand", sans-serif',
-                            fontWeight: 500,
-                            fontSize: 18,
-                            color: '#FFF1BF',
-                            textAlign: 'center',
-                            marginTop: -8,
-                        }}
+                        className="font-medium text-[18px] text-[#FFF1BF] text-center -mt-2"
+                        style={{ fontFamily: '"Quicksand", sans-serif' }}
                     >
                         Para continuar
                     </span>
 
                     <span
-                        style={{
-                            display: 'block',
-                            marginTop: 14,
-                            marginLeft: 24,
-                            fontFamily: '"Quicksand", sans-serif',
-                            fontWeight: 500,
-                            fontSize: 16,
-                            color: '#FFF1BF',
-                            textAlign: 'left',
-                            alignSelf: 'flex-start',
-                        }}
+                        className="block mt-4 ml-6 font-medium text-[#FFF1BF] text-[16px] text-left self-start"
+                        style={{ fontFamily: '"Quicksand", sans-serif' }}
                     >
                         E-mail
                     </span>
@@ -118,36 +72,15 @@ export default function Login() {
                         placeholder="digite seu e-mail"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        style={{
-                            width: 426,
-                            height: 50,
-                            borderRadius: 12,
-                            background: '#FFF1BF',
-                            border: '2px solid #2F2F2F',
-                            outline: 'none',
-                            fontFamily: '"Quicksand", sans-serif',
-                            fontWeight: 500,
-                            fontSize: 16,
-                            color: '#2B3722',
-                            marginTop: 8,
-                            paddingLeft: 20,
-                            boxSizing: 'border-box',
-                        }}
-                        className="login-password-input"
+                        className="w-[350px] h-[50px] rounded-[12px] bg-[#FFF1BF] border-2 border-[#2F2F2F] 
+                                   outline-none font-medium text-[16px] text-[#2B3722] mt-2 pl-5 box-border 
+                                   md:w-[426px] login-password-input"
+                        style={{ fontFamily: '"Quicksand", sans-serif' }}
                     />
 
                     <span
-                        style={{
-                            display: 'block',
-                            marginTop: 18,
-                            marginLeft: 24,
-                            fontFamily: '"Quicksand", sans-serif',
-                            fontWeight: 500,
-                            fontSize: 16,
-                            color: '#FFF1BF',
-                            textAlign: 'left',
-                            alignSelf: 'flex-start',
-                        }}
+                        className="block mt-4 ml-6 font-medium text-[#FFF1BF] text-[16px] text-left self-start"
+                        style={{ fontFamily: '"Quicksand", sans-serif' }}
                     >
                         Senha
                     </span>
@@ -156,49 +89,22 @@ export default function Login() {
                         placeholder="digite sua senha"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        style={{
-                            width: 426,
-                            height: 50,
-                            borderRadius: 12,
-                            background: '#FFF1BF',
-                            border: '2px solid #2F2F2F',
-                            outline: 'none',
-                            fontFamily: '"Quicksand", sans-serif',
-                            fontWeight: 500,
-                            fontSize: 16,
-                            color: '#2B3722',
-                            marginTop: 8,
-                            paddingLeft: 20,
-                            boxSizing: 'border-box',
-                        }}
-                        className="login-password-input"
+                        className="w-[350px] h-[50px] rounded-[12px] bg-[#FFF1BF] border-2 border-[#2F2F2F] 
+                                   outline-none font-medium text-[16px] text-[#2B3722] mt-2 pl-5 box-border 
+                                   md:w-[426px] login-password-input"
+                        style={{ fontFamily: '"Quicksand", sans-serif' }}
                     />
                 </div>
 
                 <button
                     type="button"
                     onClick={handleLogin}
-                    style={{
-                        width: 426,
-                        height: 50,
-                        borderRadius: 12,
-                        background: '#F06F37',
-                        border: 'none',
-                        marginTop: 35,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                    }}
+                    className="login-button w-[350px] h-[50px] rounded-[12px] bg-[#F06F37] border-none mt-8 flex items-center 
+                            justify-center cursor-pointer md:w-[426px]"
                 >
                     <span
-                        style={{
-                            color: '#2B3722',
-                            fontFamily: '"all-round-gothic", sans-serif',
-                            fontWeight: 700,
-                            fontSize: 18,
-                            letterSpacing: 1,
-                        }}
+                        className="text-[#2B3722] font-bold text-[18px] tracking-wide"
+                        style={{ fontFamily: '"all-round-gothic", sans-serif' }}
                     >
                         LOGIN
                     </span>
@@ -206,12 +112,8 @@ export default function Login() {
 
                 {error && (
                     <span
-                        style={{
-                            color: 'red',
-                            marginTop: 10,
-                            fontFamily: '"Quicksand", sans-serif',
-                            fontSize: 14,
-                        }}
+                        className="text-red-500 mt-2 font-medium text-[14px]"
+                        style={{ fontFamily: '"Quicksand", sans-serif' }}
                     >
                         {error}
                     </span>
@@ -219,48 +121,23 @@ export default function Login() {
 
                 {success && (
                     <span
-                        style={{
-                            color: 'green',
-                            marginTop: 10,
-                            fontFamily: '"Quicksand", sans-serif',
-                            fontSize: 14,
-                        }}
+                        className="text-green-500 mt-2 font-medium text-[14px]"
+                        style={{ fontFamily: '"Quicksand", sans-serif' }}
                     >
                         {success}
                     </span>
                 )}
 
-                <div
-                    style={{
-                        position: 'absolute',
-                        bottom: 24,
-                        left: 0,
-                        width: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
+                <div className="absolute bottom-6 left-0 w-full flex flex-col items-center">
                     <span
-                        style={{
-                            fontFamily: '"Quicksand", sans-serif',
-                            fontWeight: 500,
-                            fontSize: 16,
-                            color: '#FFF1BF',
-                            textAlign: 'center',
-                            marginBottom: 4,
-                        }}
+                        className="font-medium text-[16px] text-[#FFF1BF] text-center mb-1"
+                        style={{ fontFamily: '"Quicksand", sans-serif' }}
                     >
                         Não tem conta? Registre-se.
                     </span>
                     <span
-                        style={{
-                            fontFamily: '"Quicksand", sans-serif',
-                            fontWeight: 500,
-                            fontSize: 16,
-                            color: '#FFF1BF',
-                            textAlign: 'center',
-                        }}
+                        className="font-medium text-[16px] text-[#FFF1BF] text-center"
+                        style={{ fontFamily: '"Quicksand", sans-serif' }}
                     >
                         Esqueceu a senha?
                     </span>
