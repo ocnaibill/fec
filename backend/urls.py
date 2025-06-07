@@ -21,5 +21,6 @@ from core.views import hello
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/hello/', hello),
-    path('api/auth/', include('users.urls'))
+    path('api/auth/', include('users.urls')),
+    path('api/event/', include('events.urls')),
 ]
