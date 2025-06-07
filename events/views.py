@@ -27,3 +27,23 @@ def list_event_details(requests, event_pk):
     
     serializer = EventSerializer(event)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+# PALESTRAS
+@api_view(['POST'])
+def add_lecture_to_event(requests):
+    serializer = LectureSerializer(data=requests.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# OFICINAS
+@api_view(['POST'])
+def add_workshop_to_event(requests):
+    serializer = WorkshopSerializer(data=requests.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

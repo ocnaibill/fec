@@ -3,18 +3,46 @@ from .models import Event, Lecture, Workshop, Subscription
 
 
 class LectureSerializer(serializers.ModelSerializer):
+    event_id = serializers.PrimaryKeyRelatedField(
+        queryset=Event.objects.all(),
+        write_only=True,
+        required=True,
+        allow_null=False
+    )
+
     class Meta:
         model = Lecture
-        fields = [ 'title', 'description', 'date', 'hour', 'local', 'event' ]
+        fields = [ 'event', 'title', 'description', 'date', 'hour', 'local', 'event_id' ]
+        read_only_fields = ['event']
+
+    def create(self, validated_data):
+        event = validated_data.pop('event_id')
+        lecture = Lecture.objects.create(event=event, **validated_data)
+
+        return lecture
 
 class WorkshopSerializer(serializers.ModelSerializer):
+    event_id = serializers.PrimaryKeyRelatedField(
+        queryset=Event.objects.all(),
+        write_only=True,
+        required=True,
+        allow_null=False
+    )
+
     class Meta:
         model = Workshop
-        fields = [ 'title', 'description', 'date', 'hour', 'local', 'event' ]
+        fields = [ 'event', 'title', 'description', 'date', 'hour', 'local', 'event_id' ]
+        read_only_fields = ['event']
+
+    def create(self, validated_data):
+        event = validated_data.pop('event_id')
+        workshop = Workshop.objects.create(event=event, **validated_data)
+
+        return workshop
 
 class EventSerializer(serializers.ModelSerializer):
-    lecture = LectureSerializer(many=True, read_only=True)
-    workshop = WorkshopSerializer(many=True, read_only=True)
+    lecture = LectureSerializer(many=True, read_only=True, source='lecture_set')
+    workshop = WorkshopSerializer(many=True, read_only=True, source='workshop_set')
 
     class Meta:
         model = Event
