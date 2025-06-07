@@ -87,3 +87,8 @@ input:focus, input:active {
 .font-quicksand {
   font-family: 'Quicksand', sans-serif;
 }
+
+.login-password-input::placeholder {
+    color: #2B3722;
+    opacity: 1;
+}
