@@ -1,8 +1,40 @@
-import fundo from '../assets/images/fundo2_fec.svg'
-
+import React, { useState } from 'react';
+import fundo from '../assets/images/fundo2_fec.svg';
 
 export default function Login() {
-    return(
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+
+    const handleLogin = async () => {
+        setError('');
+        setSuccess('');
+        try {
+            const response = await fetch('http://localhost:8000/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setSuccess('Login realizado com sucesso!');
+                alert(`Token: ${data.token}`);
+                // Salvar o token no localStorage ou em um contexto global
+                localStorage.setItem('authToken', data.token);
+            } else {
+                setError(data.error || 'Erro ao realizar login.');
+            }
+        } catch (err) {
+            setError('Erro de conexão com o servidor.');
+        }
+    };
+
+    return (
         <div
             style={{
                 minHeight: '100vh',
@@ -84,6 +116,8 @@ export default function Login() {
                     <input
                         type="text"
                         placeholder="digite seu e-mail"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         style={{
                             width: 426,
                             height: 50,
@@ -101,47 +135,49 @@ export default function Login() {
                         }}
                         className="login-password-input"
                     />
-                
 
-                <span
-                    style={{
-                        display: 'block',
-                        marginTop: 18, 
-                        marginLeft: 24,
-                        fontFamily: '"Quicksand", sans-serif',
-                        fontWeight: 500,
-                        fontSize: 16,
-                        color: '#FFF1BF',
-                        textAlign: 'left',
-                        alignSelf: 'flex-start',
-                    }}
-                >
-                    Senha
-                </span>
-                <input
-                    type="password"
-                    placeholder="digite sua senha"
-                    style={{
-                        width: 426,
-                        height: 50,
-                        borderRadius: 12,
-                        background: '#FFF1BF',
-                        border: '2px solid #2F2F2F',
-                        outline: 'none',
-                        fontFamily: '"Quicksand", sans-serif',
-                        fontWeight: 500,
-                        fontSize: 16,
-                        color: '#2B3722',
-                        marginTop: 8,
-                        paddingLeft: 20,
-                        boxSizing: 'border-box',
-                    }}
-                    className="login-password-input"
-                />
+                    <span
+                        style={{
+                            display: 'block',
+                            marginTop: 18,
+                            marginLeft: 24,
+                            fontFamily: '"Quicksand", sans-serif',
+                            fontWeight: 500,
+                            fontSize: 16,
+                            color: '#FFF1BF',
+                            textAlign: 'left',
+                            alignSelf: 'flex-start',
+                        }}
+                    >
+                        Senha
+                    </span>
+                    <input
+                        type="password"
+                        placeholder="digite sua senha"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        style={{
+                            width: 426,
+                            height: 50,
+                            borderRadius: 12,
+                            background: '#FFF1BF',
+                            border: '2px solid #2F2F2F',
+                            outline: 'none',
+                            fontFamily: '"Quicksand", sans-serif',
+                            fontWeight: 500,
+                            fontSize: 16,
+                            color: '#2B3722',
+                            marginTop: 8,
+                            paddingLeft: 20,
+                            boxSizing: 'border-box',
+                        }}
+                        className="login-password-input"
+                    />
                 </div>
-                
+
                 <button
-                    type="submit"
+                    type="button"
+                    onClick={handleLogin}
                     style={{
                         width: 426,
                         height: 50,
@@ -167,6 +203,33 @@ export default function Login() {
                         LOGIN
                     </span>
                 </button>
+
+                {error && (
+                    <span
+                        style={{
+                            color: 'red',
+                            marginTop: 10,
+                            fontFamily: '"Quicksand", sans-serif',
+                            fontSize: 14,
+                        }}
+                    >
+                        {error}
+                    </span>
+                )}
+
+                {success && (
+                    <span
+                        style={{
+                            color: 'green',
+                            marginTop: 10,
+                            fontFamily: '"Quicksand", sans-serif',
+                            fontSize: 14,
+                        }}
+                    >
+                        {success}
+                    </span>
+                )}
+
                 <div
                     style={{
                         position: 'absolute',
@@ -202,8 +265,7 @@ export default function Login() {
                         Esqueceu a senha?
                     </span>
                 </div>
-
-                 </div>
             </div>
-    )
+        </div>
+    );
 }
