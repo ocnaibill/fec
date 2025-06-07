@@ -23,7 +23,6 @@ export default function Login() {
 
             if (response.ok) {
                 setSuccess('Login realizado com sucesso!');
-                alert(`Token: ${data.token}`);
                 localStorage.setItem('authToken', data.token);
             } else {
                 setError(data.error || 'Erro ao realizar login.');
