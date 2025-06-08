@@ -56,4 +56,8 @@ def signup(request):
 
 @api_view(['POST'])
 def logout(request):
-    return Response({})
+    try:
+        request.user.auth_token.delete()
+        return Response({'message': 'Logout realizado com sucesso.'}, status=status.HTTP_200_OK)
+    except:
+        return Response({'erro': 'Erro ao realizar logout.'}, status=status.HTTP_400_BAD_REQUEST)
