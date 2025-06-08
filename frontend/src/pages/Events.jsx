@@ -5,6 +5,7 @@ import logoConecom from '../assets/images/logo_conecom.svg';
 import logoHackaton from '../assets/images/logo_hackaton.svg';
 import logoInterprogramas from '../assets/images/logo_interprogramas.svg';
 import logoSemanaDesign from '../assets/images/logo_semanadesign.svg';
+import EventsCard from '../components/EventsCard';
 
 export default function Events() {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -13,7 +14,6 @@ export default function Events() {
     const pages = [
         {
             title: 'CONECOM',
-            description: 'Aqui você pode adicionar os eventos do CONECOM.',
             buttonColor: '#2C53A1',
             textColor: '#2C53A1',
             logo: logoConecom,
@@ -25,10 +25,43 @@ export default function Events() {
                 { time: '00:50', title: 'CONECOM Atividade 5' },
                 { time: '01:00', title: 'CONECOM Atividade 6' },
             ],
+            cards: [
+                 {
+                    date: '13/05',
+                    time: '10:00',
+                    title: 'Palestra 1',
+                    description: 'LOREM IPSUM SCELERISQUE ACCUMSAN ERAT ORCI ALIQUAM ULTRICIES AUCTOR NIBH JUSTO EGET AT NUNC IACULIS SAGITTIS PLACERAT ORNARE NUNC SCELERISQUE NETUS GRAVIDA QUAM MALESUADA EGESTAS AMET PHARETRA HABITASSE EU MAGNA LOBORTIS FRINGILLA DICTUM ENIM ORNARE GRAVIDA RISUS ID GRAVIDA NISI ODIO DUIS ELEIFEND SED SED.',
+                    speakers: [
+                        {
+                            name: 'NOME SOBRENOME',
+                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
+                        },
+                        {
+                            name: 'NOME SOBRENOME',
+                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
+                        },
+                    ],
+                },
+                {
+                    date: '14/05',
+                    time: '11:00',
+                    title: 'Palestra 2',
+                    description: 'LOREM IPSUM SCELERISQUE ACCUMSAN ERAT ORCI ALIQUAM ULTRICIES AUCTOR NIBH JUSTO EGET AT NUNC IACULIS SAGITTIS PLACERAT ORNARE NUNC SCELERISQUE NETUS GRAVIDA QUAM MALESUADA EGESTAS AMET PHARETRA HABITASSE EU MAGNA LOBORTIS FRINGILLA DICTUM ENIM ORNARE GRAVIDA RISUS ID GRAVIDA NISI ODIO DUIS ELEIFEND SED SED.',
+                    speakers: [
+                        {
+                            name: 'NOME SOBRENOME',
+                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
+                        },
+                        {
+                            name: 'NOME SOBRENOME',
+                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
+                        },
+                    ],
+                },
+            ],
         },
         {
             title: 'SEMANA DO DESIGN',
-            description: 'Aqui você pode adicionar os eventos da Semana do Design.',
             buttonColor: '#ED5F2E',
             textColor: '#ED5F2E',
             logo: logoSemanaDesign,
@@ -40,10 +73,43 @@ export default function Events() {
                 { time: '10:50', title: 'Design Atividade 5' },
                 { time: '11:00', title: 'Design Atividade 6' },
             ],
+           cards: [
+                 {
+                    date: '15/05',
+                    time: '12:00',
+                    title: 'Palestra 3',
+                    description: 'LOREM IPSUM SCELERISQUE ACCUMSAN ERAT ORCI ALIQUAM ULTRICIES AUCTOR NIBH JUSTO EGET AT NUNC IACULIS SAGITTIS PLACERAT ORNARE NUNC SCELERISQUE NETUS GRAVIDA QUAM MALESUADA EGESTAS AMET PHARETRA HABITASSE EU MAGNA LOBORTIS FRINGILLA DICTUM ENIM ORNARE GRAVIDA RISUS ID GRAVIDA NISI ODIO DUIS ELEIFEND SED SED.',
+                    speakers: [
+                        {
+                            name: 'NOME SOBRENOME',
+                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
+                        },
+                        {
+                            name: 'NOME SOBRENOME',
+                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
+                        },
+                    ],
+                },
+                {
+                    date: '16/05',
+                    time: '13:00',
+                    title: 'Palestra 4',
+                    description: 'LOREM IPSUM SCELERISQUE ACCUMSAN ERAT ORCI ALIQUAM ULTRICIES AUCTOR NIBH JUSTO EGET AT NUNC IACULIS SAGITTIS PLACERAT ORNARE NUNC SCELERISQUE NETUS GRAVIDA QUAM MALESUADA EGESTAS AMET PHARETRA HABITASSE EU MAGNA LOBORTIS FRINGILLA DICTUM ENIM ORNARE GRAVIDA RISUS ID GRAVIDA NISI ODIO DUIS ELEIFEND SED SED.',
+                    speakers: [
+                        {
+                            name: 'NOME SOBRENOME',
+                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
+                        },
+                        {
+                            name: 'NOME SOBRENOME',
+                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
+                        },
+                    ],
+                },
+            ],
         },
         {
             title: 'INTERPROGRAMAS',
-            description: 'Aqui você pode adicionar os eventos de Interprogramas.',
             buttonColor: '#C91E1D',
             textColor: '#C91E1D',
             logo: logoInterprogramas,
@@ -55,10 +121,43 @@ export default function Events() {
                 { time: '14:50', title: 'Interprogramas Atividade 5' },
                 { time: '15:00', title: 'Interprogramas Atividade 6' },
             ],
+            cards: [
+                 {
+                    date: '16/05',
+                    time: '14:00',
+                    title: 'Palestra 5',
+                    description: 'LOREM IPSUM SCELERISQUE ACCUMSAN ERAT ORCI ALIQUAM ULTRICIES AUCTOR NIBH JUSTO EGET AT NUNC IACULIS SAGITTIS PLACERAT ORNARE NUNC SCELERISQUE NETUS GRAVIDA QUAM MALESUADA EGESTAS AMET PHARETRA HABITASSE EU MAGNA LOBORTIS FRINGILLA DICTUM ENIM ORNARE GRAVIDA RISUS ID GRAVIDA NISI ODIO DUIS ELEIFEND SED SED.',
+                    speakers: [
+                        {
+                            name: 'NOME SOBRENOME',
+                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
+                        },
+                        {
+                            name: 'NOME SOBRENOME',
+                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
+                        },
+                    ],
+                },
+                {
+                    date: '17/05',
+                    time: '15:00',
+                    title: 'Palestra 6',
+                    description: 'LOREM IPSUM SCELERISQUE ACCUMSAN ERAT ORCI ALIQUAM ULTRICIES AUCTOR NIBH JUSTO EGET AT NUNC IACULIS SAGITTIS PLACERAT ORNARE NUNC SCELERISQUE NETUS GRAVIDA QUAM MALESUADA EGESTAS AMET PHARETRA HABITASSE EU MAGNA LOBORTIS FRINGILLA DICTUM ENIM ORNARE GRAVIDA RISUS ID GRAVIDA NISI ODIO DUIS ELEIFEND SED SED.',
+                    speakers: [
+                        {
+                            name: 'NOME SOBRENOME',
+                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
+                        },
+                        {
+                            name: 'NOME SOBRENOME',
+                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
+                        },
+                    ],
+                },
+            ],
         },
         {
             title: 'HACKATHON',
-            description: 'Aqui você pode adicionar os eventos da Hackathon.',
             buttonColor: '#8A3B8E',
             textColor: '#8A3B8E',
             logo: logoHackaton,
@@ -70,6 +169,41 @@ export default function Events() {
                 { time: '16:50', title: 'Hackathon Atividade 5' },
                 { time: '17:00', title: 'Hackathon Atividade 6' },
             ],
+           cards: [
+                 {
+                    date: '18/05',
+                    time: '16:00',
+                    title: 'Palestra 7',
+                    description: 'LOREM IPSUM SCELERISQUE ACCUMSAN ERAT ORCI ALIQUAM ULTRICIES AUCTOR NIBH JUSTO EGET AT NUNC IACULIS SAGITTIS PLACERAT ORNARE NUNC SCELERISQUE NETUS GRAVIDA QUAM MALESUADA EGESTAS AMET PHARETRA HABITASSE EU MAGNA LOBORTIS FRINGILLA DICTUM ENIM ORNARE GRAVIDA RISUS ID GRAVIDA NISI ODIO DUIS ELEIFEND SED SED.',
+                    speakers: [
+                        {
+                            name: 'NOME SOBRENOME',
+                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
+                        },
+                        {
+                            name: 'NOME SOBRENOME',
+                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
+                        },
+                    ],
+                },
+                {
+                    date: '19/05',
+                    time: '17:00',
+                    title: 'Palestra 8',
+                    description: 'LOREM IPSUM SCELERISQUE ACCUMSAN ERAT ORCI ALIQUAM ULTRICIES AUCTOR NIBH JUSTO EGET AT NUNC IACULIS SAGITTIS PLACERAT ORNARE NUNC SCELERISQUE NETUS GRAVIDA QUAM MALESUADA EGESTAS AMET PHARETRA HABITASSE EU MAGNA LOBORTIS FRINGILLA DICTUM ENIM ORNARE GRAVIDA RISUS ID GRAVIDA NISI ODIO DUIS ELEIFEND SED SED.',
+                    speakers: [
+                        {
+                            name: 'NOME SOBRENOME',
+                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
+                        },
+                        {
+                            name: 'NOME SOBRENOME',
+                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
+                        },
+                    ],
+                },
+            ],
+            
         },
     ];
 
@@ -85,6 +219,7 @@ export default function Events() {
 
     return (
         <div className="min-h-screen w-full bg-[#FFF1C0] relative pt-[64px]">
+
             {/* Título e logo no mobile */}
             <div className="flex items-center justify-center md:absolute md:top-[64px] md:left-[282px] md:justify-start">
                 <div
@@ -549,7 +684,55 @@ export default function Events() {
                 }}
             />
 
-            {/* Conteúdo principal */}
+
+            {/* Texto "PALESTRAS" */}
+            <p
+                style={{
+                    fontFamily: '"all-round-gothic", sans-serif',
+                    fontWeight: 'bold',
+                    fontSize: '50px',
+                    color: '#2B3722',
+                    textAlign: window.innerWidth >= 768 ? 'left' : 'center', // Centraliza no mobile, alinha à esquerda no desktop
+                    marginTop: '148px', // Espaçamento de 196px abaixo das atividades
+                    marginLeft: window.innerWidth >= 768 ? '284px' : 'auto', // Alinhamento no desktop
+                    marginRight: window.innerWidth >= 768 ? '0' : 'auto', // Centraliza no mobile
+                    marginBottom: '48px', // Espaçamento de 48px abaixo do texto
+                }}
+            >
+                PALESTRAS
+            </p>
+            
+            {currentPage.cards.map((card, index) => (
+                <EventsCard
+                    key={index}
+                    date={card.date} // Data específica do card
+                    time={card.time} // Horário específico do card
+                    title={card.title} // Título específico do card
+                    description={card.description}
+                    speakers={card.speakers}
+
+                    style={{
+                        fontFamily: '"all-round-gothic", sans-serif',
+                        marginLeft: window.innerWidth >= 768 ? '284px' : 'auto', // Mantém o alinhamento à esquerda no desktop
+                        marginRight: window.innerWidth >= 768 ? '277px' : 'auto', // Define a distância de 277px do canto direito no desktop
+                        marginTop: '48px',
+                        width: window.innerWidth >= 768 ? `calc(100% - 561px)` : 'calc(100% - 32px)', // Ajusta a largura no desktop e no mobile
+                    }}
+                >
+                    <p
+                        style={{
+                            fontFamily: '"quicksand", sans-serif',
+                            fontSize: '18px',
+                            color: '#2B3722',
+                            textAlign: 'center',
+                        }}
+                    >
+                        {card.content} {/* Conteúdo específico do card */}
+                    </p>
+                </EventsCard>
+            ))}
+            
+            {/* espaçamento final para respiro do footer */}
             <main className="mt-[32px] flex flex-col items-center">
                 <p
                     className="text-[18px]"
@@ -557,13 +740,11 @@ export default function Events() {
                         fontFamily: '"quicksand", sans-serif',
                         color: '#2B3722',
                         fontWeight: '500',
-                        marginTop: 1600,
+                        marginTop: 100,
                     }}
                 >
                     {currentPage.description}
                 </p>
-
-                
             </main>
         </div>
     );
