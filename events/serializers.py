@@ -51,6 +51,8 @@ class EventSerializer(serializers.ModelSerializer):
         fields = [ 'id', 'name', 'description', 'lecture', 'workshop']
 
 class SubscriptionSerializer(serializers.ModelSerializer):
+    lecture = LectureSerializer(read_only=True)
+    workshop = WorkshopSerializer(read_only=True)
     alert = serializers.SerializerMethodField()
 
     user_id = serializers.PrimaryKeyRelatedField(
@@ -81,6 +83,8 @@ class SubscriptionSerializer(serializers.ModelSerializer):
             'user_id',
             'lecture_id',
             'workshop_id',
+            'lecture',
+            'workshop',
             'alert'
         ]
         read_only_fields = ['id', 'status', 'alert']

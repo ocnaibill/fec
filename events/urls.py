@@ -9,4 +9,5 @@ urlpatterns = [
     path('workshop/', views.add_workshop_to_event, name='create_workshop'),
     path('workshop/<int:event_pk>/', views.list_event_workshops, name='event_workshops'),
     path('subscribe/', views.subscribe_to_event, name='subscribe'),
+    path('mysubs/', views.list_subscriptions, name='list_user_subscribed_activities'),
 ]
