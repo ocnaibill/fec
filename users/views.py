@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
 
 from .serializers import UserSerializer
@@ -10,6 +10,7 @@ from users.models import CustomUser
 
 # Create your views here.
 @api_view(['POST'])
+@permission_classes([])
 def login(request):
     email = request.data.get('email')
     password = request.data.get('password')
@@ -41,6 +42,7 @@ def login(request):
         )
 
 @api_view(['POST'])
+@permission_classes([])
 def signup(request):
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():

@@ -22,6 +22,7 @@ def create_event(requests):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
+@permission_classes([])
 def list_event_details(requests, event_pk):
     try:
         event = Event.objects.get(pk=event_pk)
@@ -42,6 +43,7 @@ def add_lecture_to_event(requests):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
+@permission_classes([])
 def list_event_lectures(requests, event_pk):
     try:
         lectures = Lecture.objects.filter(event_id=event_pk)
@@ -62,6 +64,7 @@ def add_workshop_to_event(requests):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
+@permission_classes([])
 def list_event_workshops(requests, event_pk):
     try:
         workshop = Workshop.objects.filter(event_id=event_pk)
