@@ -47,3 +47,13 @@ def add_workshop_to_event(requests):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# INSCRIÇÕES
+@api_view(['POST'])
+def subscribe_to_event(requests):
+    serializer = SubscriptionSerializer(data=requests.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -14,7 +14,7 @@ class Event(models.Model):
         return self.name
     
 class Lecture(models.Model):
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=50, unique=True)
     description = models.TextField()
     date = models.DateField()
     hour = models.TimeField()
@@ -28,7 +28,7 @@ class Lecture(models.Model):
         return self.title
 
 class Workshop(models.Model):
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=50, unique=True)
     description = models.TextField()
     date = models.DateField()
     hour = models.TimeField()
@@ -53,7 +53,7 @@ class Subscription(models.Model):
     lecture = models.ForeignKey(Lecture, null=True, blank=True, on_delete=models.CASCADE)
     workshop = models.ForeignKey(Workshop, null=True, blank=True, on_delete=models.CASCADE)
     status = models.CharField(max_length=12, choices=StatusSubscription.choices, default=StatusSubscription.EMITED)
-    created_at = models.DateField(default=timezone.now)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def clean(self):
         from django.core.exceptions import ValidationError

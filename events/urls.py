@@ -6,4 +6,5 @@ urlpatterns = [
     path('<int:event_pk>/', views.list_event_details, name='event_activities'),
     path('lecture/', views.add_lecture_to_event, name='create_lecture'),
     path('workshop/', views.add_workshop_to_event, name='create_workshop'),
+    path('subscribe/', views.subscribe_to_event, name='subscribe'),
 ]
