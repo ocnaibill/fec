@@ -3,6 +3,8 @@ from users.models import CustomUser
 from django.utils import timezone
 
 # Create your models here.
+
+
 class Event(models.Model):
     name = models.CharField(max_length=50, unique=True, null=False, blank=False)
     description = models.TextField()
@@ -12,12 +14,24 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+
+class Activity(models.Model):
+    time = models.TimeField()
+    title = models.CharField(max_length=100)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='activities')
+
+    class Meta:
+        db_table = 'activities'
+
+    def __str__(self):
+        return f"{self.title} at {self.time}"
     
+
 class Lecture(models.Model):
     title = models.CharField(max_length=50, unique=True)
     description = models.TextField()
     date = models.DateField()
-    hour = models.TimeField()
+    time = models.TimeField()
     local = models.CharField(max_length=50)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
 
@@ -27,11 +41,22 @@ class Lecture(models.Model):
     def __str__(self):
         return self.title
 
+class Speaker(models.Model):
+    name = models.CharField(max_length=100)
+    bio = models.TextField()
+    cards = models.ManyToManyField('Lecture', related_name='speakers') 
+
+    class Meta:
+        db_table = 'speakers'
+
+    def __str__(self):
+        return self.name
+    
 class Workshop(models.Model):
     title = models.CharField(max_length=50, unique=True)
     description = models.TextField()
     date = models.DateField()
-    hour = models.TimeField()
+    time = models.TimeField()
     local = models.CharField(max_length=50)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
 
@@ -41,6 +66,17 @@ class Workshop(models.Model):
     def __str__(self):
         return self.title
 
+class Instructor(models.Model):
+    name = models.CharField(max_length=100)
+    bio = models.TextField()
+    workshops = models.ManyToManyField('Workshop', related_name='instructors')  # Relacionamento ManyToMany
+
+    class Meta:
+        db_table = 'instructors'
+
+    def __str__(self):
+        return self.name
+    
 class StatusSubscription(models.TextChoices):
     EMITED = 'emitida', 'Emitida'
     VALIDATED = 'validada', 'Validada'

@@ -5,8 +5,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from .models import Event, Lecture, Workshop, Subscription
-from .serializers import EventSerializer, LectureSerializer, WorkshopSerializer, SubscriptionSerializer
+from .models import Event, Activity, Lecture, Workshop, Subscription
+from .serializers import EventSerializer, ActivitySerializer, LectureSerializer, WorkshopSerializer, SubscriptionSerializer
 from rest_framework import status
 
 # Create your views here.
@@ -30,6 +30,18 @@ def list_event_details(requests, event_pk):
         return Response({'erro': 'Evento não encontrado.'}, status=status.HTTP_404_NOT_FOUND)
     
     serializer = EventSerializer(event)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+# ATIVIDADES
+@api_view(['GET'])
+@permission_classes([])
+def list_event_activities(requests, event_pk):
+    try:
+        activities = Activity.objects.filter(event_id=event_pk)
+    except Activity.DoesNotExist:
+        return Response({'erro': 'Nenhuma atividade associada ao evento.'}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = ActivitySerializer(activities, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 # PALESTRAS

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import setaEsquerdaEvento from '../assets/images/setaEsquerdaEvento.svg';
 import setaDireitaEvento from '../assets/images/setaDireitaEvento.svg';
 import logoConecom from '../assets/images/logo_conecom.svg';
@@ -10,202 +11,42 @@ import EventsCard from '../components/EventsCard';
 export default function Events() {
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    // Dados para cada página
-    const pages = [
-        {
-            title: 'CONECOM',
-            buttonColor: '#2C53A1',
-            textColor: '#2C53A1',
-            logo: logoConecom,
-            activities: [
-                { time: '00:10', title: 'CONECOM Atividade 1' },
-                { time: '00:20', title: 'CONECOM Atividade 2' },
-                { time: '00:30', title: 'CONECOM Atividade 3' },
-                { time: '00:40', title: 'CONECOM Atividade 4' },
-                { time: '00:50', title: 'CONECOM Atividade 5' },
-                { time: '01:00', title: 'CONECOM Atividade 6' },
-            ],
-            cards: [
-                 {
-                    date: '13/05',
-                    time: '10:00',
-                    title: 'Palestra 1',
-                    description: 'LOREM IPSUM SCELERISQUE ACCUMSAN ERAT ORCI ALIQUAM ULTRICIES AUCTOR NIBH JUSTO EGET AT NUNC IACULIS SAGITTIS PLACERAT ORNARE NUNC SCELERISQUE NETUS GRAVIDA QUAM MALESUADA EGESTAS AMET PHARETRA HABITASSE EU MAGNA LOBORTIS FRINGILLA DICTUM ENIM ORNARE GRAVIDA RISUS ID GRAVIDA NISI ODIO DUIS ELEIFEND SED SED.',
-                    speakers: [
-                        {
-                            name: 'NOME SOBRENOME',
-                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
-                        },
-                        {
-                            name: 'NOME SOBRENOME',
-                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
-                        },
-                    ],
-                },
-                {
-                    date: '14/05',
-                    time: '11:00',
-                    title: 'Palestra 2',
-                    description: 'LOREM IPSUM SCELERISQUE ACCUMSAN ERAT ORCI ALIQUAM ULTRICIES AUCTOR NIBH JUSTO EGET AT NUNC IACULIS SAGITTIS PLACERAT ORNARE NUNC SCELERISQUE NETUS GRAVIDA QUAM MALESUADA EGESTAS AMET PHARETRA HABITASSE EU MAGNA LOBORTIS FRINGILLA DICTUM ENIM ORNARE GRAVIDA RISUS ID GRAVIDA NISI ODIO DUIS ELEIFEND SED SED.',
-                    speakers: [
-                        {
-                            name: 'NOME SOBRENOME',
-                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
-                        },
-                        {
-                            name: 'NOME SOBRENOME',
-                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
-                        },
-                    ],
-                },
-            ],
-        },
-        {
-            title: 'SEMANA DO DESIGN',
-            buttonColor: '#ED5F2E',
-            textColor: '#ED5F2E',
-            logo: logoSemanaDesign,
-            activities: [
-                { time: '10:00', title: 'Design Atividade 1' },
-                { time: '10:20', title: 'Design Atividade 2' },
-                { time: '10:30', title: 'Design Atividade 3' },
-                { time: '10:40', title: 'Design Atividade 4' },
-                { time: '10:50', title: 'Design Atividade 5' },
-                { time: '11:00', title: 'Design Atividade 6' },
-            ],
-           cards: [
-                 {
-                    date: '15/05',
-                    time: '12:00',
-                    title: 'Palestra 3',
-                    description: 'LOREM IPSUM SCELERISQUE ACCUMSAN ERAT ORCI ALIQUAM ULTRICIES AUCTOR NIBH JUSTO EGET AT NUNC IACULIS SAGITTIS PLACERAT ORNARE NUNC SCELERISQUE NETUS GRAVIDA QUAM MALESUADA EGESTAS AMET PHARETRA HABITASSE EU MAGNA LOBORTIS FRINGILLA DICTUM ENIM ORNARE GRAVIDA RISUS ID GRAVIDA NISI ODIO DUIS ELEIFEND SED SED.',
-                    speakers: [
-                        {
-                            name: 'NOME SOBRENOME',
-                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
-                        },
-                        {
-                            name: 'NOME SOBRENOME',
-                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
-                        },
-                    ],
-                },
-                {
-                    date: '16/05',
-                    time: '13:00',
-                    title: 'Palestra 4',
-                    description: 'LOREM IPSUM SCELERISQUE ACCUMSAN ERAT ORCI ALIQUAM ULTRICIES AUCTOR NIBH JUSTO EGET AT NUNC IACULIS SAGITTIS PLACERAT ORNARE NUNC SCELERISQUE NETUS GRAVIDA QUAM MALESUADA EGESTAS AMET PHARETRA HABITASSE EU MAGNA LOBORTIS FRINGILLA DICTUM ENIM ORNARE GRAVIDA RISUS ID GRAVIDA NISI ODIO DUIS ELEIFEND SED SED.',
-                    speakers: [
-                        {
-                            name: 'NOME SOBRENOME',
-                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
-                        },
-                        {
-                            name: 'NOME SOBRENOME',
-                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
-                        },
-                    ],
-                },
-            ],
-        },
-        {
-            title: 'INTERPROGRAMAS',
-            buttonColor: '#C91E1D',
-            textColor: '#C91E1D',
-            logo: logoInterprogramas,
-            activities: [
-                { time: '14:00', title: 'Interprogramas Atividade 1' },
-                { time: '14:20', title: 'Interprogramas Atividade 2' },
-                { time: '14:30', title: 'Interprogramas Atividade 3' },
-                { time: '14:40', title: 'Interprogramas Atividade 4' },
-                { time: '14:50', title: 'Interprogramas Atividade 5' },
-                { time: '15:00', title: 'Interprogramas Atividade 6' },
-            ],
-            cards: [
-                 {
-                    date: '16/05',
-                    time: '14:00',
-                    title: 'Palestra 5',
-                    description: 'LOREM IPSUM SCELERISQUE ACCUMSAN ERAT ORCI ALIQUAM ULTRICIES AUCTOR NIBH JUSTO EGET AT NUNC IACULIS SAGITTIS PLACERAT ORNARE NUNC SCELERISQUE NETUS GRAVIDA QUAM MALESUADA EGESTAS AMET PHARETRA HABITASSE EU MAGNA LOBORTIS FRINGILLA DICTUM ENIM ORNARE GRAVIDA RISUS ID GRAVIDA NISI ODIO DUIS ELEIFEND SED SED.',
-                    speakers: [
-                        {
-                            name: 'NOME SOBRENOME',
-                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
-                        },
-                        {
-                            name: 'NOME SOBRENOME',
-                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
-                        },
-                    ],
-                },
-                {
-                    date: '17/05',
-                    time: '15:00',
-                    title: 'Palestra 6',
-                    description: 'LOREM IPSUM SCELERISQUE ACCUMSAN ERAT ORCI ALIQUAM ULTRICIES AUCTOR NIBH JUSTO EGET AT NUNC IACULIS SAGITTIS PLACERAT ORNARE NUNC SCELERISQUE NETUS GRAVIDA QUAM MALESUADA EGESTAS AMET PHARETRA HABITASSE EU MAGNA LOBORTIS FRINGILLA DICTUM ENIM ORNARE GRAVIDA RISUS ID GRAVIDA NISI ODIO DUIS ELEIFEND SED SED.',
-                    speakers: [
-                        {
-                            name: 'NOME SOBRENOME',
-                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
-                        },
-                        {
-                            name: 'NOME SOBRENOME',
-                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
-                        },
-                    ],
-                },
-            ],
-        },
-        {
-            title: 'HACKATHON',
-            buttonColor: '#8A3B8E',
-            textColor: '#8A3B8E',
-            logo: logoHackaton,
-            activities: [
-                { time: '16:00', title: 'Hackathon Atividade 1' },
-                { time: '16:20', title: 'Hackathon Atividade 2' },
-                { time: '16:30', title: 'Hackathon Atividade 3' },
-                { time: '16:40', title: 'Hackathon Atividade 4' },
-                { time: '16:50', title: 'Hackathon Atividade 5' },
-                { time: '17:00', title: 'Hackathon Atividade 6' },
-            ],
-           cards: [
-                 {
-                    date: '18/05',
-                    time: '16:00',
-                    title: 'Palestra 7',
-                    description: 'LOREM IPSUM SCELERISQUE ACCUMSAN ERAT ORCI ALIQUAM ULTRICIES AUCTOR NIBH JUSTO EGET AT NUNC IACULIS SAGITTIS PLACERAT ORNARE NUNC SCELERISQUE NETUS GRAVIDA QUAM MALESUADA EGESTAS AMET PHARETRA HABITASSE EU MAGNA LOBORTIS FRINGILLA DICTUM ENIM ORNARE GRAVIDA RISUS ID GRAVIDA NISI ODIO DUIS ELEIFEND SED SED.',
-                    speakers: [
-                        {
-                            name: 'NOME SOBRENOME',
-                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
-                        },
-                        {
-                            name: 'NOME SOBRENOME',
-                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
-                        },
-                    ],
-                },
-                {
-                    date: '19/05',
-                    time: '17:00',
-                    title: 'Palestra 8',
-                    description: 'LOREM IPSUM SCELERISQUE ACCUMSAN ERAT ORCI ALIQUAM ULTRICIES AUCTOR NIBH JUSTO EGET AT NUNC IACULIS SAGITTIS PLACERAT ORNARE NUNC SCELERISQUE NETUS GRAVIDA QUAM MALESUADA EGESTAS AMET PHARETRA HABITASSE EU MAGNA LOBORTIS FRINGILLA DICTUM ENIM ORNARE GRAVIDA RISUS ID GRAVIDA NISI ODIO DUIS ELEIFEND SED SED.',
-                    speakers: [
-                        {
-                            name: 'NOME SOBRENOME',
-                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
-                        },
-                        {
-                            name: 'NOME SOBRENOME',
-                            bio: 'LOREM IPSUM SED MI MAGNA SUSPENDISSE FERMENTUM NUNC BIBENDUM SIT VITAE NEQUE NUNC TELLUS VITAE ELIT ID EGET NEC DIGNISSIM.',
-                        },
-                    ],
-                },
-            ],
-            
-        },
-    ];
+    const [pages, setPages] = useState([
+        { id: 2, title: 'CONECOM', buttonColor: '#2C53A1', textColor: '#2C53A1', logo: logoConecom, activities: [], lectures: [], workshops: [] },
+        { id: 3, title: 'SEMANA DO DESIGN', buttonColor: '#ED5F2E', textColor: '#ED5F2E', logo: logoSemanaDesign, activities: [], lectures: [], workshops: [] },
+        { id: 4, title: 'INTERPROGRAMAS', buttonColor: '#C91E1D', textColor: '#C91E1D', logo: logoInterprogramas, activities: [], lectures: [], workshops: [] },
+        { id: 5, title: 'HACKATHON', buttonColor: '#8A3B8E', textColor: '#8A3B8E', logo: logoHackaton, activities: [], lectures: [], workshops: [] },
+    ]);
+
+
+    useEffect(() => {
+        async function fetchEventDetails() {
+            try {
+                const updatedPages = await Promise.all(
+                    pages.map(async (page) => {
+                        const [eventResponse, lecturesResponse, workshopsResponse] = await Promise.all([
+                            axios.get(`http://localhost:8000/api/event/${page.id}/`),
+                            axios.get(`http://localhost:8000/api/event/${page.id}/lectures/`),
+                            axios.get(`http://localhost:8000/api/event/${page.id}/workshops/`), // Adiciona workshopsResponse
+                        ]);
+
+                        return { 
+                            ...page, 
+                            description: eventResponse.data.description,
+                            activities: eventResponse.data.activities,
+                            lectures: lecturesResponse.data,
+                            workshops: workshopsResponse.data, 
+                        };
+                    })
+                );
+                setPages(updatedPages);
+            } catch (error) {
+                console.error('Erro ao carregar detalhes do evento:', error);
+            }
+        }
+
+        fetchEventDetails();
+    }, []);
 
     const handlePrev = () => {
         setCurrentIndex((prevIndex) => (prevIndex === 0 ? pages.length - 1 : prevIndex - 1));
@@ -307,187 +148,26 @@ export default function Events() {
                 </button>
             </div>
 
-            {/* Descrição do evento */}
 
-           {/* Sinopse CONECOM */}
-            {currentPage.title === 'CONECOM' && (
-                <>
-                <p
-                    className="mt-[20px] text-[14px] md:text-[16px]"
-                    style={{
-                        fontFamily: '"quicksand", sans-serif',
-                        fontWeight: '500',
-                        color: '#2B3722',
-                        width: window.innerWidth >= 768 ? '906px' : 'calc(100% - 32px)', // Largura responsiva no mobile
-                        height: window.innerWidth >= 768 ? '90px' : '160px', // Altura responsiva
-                        overflow: 'hidden',
-                        wordWrap: 'break-word',
-                        marginTop: '25px',
-                        marginLeft: window.innerWidth >= 768 ? '290px' : '16px', // Margem esquerda no desktop e mobile
-                        marginRight: window.innerWidth >= 768 ? 'auto' : '16px', // Margem direita no mobile
-                        textAlign: 'left',
-                    }}
-                >
-                    LOREM IPSUM SCELERISQUE ACCUMSAN ERAT ORCI ALIQUAM ULTRICIES AUCTOR NIBH JUSTO EGET AT NUNC IACULIS SAGITTIS PLACERAT ORNARE NUNC SCELERISQUE NETUS GRAVIDA QUAM MALESUADA EGESTAS AMET PHARETRA HABITASSE EU MAGNA LOBORTIS FRINGILLA DICTUM ENIM ORNARE GRAVIDA RISUS ID GRAVIDA NISI ODIO DUIS ELEIFEND SED SED.
-                </p>
-                <button
-                    className="mt-[16px]" // Margem superior
-                    style={{
-                        width: '122px',
-                        height: '42px',
-                        backgroundColor: '#C43934',
-                        borderRadius: '6px',
-                        fontFamily: '"all-round-gothic", sans-serif',
-                        fontWeight: 'bold',
-                        fontSize: '14px',
-                        color: '#FFF1C0',
-                        border: 'none',
-                        cursor: 'pointer',
-                        marginTop: '40px',
-                        marginLeft: window.innerWidth >= 768 ? '290px' : 'auto', // Margem esquerda no desktop, centraliza no mobile
-                        marginRight: window.innerWidth >= 768 ? '0' : 'auto', // Centraliza no mobile
-                        display: 'block', // Garante que o botão seja tratado como bloco
-                    }}
-                >
-                    INSCREVA-SE
-                </button>
-                </>
-            )}
-
-            {/* Sinopse Semana do Design */}
-            {currentPage.title === 'SEMANA DO DESIGN' && (
-                <>
-                <p
-                    className="mt-[20px] text-[14px] md:text-[16px]"
-                    style={{
-                        fontFamily: '"quicksand", sans-serif',
-                        fontWeight: '500',
-                        color: '#2B3722',
-                        width: window.innerWidth >= 768 ? '906px' : 'calc(100% - 32px)', // Largura responsiva no mobile
-                        height: window.innerWidth >= 768 ? '90px' : '160px', // Altura responsiva
-                        overflow: 'hidden',
-                        wordWrap: 'break-word',
-                        marginTop: '25px',
-                        marginLeft: window.innerWidth >= 768 ? '290px' : '16px', // Margem esquerda no desktop e mobile
-                        marginRight: window.innerWidth >= 768 ? 'auto' : '16px', // Margem direita no mobile
-                        textAlign: 'left',
-                    }}
-                >
-                    LOREM IPSUM SCELERISQUE ACCUMSAN ERAT ORCI ALIQUAM ULTRICIES AUCTOR NIBH JUSTO EGET AT NUNC IACULIS SAGITTIS PLACERAT ORNARE NUNC SCELERISQUE NETUS GRAVIDA QUAM MALESUADA EGESTAS AMET PHARETRA HABITASSE EU MAGNA LOBORTIS FRINGILLA DICTUM ENIM ORNARE GRAVIDA RISUS ID GRAVIDA NISI ODIO DUIS ELEIFEND SED SED.
-                </p>
-                <button
-                    className="mt-[16px]" // Margem superior
-                    style={{
-                        width: '122px',
-                        height: '42px',
-                        backgroundColor: '#C43934',
-                        borderRadius: '6px',
-                        fontFamily: '"all-round-gothic", sans-serif',
-                        fontWeight: 'bold',
-                        fontSize: '14px',
-                        color: '#FFF1C0',
-                        border: 'none',
-                        cursor: 'pointer',
-                        marginTop: '40px',
-                        marginLeft: window.innerWidth >= 768 ? '290px' : 'auto', // Margem esquerda no desktop, centraliza no mobile
-                        marginRight: window.innerWidth >= 768 ? '0' : 'auto', // Centraliza no mobile
-                        display: 'block', // Garante que o botão seja tratado como bloco
-                    }}
-                >
-                    INSCREVA-SE
-                </button>
-                </>
-            )}
-
-            {/* Sinopse Interprogramas */}
-            {currentPage.title === 'INTERPROGRAMAS' && (
-                <>
-                <p
-                    className="mt-[20px] text-[14px] md:text-[16px]"
-                    style={{
-                        fontFamily: '"quicksand", sans-serif',
-                        fontWeight: '500',
-                        color: '#2B3722',
-                        width: window.innerWidth >= 768 ? '906px' : 'calc(100% - 32px)', // Largura responsiva no mobile
-                        height: window.innerWidth >= 768 ? '90px' : '160px', // Altura responsiva
-                        overflow: 'hidden',
-                        wordWrap: 'break-word',
-                        marginTop: '25px',
-                        marginLeft: window.innerWidth >= 768 ? '290px' : '16px', // Margem esquerda no desktop e mobile
-                        marginRight: window.innerWidth >= 768 ? 'auto' : '16px', // Margem direita no mobile
-                        textAlign: 'left',
-                    }}
-                >
-                    LOREM IPSUM SCELERISQUE ACCUMSAN ERAT ORCI ALIQUAM ULTRICIES AUCTOR NIBH JUSTO EGET AT NUNC IACULIS SAGITTIS PLACERAT ORNARE NUNC SCELERISQUE NETUS GRAVIDA QUAM MALESUADA EGESTAS AMET PHARETRA HABITASSE EU MAGNA LOBORTIS FRINGILLA DICTUM ENIM ORNARE GRAVIDA RISUS ID GRAVIDA NISI ODIO DUIS ELEIFEND SED SED.
-                </p>
-                <button
-                    className="mt-[16px]" // Margem superior
-                    style={{
-                        width: '122px',
-                        height: '42px',
-                        backgroundColor: '#C43934',
-                        borderRadius: '6px',
-                        fontFamily: '"all-round-gothic", sans-serif',
-                        fontWeight: 'bold',
-                        fontSize: '14px',
-                        color: '#FFF1C0',
-                        border: 'none',
-                        cursor: 'pointer',
-                        marginTop: '40px',
-                        marginLeft: window.innerWidth >= 768 ? '290px' : 'auto', // Margem esquerda no desktop, centraliza no mobile
-                        marginRight: window.innerWidth >= 768 ? '0' : 'auto', // Centraliza no mobile
-                        display: 'block', // Garante que o botão seja tratado como bloco
-                    }}
-                >
-                    INSCREVA-SE
-                </button>
-                </>
-            )}
-
-            {/* Sinopse Hackaton */}
-            {currentPage.title === 'HACKATHON' && (
-                <>
-                <p
-                    className="mt-[20px] text-[14px] md:text-[16px]"
-                    style={{
-                        fontFamily: '"quicksand", sans-serif',
-                        fontWeight: '500',
-                        color: '#2B3722',
-                        width: window.innerWidth >= 768 ? '906px' : 'calc(100% - 32px)', // Largura responsiva no mobile
-                        height: window.innerWidth >= 768 ? '90px' : '160px', // Altura responsiva
-                        overflow: 'hidden',
-                        wordWrap: 'break-word',
-                        marginTop: '25px',
-                        marginLeft: window.innerWidth >= 768 ? '290px' : '16px', // Margem esquerda no desktop e mobile
-                        marginRight: window.innerWidth >= 768 ? 'auto' : '16px', // Margem direita no mobile
-                        textAlign: 'left',
-                    }}
-                >
-                    LOREM IPSUM SCELERISQUE ACCUMSAN ERAT ORCI ALIQUAM ULTRICIES AUCTOR NIBH JUSTO EGET AT NUNC IACULIS SAGITTIS PLACERAT ORNARE NUNC SCELERISQUE NETUS GRAVIDA QUAM MALESUADA EGESTAS AMET PHARETRA HABITASSE EU MAGNA LOBORTIS FRINGILLA DICTUM ENIM ORNARE GRAVIDA RISUS ID GRAVIDA NISI ODIO DUIS ELEIFEND SED SED.
-                </p>
-                <button
-                    className="mt-[16px]" // Margem superior
-                    style={{
-                        width: '122px',
-                        height: '42px',
-                        backgroundColor: '#C43934',
-                        borderRadius: '6px',
-                        fontFamily: '"all-round-gothic", sans-serif',
-                        fontWeight: 'bold',
-                        fontSize: '14px',
-                        color: '#FFF1C0',
-                        border: 'none',
-                        cursor: 'pointer',
-                        marginTop: '40px',
-                        marginLeft: window.innerWidth >= 768 ? '290px' : 'auto', // Margem esquerda no desktop, centraliza no mobile
-                        marginRight: window.innerWidth >= 768 ? '0' : 'auto', // Centraliza no mobile
-                        display: 'block', // Garante que o botão seja tratado como bloco
-                    }}
-                >
-                    INSCREVA-SE
-                </button>
-                </>
-            )}
+          {/* Sinopses */}
+            <p
+                className="mt-[20px] text-[14px] md:text-[16px]"
+                style={{
+                    fontFamily: '"quicksand", sans-serif',
+                    fontWeight: '500',
+                    color: '#2B3722',
+                    width: window.innerWidth >= 768 ? '906px' : 'calc(100% - 32px)', // Largura responsiva no mobile
+                    height: window.innerWidth >= 768 ? '90px' : '170px', // Altura responsiva
+                    overflow: 'hidden',
+                    wordWrap: 'break-word',
+                    marginTop: '25px',
+                    marginLeft: window.innerWidth >= 768 ? '290px' : '16px', // Margem esquerda no desktop e mobile
+                    marginRight: window.innerWidth >= 768 ? 'auto' : '16px', // Margem direita no mobile
+                    textAlign: 'left',
+                }}
+            >
+                {currentPage.description || 'Descrição não disponível.'} {/* Exibe a descrição ou um fallback */}
+            </p>
                             
             {/* "CRONOGRAMA" */}
                 <p
@@ -507,155 +187,85 @@ export default function Events() {
 
 
 
+            {/* Horários e atividades */}
+            <div
+                style={{
+                    marginTop: '32px',
+                    marginLeft: window.innerWidth >= 768 ? '284px' : '45px',  
+                    marginRight: 'auto',
+                    maxWidth: window.innerWidth >= 768 ? '700px' : '100%', 
+                    display: 'grid',
+                    gridTemplateColumns: window.innerWidth >= 768 ? 'repeat(2, 1fr)' : '1fr', 
+                    gridAutoRows: 'auto',
+                    gap: '16px', // Espaçamento entre colunas e linhas
+                    alignItems: window.innerWidth < 768 ? 'center' : 'flex-start',
+                    justifyContent: window.innerWidth < 768 ? 'center' : 'flex-start', 
+                }}
+            >
+                {(() => {
+                    const columns = [];
+                    for (let i = 0; i < currentPage.activities.length; i += 3) {
+                        columns.push(currentPage.activities.slice(i, i + 3));
+                    }
 
-                {/* Horários e atividades */}
-                <div
-                    style={{
-                        marginTop: '32px', // Espaçamento abaixo de "DATA"
-                        marginLeft: window.innerWidth >= 768 ? '284px' : 'auto', // Alinhamento no desktop
-                        marginRight: window.innerWidth >= 768 ? '0' : 'auto', // Centraliza no mobile
-                        display: window.innerWidth >= 768 ? 'flex' : 'block', // Flex no desktop, bloco no mobile
-                        gap: window.innerWidth >= 768 ? '32px' : '0', // Espaçamento entre colunas no desktop
-                    }}
-                >
-
-                {/* Coluna 1: Atividades 1, 2 e 3 */}
-                <div
-                    style={{
-                        marginTop: window.innerWidth >= 768 ? '0' : '32px', // Espaçamento no mobile
-                        paddingLeft: window.innerWidth < 768 ? '80px' : '0', // Adiciona padding no mobile
-                        paddingRight: window.innerWidth < 768 ? '80px' : '0', // Adiciona padding no mobile
-                        textAlign: window.innerWidth < 768 ? 'center' : 'left', // Centraliza no mobile, alinha à esquerda no desktop
-                    }}
-                >
-                    {/* "DATA" alinhado com Atividade 1 no desktop */}
-                    <h3
-                        style={{
-                            fontFamily: '"all-round-gothic", sans-serif',
-                            fontWeight: 'bold',
-                            fontSize: '24px',
-                            color: '#2B3722',
-                            marginBottom: '33px', // Espaçamento abaixo de "DATA"
-                            marginTop: '0', // Remove margem superior
-                        }}
-                    >
-                        DATA
-                    </h3>
-
-                    {currentPage.activities.slice(0, 3).map((activity, index) => (
+                    return columns.map((activities, columnIndex) => (
                         <div
-                            key={index}
+                            key={columnIndex}
                             style={{
-                                marginBottom: '12px',
                                 display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: window.innerWidth < 768 ? 'center' : 'flex-start', // Centraliza no mobile, alinha à esquerda no desktop
+                                flexDirection: 'column',
+                                alignItems: 'flex-start', // Alinha os itens à esquerda
+                                width: '100%', // Garante que a coluna ocupe toda a largura disponível
                             }}
                         >
-                            <div>
-                                <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <span
-                                        style={{
-                                            fontFamily: '"all-round-gothic", sans-serif',
-                                            fontWeight: 'bold',
-                                            fontSize: '16px',
-                                            color: '#2B3722',
-                                            marginRight: window.innerWidth < 768 ? '0' : '24px', // Remove margem no mobile
-                                        }}
-                                    >
-                                        {activity.time}
-                                    </span>
-                                    <span
-                                        style={{
-                                            fontFamily: '"quicksand", sans-serif',
-                                            fontSize: '16px',
-                                            color: '#2B3722',
-                                        }}
-                                    >
-                                        {activity.title}
-                                    </span>
-                                </div>
+                            {activities.map((activity, index) => (
                                 <div
+                                    key={index}
                                     style={{
-                                        width: window.innerWidth >= 768 ? '437px' : '320px', // Ajusta largura no mobile
-                                        height: '2px',
-                                        backgroundColor: '#2B3722',
-                                        marginTop: '8px', // Espaçamento acima da linha
+                                        marginBottom: '12px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'flex-start',
+                                        width: '100%', // Garante que o elemento ocupe toda a largura disponível
                                     }}
-                                ></div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Coluna 2: Atividades 4, 5 e 6 */}
-                <div
-                    style={{
-                        marginTop: window.innerWidth >= 768 ? '0' : '32px', // Espaçamento no mobile
-                        paddingLeft: window.innerWidth < 768 ? '80px' : '0', // Adiciona padding no mobile
-                        paddingRight: window.innerWidth < 768 ? '80px' : '0', // Adiciona padding no mobile
-                        textAlign: window.innerWidth < 768 ? 'center' : 'left', // Centraliza no mobile, alinha à esquerda no desktop
-                    }}
-                >
-                    {/* "DATA" alinhado com Atividade 4 no desktop */}
-                    <h3
-                        style={{
-                            fontFamily: '"all-round-gothic", sans-serif',
-                            fontWeight: 'bold',
-                            fontSize: '24px',
-                            color: '#2B3722',
-                            marginBottom: '33px', // Espaçamento abaixo de "DATA"
-                            marginTop: window.innerWidth >= 768 ? '0px' : '32px', // No desktop, sem margem superior; no mobile, espaçamento adicional
-                        }}
-                    >
-                        DATA
-                    </h3>
-
-                    {currentPage.activities.slice(3, 6).map((activity, index) => (
-                        <div
-                            key={index}
-                            style={{
-                                marginBottom: '12px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: window.innerWidth < 768 ? 'center' : 'flex-start', // Centraliza no mobile, alinha à esquerda no desktop
-                            }}
-                        >
-                            <div>
-                                <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <span
-                                        style={{
-                                            fontFamily: '"all-round-gothic", sans-serif',
-                                            fontWeight: 'bold',
-                                            fontSize: '16px',
-                                            color: '#2B3722',
-                                            marginRight: window.innerWidth < 768 ? '0' : '24px', // Remove margem no mobile
-                                        }}
-                                    >
-                                        {activity.time}
-                                    </span>
-                                    <span
-                                        style={{
-                                            fontFamily: '"quicksand", sans-serif',
-                                            fontSize: '16px',
-                                            color: '#2B3722',
-                                        }}
-                                    >
-                                        {activity.title}
-                                    </span>
+                                >
+                                    <div>
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                            <span
+                                                style={{
+                                                    fontFamily: '"all-round-gothic", sans-serif',
+                                                    fontWeight: 'bold',
+                                                    fontSize: '16px',
+                                                    color: '#2B3722',
+                                                    marginRight: '24px',
+                                                }}
+                                            >
+                                                {activity.time.slice(0, 5)} {/* Exibe apenas HH:MM */}
+                                            </span>
+                                            <span
+                                                style={{
+                                                    fontFamily: '"quicksand", sans-serif',
+                                                    fontSize: '16px',
+                                                    color: '#2B3722',
+                                                }}
+                                            >
+                                                {activity.title}
+                                            </span>
+                                        </div>
+                                        <div
+                                            style={{
+                                                width: '285px',
+                                                height: '2px',
+                                                backgroundColor: '#2B3722',
+                                                marginTop: '8px',
+                                            }}
+                                        ></div>
+                                    </div>
                                 </div>
-                                <div
-                                    style={{
-                                        width: window.innerWidth >= 768 ? '437px' : '320px', // Ajusta largura no mobile
-                                        height: '2px',
-                                        backgroundColor: '#2B3722',
-                                        marginTop: '8px', // Espaçamento acima da linha
-                                    }}
-                                ></div>
-                            </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
+                    ));
+                })()}
                 </div>
                 
             {/* Logos no desktop */}
@@ -684,67 +294,121 @@ export default function Events() {
                 }}
             />
 
-
-            {/* Texto "PALESTRAS" */}
+            
+         {/* Texto "PALESTRAS" */}
             <p
                 style={{
                     fontFamily: '"all-round-gothic", sans-serif',
                     fontWeight: 'bold',
                     fontSize: '50px',
                     color: '#2B3722',
-                    textAlign: window.innerWidth >= 768 ? 'left' : 'center', // Centraliza no mobile, alinha à esquerda no desktop
-                    marginTop: '148px', // Espaçamento de 196px abaixo das atividades
-                    marginLeft: window.innerWidth >= 768 ? '284px' : 'auto', // Alinhamento no desktop
-                    marginRight: window.innerWidth >= 768 ? '0' : 'auto', // Centraliza no mobile
-                    marginBottom: '48px', // Espaçamento de 48px abaixo do texto
+                    textAlign: window.innerWidth >= 768 ? 'left' : 'center',
+                    marginTop: '148px',
+                    marginLeft: window.innerWidth >= 768 ? '284px' : 'auto',
+                    marginRight: window.innerWidth >= 768 ? '0' : 'auto',
+                    marginBottom: '48px',
                 }}
             >
                 PALESTRAS
             </p>
-            
-            {currentPage.cards.map((card, index) => (
-                <EventsCard
-                    key={index}
-                    date={card.date} // Data específica do card
-                    time={card.time} // Horário específico do card
-                    title={card.title} // Título específico do card
-                    description={card.description}
-                    speakers={card.speakers}
 
-                    style={{
-                        fontFamily: '"all-round-gothic", sans-serif',
-                        marginLeft: window.innerWidth >= 768 ? '284px' : 'auto', // Mantém o alinhamento à esquerda no desktop
-                        marginRight: window.innerWidth >= 768 ? '277px' : 'auto', // Define a distância de 277px do canto direito no desktop
-                        marginTop: '48px',
-                        width: window.innerWidth >= 768 ? `calc(100% - 561px)` : 'calc(100% - 32px)', // Ajusta a largura no desktop e no mobile
-                    }}
-                >
-                    <p
+            {/* CARDS DE PALESTRAS */}
+            {currentPage.lectures.map((lecture, index) => {
+                const formattedDate = new Date(lecture.date).toLocaleDateString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                });
+
+                const formattedTime = lecture.time.slice(0, 5);
+
+                return (
+                    <EventsCard
+                        key={index}
+                        date={formattedDate} 
+                        time={formattedTime} 
+                        title={lecture.title}
+                        description={lecture.description}
+                        speakers={lecture.speakers}
                         style={{
-                            fontFamily: '"quicksand", sans-serif',
-                            fontSize: '18px',
-                            color: '#2B3722',
-                            textAlign: 'center',
+                            fontFamily: '"all-round-gothic", sans-serif',
+                            marginLeft: window.innerWidth >= 768 ? '284px' : 'auto',
+                            marginRight: window.innerWidth >= 768 ? '277px' : 'auto',
+                            marginTop: '48px',
+                            width: window.innerWidth >= 768 ? 'calc(100% - 561px)' : 'calc(100% - 32px)',
                         }}
                     >
-                        {card.content} {/* Conteúdo específico do card */}
-                    </p>
-                </EventsCard>
-            ))}
-            
+                        <p
+                            style={{
+                                fontFamily: '"quicksand", sans-serif',
+                                fontSize: '18px',
+                                color: '#2B3722',
+                                textAlign: 'center',
+                            }}
+                        >
+                            {lecture.description}
+                        </p>
+                    </EventsCard>
+                );
+            })}
+
+            {/* Texto "OFICINAS */}
+            <p
+                style={{
+                    fontFamily: '"all-round-gothic", sans-serif',
+                    fontWeight: 'bold',
+                    fontSize: '50px',
+                    color: '#2B3722',
+                    textAlign: window.innerWidth >= 768 ? 'left' : 'center',
+                    marginTop: '100px',
+                    marginLeft: window.innerWidth >= 768 ? '284px' : 'auto',
+                    marginRight: window.innerWidth >= 768 ? '0' : 'auto',
+                    marginBottom: '48px',
+                }}
+            >
+                OFICINAS
+            </p>
+
+            {/* Renderizar os Cards de Oficinas */}
+            {currentPage.workshops.map((workshop, index) => {
+                const formattedDate = new Date(workshop.date).toLocaleDateString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                });
+
+                const formattedTime = workshop.time.slice(0, 5);
+
+                return (
+                    <EventsCard
+                        key={index}
+                        date={formattedDate}
+                        time={formattedTime}
+                        title={workshop.title}
+                        description={workshop.description}
+                        speakers={workshop.instructors} // Substituir "speakers" por "instructors"
+                        style={{
+                            fontFamily: '"all-round-gothic", sans-serif',
+                            marginLeft: window.innerWidth >= 768 ? '284px' : 'auto',
+                            marginRight: window.innerWidth >= 768 ? '277px' : 'auto',
+                            marginTop: '48px',
+                            width: window.innerWidth >= 768 ? 'calc(100% - 561px)' : 'calc(100% - 32px)',
+                        }}
+                    >
+                        <p
+                            style={{
+                                fontFamily: '"quicksand", sans-serif',
+                                fontSize: '18px',
+                                color: '#2B3722',
+                                textAlign: 'center',
+                            }}
+                        >
+                            {workshop.description}
+                        </p>
+                    </EventsCard>
+                );
+            })}
             {/* espaçamento final para respiro do footer */}
             <main className="mt-[32px] flex flex-col items-center">
-                <p
-                    className="text-[18px]"
-                    style={{
-                        fontFamily: '"quicksand", sans-serif',
-                        color: '#2B3722',
-                        fontWeight: '500',
-                        marginTop: 100,
-                    }}
-                >
-                    {currentPage.description}
-                </p>
+
             </main>
         </div>
     );
