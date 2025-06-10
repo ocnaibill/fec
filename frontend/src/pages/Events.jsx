@@ -314,7 +314,8 @@ export default function Events() {
 
             {/* CARDS DE PALESTRAS */}
             {currentPage.lectures.map((lecture, index) => {
-                const formattedDate = new Date(lecture.date).toLocaleDateString('pt-BR', {
+                // Corrige a data para evitar problemas de fuso horário
+                const formattedDate = new Date(lecture.date + 'T00:00:00').toLocaleDateString('pt-BR', {
                     day: '2-digit',
                     month: '2-digit',
                 });
@@ -324,8 +325,8 @@ export default function Events() {
                 return (
                     <EventsCard
                         key={index}
-                        date={formattedDate} 
-                        time={formattedTime} 
+                        date={formattedDate}
+                        time={formattedTime}
                         title={lecture.title}
                         description={lecture.description}
                         speakers={lecture.speakers}
@@ -351,6 +352,7 @@ export default function Events() {
                 );
             })}
 
+
             {/* Texto "OFICINAS */}
             <p
                 style={{
@@ -368,9 +370,9 @@ export default function Events() {
                 OFICINAS
             </p>
 
-            {/* Renderizar os Cards de Oficinas */}
             {currentPage.workshops.map((workshop, index) => {
-                const formattedDate = new Date(workshop.date).toLocaleDateString('pt-BR', {
+                // Corrige a data para evitar problemas de fuso horário
+                const formattedDate = new Date(workshop.date + 'T00:00:00').toLocaleDateString('pt-BR', {
                     day: '2-digit',
                     month: '2-digit',
                 });
@@ -384,7 +386,7 @@ export default function Events() {
                         time={formattedTime}
                         title={workshop.title}
                         description={workshop.description}
-                        speakers={workshop.instructors} 
+                        speakers={workshop.instructors}
                         isWorkshop={true}
                         style={{
                             fontFamily: '"all-round-gothic", sans-serif',
