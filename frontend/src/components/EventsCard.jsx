@@ -1,4 +1,5 @@
 import React from 'react';
+
 export default function EventsCard({ children, style, date, time, title, description, speakers = [] }) {
     return (
         <div
@@ -8,87 +9,92 @@ export default function EventsCard({ children, style, date, time, title, descrip
                         shadow-[0px_4px_15px_rgba(0,0,0,0.25)] box-border`}
             style={style}
         >
-            {/* Data do evento */}
-            <div
-                className={`absolute font-all-round-gothic font-bold text-[#2B3722] 
-                            ${window.innerWidth >= 768 ? 'text-[64px] top-[10px] left-[36px]' : 'text-[48px] top-[8px] left-[24px]'}`}
-            >
-                {date}
-            </div>
+            {/* Linha com data, horário, linha separadora e título */}
+            <div className="flex items-center gap-[16px] w-full">
+                {/* Data e horário do evento */}
+                <div className="flex flex-col items-end">
+                    <div
+                        className={`font-all-round-gothic font-bold text-[#2B3722] 
+                                    ${window.innerWidth >= 768 ? 'text-[64px]' : 'text-[48px]'}`}
+                    >
+                        {date}
+                    </div>
+                    <div
+                        className={`font-all-round-gothic font-bold text-[#2B3722] 
+                                    ${window.innerWidth >= 768 ? 'text-[32px] mt-[-30px]' : 'text-[24px] mt-[-4px]'}`}
+                    >
+                        {time}
+                    </div>
+                </div>
 
-            {/* Horário do evento */}
-            <div
-                className={`absolute font-all-round-gothic font-bold text-[#2B3722] 
-                            ${window.innerWidth >= 768 ? 'text-[32px] top-[80px] left-[115px]' : 'text-[24px] top-[64px] left-[80px]'}`}
-            >
-                {time}
-            </div>
+                {/* Linha separadora */}
+                <div
+                    className={`bg-[#2B3722] 
+                                ${window.innerWidth >= 768 ? 'w-[3px] h-[90px]' : 'w-[2px] h-[70px]'}`}
+                ></div>
 
-            {/* Linha vertical ao lado da data */}
-            <div
-                className={`absolute bg-[#2B3722] 
-                            ${window.innerWidth >= 768 ? 'top-[30px] left-[200px] w-[3px] h-[90px]' : 'top-[24px] left-[150px] w-[2px] h-[70px]'}`}
-            ></div>
-
-            {/* Título da palestra */}
-            <div
-                className={`absolute font-all-round-gothic font-bold text-[#2B3722] text-center 
-                            ${window.innerWidth >= 768 ? 'text-[42px] top-[44px] left-[220px]' : 'text-[36px] top-[30px] left-[160px]'}`}
-            >
-                {title}
+                {/* Título da palestra */}
+                <div
+                    className={`font-all-round-gothic font-bold text-[#2B3722] text-center 
+                                ${window.innerWidth >= 768 ? 'text-[42px]' : 'text-[25px]'}`}
+                >
+                    {title}
+                </div>
             </div>
 
             {/* Descrição do evento */}
             <div
-                className={`absolute font-quicksand font-medium text-[#2B3722] 
-                            ${window.innerWidth >= 768 ? 'text-[18px] top-[136px] left-[36px] right-[36px]' : 'text-[16px] top-[120px] left-[24px] right-[24px]'}`}
+                className={`font-quicksand font-medium text-[#2B3722] 
+                            ${window.innerWidth >= 768 ? 'text-[18px] mb-[24px]' : 'text-[16px] mb-[20px]'}`}
                 style={{
-                    lineHeight: '1.5', // Ajusta o espaçamento entre linhas
+                    lineHeight: '1.5', 
                 }}
             >
                 {description}
             </div>
 
-            {/* Título "PALESTRANTES" */}
+            {/* Título "Palestrantes" ou "Instrutores" */}
             <div
                 className={`font-all-round-gothic font-bold text-[#2B3722] text-left 
-                            ${window.innerWidth >= 768 ? 'text-[32px] mt-[210px]' : 'text-[24px] mt-[360px]'}`}
+                            ${window.innerWidth >= 768 ? 'text-[32px] mb-[16px]' : 'text-[24px] mb-[12px]'}`}
             >
-                PALESTRANTES
+                {speakers.length > 0 ? 'PALESTRANTES' : 'INSTRUTORES'}
             </div>
 
-            {/* Lista de palestrantes */}
-            {speakers.map((speaker, index) => (
-                <div
-                    key={index}
-                    className="flex items-start mt-[24px]"
-                    style={{
-                        marginLeft: '4px',
-                        marginRight: '24px',
-                    }}
-                >
-                    {/* Nome do palestrante */}
-                    <span
-                        className={`font-all-round-gothic font-bold text-[#2B3722] 
-                                    ${window.innerWidth >= 768 ? 'text-[18px]' : 'text-[16px]'}`}
+            {/* Lista de palestrantes/instrutores */}
+            <div className="flex flex-col gap-[12px]">
+                {speakers.map((speaker, index) => (
+                    <div
+                        key={index}
+                        className="flex items-start"
                         style={{
-                            whiteSpace: 'nowrap', // Garante que o nome completo fique na mesma linha
+                            marginLeft: '4px',
+                            marginRight: '24px',
                         }}
                     >
-                        {speaker.name}
-                    </span>
-                    {/* Sinopse do palestrante */}
-                    <span
-                        className={`font-quicksand font-medium text-[#2B3722] ml-[18px] 
-                                    ${window.innerWidth >= 768 ? 'text-[18px]' : 'text-[16px]'}`}
-                        style={{
-                            lineHeight: '1.5',
-                        }}
-                    >
-                        {speaker.bio}
-                    </span>
-                </div>
-            ))}
+                        {/* Nome do palestrante/instrutor */}
+                        <span
+                            className={`font-all-round-gothic font-bold text-[#2B3722] 
+                                        ${window.innerWidth >= 768 ? 'text-[18px]' : 'text-[16px]'}`}
+                            style={{
+                                whiteSpace: 'nowrap', 
+                            }}
+                        >
+                            {speaker.name}
+                        </span>
+                        {/* Sinopse do palestrante/instrutor */}
+                        <span
+                            className={`font-quicksand font-medium text-[#2B3722] ml-[18px] 
+                                        ${window.innerWidth >= 768 ? 'text-[18px]' : 'text-[16px]'}`}
+                            style={{
+                                lineHeight: '1.5',
+                            }}
+                        >
+                            {speaker.bio}
+                        </span>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
