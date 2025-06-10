@@ -1,6 +1,4 @@
-import React from 'react';
-
-export default function EventsCard({ children, style, date, time, title, description, speakers = [] }) {
+export default function EventsCard({ children, style, date, time, title, description, speakers = [], isWorkshop = false }) {
     return (
         <div
             className={`relative flex flex-col items-start justify-start 
@@ -58,7 +56,7 @@ export default function EventsCard({ children, style, date, time, title, descrip
                 className={`font-all-round-gothic font-bold text-[#2B3722] text-left 
                             ${window.innerWidth >= 768 ? 'text-[32px] mb-[16px]' : 'text-[24px] mb-[12px]'}`}
             >
-                {speakers.length > 0 ? 'PALESTRANTES' : 'INSTRUTORES'}
+                {isWorkshop ? 'INSTRUTORES' : 'PALESTRANTES'}
             </div>
 
             {/* Lista de palestrantes/instrutores */}

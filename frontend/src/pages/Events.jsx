@@ -384,7 +384,8 @@ export default function Events() {
                         time={formattedTime}
                         title={workshop.title}
                         description={workshop.description}
-                        speakers={workshop.instructors} // Substituir "speakers" por "instructors"
+                        speakers={workshop.instructors} 
+                        isWorkshop={true}
                         style={{
                             fontFamily: '"all-round-gothic", sans-serif',
                             marginLeft: window.innerWidth >= 768 ? '284px' : 'auto',
