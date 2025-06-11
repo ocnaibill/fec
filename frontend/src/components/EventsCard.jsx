@@ -64,10 +64,10 @@ export default function EventsCard({ children, style, date, time, title, descrip
                 {speakers.map((speaker, index) => (
                     <div
                         key={index}
-                        className="flex items-start"
+                        className={`flex ${window.innerWidth >= 768 ? 'flex-row items-start' : 'flex-col items-center'}`} 
                         style={{
-                            marginLeft: '4px',
-                            marginRight: '24px',
+                            marginLeft: window.innerWidth >= 768 ? '4px' : '0',
+                            marginRight: window.innerWidth >= 768 ? '24px' : '0',
                         }}
                     >
                         {/* Nome do palestrante/instrutor */}
@@ -76,16 +76,21 @@ export default function EventsCard({ children, style, date, time, title, descrip
                                         ${window.innerWidth >= 768 ? 'text-[18px]' : 'text-[16px]'}`}
                             style={{
                                 whiteSpace: 'nowrap', 
+                                textAlign: 'center', 
+                                display: 'inline-block', 
+                                width: '100%', 
+                                maxWidth: '200px', 
                             }}
                         >
                             {speaker.name}
                         </span>
                         {/* Sinopse do palestrante/instrutor */}
                         <span
-                            className={`font-quicksand font-medium text-[#2B3722] ml-[18px] 
-                                        ${window.innerWidth >= 768 ? 'text-[18px]' : 'text-[16px]'}`}
+                            className={`font-quicksand font-medium text-[#2B3722] 
+                                        ${window.innerWidth >= 768 ? 'ml-[8px] text-[18px]' : 'mt-[8px] text-[16px]'}`} 
                             style={{
                                 lineHeight: '1.5',
+                                textAlign: window.innerWidth >= 768 ? 'left' : 'center', 
                             }}
                         >
                             {speaker.bio}
