@@ -3,7 +3,7 @@ from .models import Event, Activity, Lecture, Speaker, Workshop, Instructor
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description')
+    list_display = ('name', 'description', 'eventColor')  
     search_fields = ('name',)
 
 

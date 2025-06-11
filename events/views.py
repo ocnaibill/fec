@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 
 from .models import Event, Activity, Lecture, Workshop, Subscription
@@ -12,6 +12,14 @@ from rest_framework import status
 # Create your views here.
 
 # EVENTOS
+
+@api_view(['GET'])
+@permission_classes([AllowAny])  
+def list_events(request):
+    events = Event.objects.all()
+    serializer = EventSerializer(events, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
 @api_view(['POST'])
 def create_event(requests):
     serializer = EventSerializer(data=requests.data)

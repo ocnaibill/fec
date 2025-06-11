@@ -1,13 +1,19 @@
 from django.db import models
 from users.models import CustomUser
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 
+def validate_svg_or_image(file):
+    if not file.name.endswith(('.png', '.jpg', '.jpeg', '.gif', '.svg')):
+        raise ValidationError('O arquivo deve ser uma imagem (PNG, JPG, JPEG, GIF) ou SVG.')
 
 class Event(models.Model):
     name = models.CharField(max_length=50, unique=True, null=False, blank=False)
     description = models.TextField()
+    eventColor = models.CharField(max_length=7, default='#000000') 
+    logo = models.FileField(upload_to='event_logos/', null=True, blank=True, validators=[validate_svg_or_image])  
 
     class Meta:
         db_table = 'events'

@@ -105,7 +105,7 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = [ 'id', 'name', 'description', 'lecture', 'workshop', 'activities' ]
+        fields = ['id', 'name', 'description', 'eventColor', 'logo', 'lecture', 'workshop', 'activities']
 
 class SubscriptionSerializer(serializers.ModelSerializer):
     lecture = LectureSerializer(read_only=True)
