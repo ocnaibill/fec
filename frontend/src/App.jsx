@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 import Login from './pages/Login'
 import Events from './pages/Events'
+import Signup from './pages/Signup'
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
         <Route path="/" element={<MainLayout><Home /></MainLayout>} />
         <Route path="/login" element={<MainLayout><Login /></MainLayout>} />
         <Route path="/events" element={<MainLayout><Events /></MainLayout>} />
+        <Route path="/signup" element={<MainLayout><Signup /></MainLayout>} />
         <Route path="*" element={<MainLayout><NotFound /></MainLayout>} />
       </Routes>
     </Router>
