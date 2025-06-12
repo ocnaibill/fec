@@ -150,6 +150,9 @@ export default function Events() {
                 <button 
                             onClick={() => navigate(`/subscription?event=${currentPage.id}`)}
                             className='w-[120px] h-[42px] !bg-[#C43934] text-[#FFF1C0] text-[18px] !font-bold !p-0 z-10'
+                            style={{
+                                fontFamily: '"all-round-gothic", sans-serif',
+                            }}
                         >
                             INSCREVA-SE
                 </button>
