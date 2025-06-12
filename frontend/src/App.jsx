@@ -3,8 +3,9 @@ import MainLayout from './layouts/MainLayout'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 import Login from './pages/Login'
-import Events from './pages/Events'
 import Signup from './pages/Signup'
+import Events from './pages/Events'
+import Subscription from './pages/Subscription'
 
 export default function App() {
   return (
@@ -12,8 +13,9 @@ export default function App() {
       <Routes>
         <Route path="/" element={<MainLayout><Home /></MainLayout>} />
         <Route path="/login" element={<MainLayout><Login /></MainLayout>} />
-        <Route path="/events" element={<MainLayout><Events /></MainLayout>} />
         <Route path="/signup" element={<MainLayout><Signup /></MainLayout>} />
+        <Route path="/events" element={<MainLayout><Events /></MainLayout>} />
+        <Route path="/subscription" element={<MainLayout><Subscription /></MainLayout>} />
         <Route path="*" element={<MainLayout><NotFound /></MainLayout>} />
       </Routes>
     </Router>
