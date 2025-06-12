@@ -97,7 +97,8 @@ def list_event_workshops(requests, event_pk):
 # INSCRIÇÕES
 @api_view(['POST'])
 def subscribe_to_event(requests):
-    serializer = SubscriptionSerializer(data=requests.data)
+    user = requests.user
+    serializer = SubscriptionSerializer(data={**requests.data, 'user_id': user.id})
 
     if serializer.is_valid():
         serializer.save()

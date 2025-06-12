@@ -31,8 +31,8 @@ class LectureSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lecture
-        fields = ['event', 'title', 'description', 'date', 'time', 'local', 'event_id', 'speakers']
-        read_only_fields = ['event']
+        fields = ['id', 'event', 'title', 'description', 'date', 'time', 'local', 'event_id', 'speakers']
+        read_only_fields = ['id', 'event']
 
     def create(self, validated_data):
         event = validated_data.pop('event_id')
@@ -70,7 +70,7 @@ class WorkshopSerializer(serializers.ModelSerializer):
     class Meta:
         model = Workshop
         fields = ['id', 'title', 'description', 'date', 'time', 'local', 'event', 'event_id', 'instructors']
-        read_only_fields = ['event']
+        read_only_fields = ['id', 'event']
 
     def create(self, validated_data):
         event = validated_data.pop('event_id')
