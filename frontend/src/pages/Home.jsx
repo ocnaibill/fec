@@ -17,8 +17,8 @@ import carrossel2 from '../assets/images/carrossel2.png'
 import carrossel3 from '../assets/images/carrossel3.png'
 import setaEsquerda from '../assets/images/setaEsquerda.svg'
 import setaDireita from '../assets/images/setaDireita.svg'
-import { Link } from 'react-router-dom'
-import React from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import React, {useEffect} from 'react';
 
 
 const carouselImages = [
@@ -250,8 +250,20 @@ function Carousel({ mobile = false }) {
   );
 }
 
-
 export default function Home() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.state?.scrollTo) {
+      const section = document.getElementById(location.state.scrollTo);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+        navigate(location.pathname, { replace: true, state: {} });
+      }
+    }
+  }, [location, navigate]);
+
   const schedule = [
     {
       date: '23/06',
@@ -406,8 +418,13 @@ export default function Home() {
               <span style={{ whiteSpace: 'nowrap' }}>(Câmpus Taguatinga)</span>
             </span>
 
-            <Link
-              to="/programacao"
+            <button
+              onClick={() => {
+                const section = document.getElementById('programacao');
+                if (section) {
+                  section.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
               className="mt-[36px]"
               style={{
                 backgroundColor: '#C43934',
@@ -422,11 +439,11 @@ export default function Home() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 border: 'none',
-                cursor: 'pointer'
+                cursor: 'pointer',
               }}
             >
               VER PROGRAMAÇÃO
-            </Link>
+            </button>
           </div>
         </div>  
 
@@ -473,7 +490,7 @@ export default function Home() {
           <Carousel />
         </div>
         {/* Sobre o Festival */}
-        <div
+        <div id="sobre"
           style={{
             marginLeft: 60,
             width: 398,
@@ -589,32 +606,33 @@ export default function Home() {
           </p>
         </div>
 
-      {/* PROGRAMAÇÃO */}
-          
-        <div className='lg:bg-[#FAF9F6] h-[791px] w-full flex flex-col justify-center items-center gap-14 mb-[226px]'>
-          <div className='flex flex-col justify-center lg:items-start items-center md:gap-14 gap-8'>
-            <div className='h-[55px] flex flex-row items-center md:gap-8 gap-4'>
-                <img className='h-[34px]' src={IconeProgramacao}/>
-                <h2 className='font-bold md:text-[46px] text-[40px]' 
+        {/* PROGRAMAÇÃO */}
+        <div id="programacao" className="lg:bg-[#FAF9F6] h-[791px] w-full flex flex-col justify-center items-center gap-14 mb-[226px]">
+          <div className="flex flex-col justify-center lg:items-start items-center md:gap-14 gap-8">
+            <div className="h-[55px] flex flex-row items-center md:gap-8 gap-4">
+              <img className="h-[34px]" src={IconeProgramacao} />
+              <h2
+                className="font-bold md:text-[46px] text-[40px]"
                 style={{
                   color: '#2B3722',
-                  fontFamily: '"all-round-gothic", sans-serif'
+                  fontFamily: '"all-round-gothic", sans-serif',
                 }}
-                >PROGRAMAÇÃO</h2>
+              >
+                PROGRAMAÇÃO
+              </h2>
             </div>
 
-            <div 
-              className='lg:w-[1290px] w-[370px] lg:h-[555px] h-[520px] bg-[#2B3722] rounded-2xl lg:px-8 px-0 py-8'
-              style={{boxShadow: '12px -10px 15px rgba(0, 0, 0, 0.25)'}}
+            <div
+              className="lg:w-[1290px] w-[370px] lg:h-[555px] h-[520px] bg-[#2B3722] rounded-2xl lg:px-8 px-0 py-8"
+              style={{ boxShadow: '12px -10px 15px rgba(0, 0, 0, 0.25)' }}
             >
-              <ScheduleBoard schedule={schedule}/>
+              <ScheduleBoard schedule={schedule} />
             </div>
-          </div>        
+          </div>
         </div>
       
       {/* CONVIDADOS */}
-
-      <div className='h-[791px] w-full flex flex-col justify-center items-center gap-14 mb-[82px]'>
+      <div id="convidados" className="h-[791px] w-full flex flex-col justify-center items-center gap-14 mb-[82px]">
         <div 
           className='lg:bg-[radial-gradient(ellipse_at_center,_#FFFFFF_0%,_#FFF1BF_100%)] bg-[#FFF1BF] flex flex-col justify-center items-center w-full gap-[62px] py-[62px]'
           style={{ boxShadow: '0px 0px 15px 4px rgba(0, 0, 0, 0.25)' }}
@@ -679,7 +697,7 @@ export default function Home() {
             Lorem ipsum cras tempus tortor at rhoncus volutpat feugiat in erat non id orci pellentesque adipiscing vestibulum egestas tellus nulla neque lorem fringilla tortor proin ut habitant id non blandit lorem.
           </p>
             <Link
-              to="/inscricao"
+              to="/events"
               style={{
                 width: '124px',
                 height: '42px',
@@ -1044,7 +1062,7 @@ export default function Home() {
         </div>
 
       {/* SEÇÃO APOIO DESKTOP */}
-        <div className="hidden lg:flex w-full justify-center" style={{ background: '#FAF9F6' }}>
+        <div id="apoio" className="hidden lg:flex w-full justify-center" style={{ background: '#FAF9F6' }}>
             <div className="flex flex-col items-center w-full" style={{ marginTop: 90, marginBottom: 60 }}>
               <h1
                 style={{
