@@ -2,15 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import setaEsquerdaEvento from '../assets/images/setaEsquerdaEvento.svg';
 import setaDireitaEvento from '../assets/images/setaDireitaEvento.svg';
-import logoConecom from '../assets/images/logo_conecom.svg';
-import logoHackaton from '../assets/images/logo_hackaton.svg';
-import logoInterprogramas from '../assets/images/logo_interprogramas.svg';
-import logoSemanaDesign from '../assets/images/logo_semanadesign.svg';
 import EventsCard from '../components/EventsCard';
+import { useNavigate } from 'react-router-dom';
 
 export default function Events() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [pages, setPages] = useState([]); 
+    const navigate = useNavigate()
 
     useEffect(() => {
         async function fetchEvents() {
@@ -34,8 +32,6 @@ export default function Events() {
     };
 
     const currentPage = pages[currentIndex] || {}; 
-    console.log('Índice atual:', currentIndex); 
-    console.log('Evento atual (currentPage):', currentPage); 
     return (
 
             <div className="min-h-screen w-full bg-[#FFF1C0] relative pt-[64px]">
@@ -149,6 +145,15 @@ export default function Events() {
             >
                 {currentPage.description || 'Descrição não disponível.'}
             </p>
+
+            <div className='w-full flex md:justify-start md:ml-[290px] justify-center mt-8'>
+                <button 
+                            onClick={() => navigate(`/subscription?event=${currentPage.id}`)}
+                            className='w-[120px] h-[42px] !bg-[#C43934] text-[#FFF1C0] text-[18px] !font-bold !p-0 z-10'
+                        >
+                            INSCREVA-SE
+                </button>
+            </div>
                             
             {/* "CRONOGRAMA" */}
                 <p
