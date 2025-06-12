@@ -23,42 +23,39 @@ export default function Header() {
         </div>
       </Link>
 
-      {/* Menu Desktop */}
-      <nav className="hidden lg:flex items-center gap-[8px] ml-[236px] text-[#E0E0E0] font-bold header-font text-lg">
-        <Link to="/" className="hover:underline header-font">home</Link>
-      <button
-        onClick={() => navigate('/', { state: { scrollTo: 'sobre' } })}
-        className="hover:underline header-font"
-        style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}
-      >
-        sobre
-      </button>
-      
-      <button
-          onClick={() => navigate('/', { state: { scrollTo: 'programacao' } })}
-          className="hover:underline header-font"
-          style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}
-        >
-          programação
-      </button>        
-        
-      <button
-          onClick={() => navigate('/', { state: { scrollTo: 'convidados' } })}
-          className="hover:underline header-font"
-          style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}
-        >
-          convidados
-      </button>
-        <Link to="/events" className="hover:underline header-font">inscrição e local</Link>
-      <button
-          onClick={() => navigate('/', { state: { scrollTo: 'apoio' } })}
-          className="hover:underline header-font"
-          style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}
-      >
-          apoio
-      </button>
-
-          </nav>
+     {/* Menu Desktop */}
+        <nav className="hidden lg:flex items-center gap-[20px] ml-[236px] text-[#E0E0E0] font-bold header-font text-lg">
+          <Link to="/" className="hover:underline header-font">home</Link>
+          <button
+            onClick={() => navigate('/', { state: { scrollTo: 'sobre' } })}
+            className="hover:underline header-font"
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}
+          >
+            sobre
+          </button>
+          <button
+            onClick={() => navigate('/', { state: { scrollTo: 'programacao' } })}
+            className="hover:underline header-font"
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}
+          >
+            programação
+          </button>
+          <button
+            onClick={() => navigate('/', { state: { scrollTo: 'convidados' } })}
+            className="hover:underline header-font"
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}
+          >
+            convidados
+          </button>
+          <Link to="/events" className="hover:underline header-font">inscrição e local</Link>
+          <button
+            onClick={() => navigate('/', { state: { scrollTo: 'apoio' } })}
+            className="hover:underline header-font"
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}
+          >
+            apoio
+          </button>
+        </nav>
 
       {/* Menu Mobile */}
       <button
