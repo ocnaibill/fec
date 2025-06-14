@@ -21,67 +21,36 @@ class Event(models.Model):
     def __str__(self):
         return self.name
 
+class Guest(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    photo = models.FileField(upload_to='guests_photos/', null=True, blank=True, validators=[validate_svg_or_image])
+    bio = models.TextField()
+
+    class Meta:
+        db_table = 'guests'
+
+    def __str__(self):
+        return self.user.name
+
+class TypeActivity(models.TextChoices):
+        LECTURE = 'palestra', 'Palestra',
+        WORKSHOP = 'oficina', 'Oficina'
+
 class Activity(models.Model):
+    title = models.CharField(max_length=50, unique=True)
+    description = models.TextField()
+    date = models.DateField()
     time = models.TimeField()
-    title = models.CharField(max_length=100)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='activities')
+    local = models.CharField(max_length=50)
+    type = models.CharField(max_length=8, choices=TypeActivity.choices)
+    event = models.ForeignKey(Event, related_name='activities', on_delete=models.CASCADE)
+    guests = models.ManyToManyField(Guest) 
 
     class Meta:
         db_table = 'activities'
 
     def __str__(self):
         return f"{self.title} at {self.time}"
-    
-
-class Lecture(models.Model):
-    title = models.CharField(max_length=50, unique=True)
-    description = models.TextField()
-    date = models.DateField()
-    time = models.TimeField()
-    local = models.CharField(max_length=50)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = 'lectures'
-
-    def __str__(self):
-        return self.title
-
-class Speaker(models.Model):
-    name = models.CharField(max_length=100)
-    bio = models.TextField()
-    cards = models.ManyToManyField('Lecture', related_name='speakers') 
-
-    class Meta:
-        db_table = 'speakers'
-
-    def __str__(self):
-        return self.name
-    
-class Workshop(models.Model):
-    title = models.CharField(max_length=50, unique=True)
-    description = models.TextField()
-    date = models.DateField()
-    time = models.TimeField()
-    local = models.CharField(max_length=50)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = 'workshops'
-
-    def __str__(self):
-        return self.title
-
-class Instructor(models.Model):
-    name = models.CharField(max_length=100)
-    bio = models.TextField()
-    workshops = models.ManyToManyField('Workshop', related_name='instructors')  # Relacionamento ManyToMany
-
-    class Meta:
-        db_table = 'instructors'
-
-    def __str__(self):
-        return self.name
     
 class StatusSubscription(models.TextChoices):
     EMITED = 'emitida', 'Emitida'
@@ -92,16 +61,9 @@ class StatusSubscription(models.TextChoices):
 
 class Subscription(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    lecture = models.ForeignKey(Lecture, null=True, blank=True, on_delete=models.CASCADE)
-    workshop = models.ForeignKey(Workshop, null=True, blank=True, on_delete=models.CASCADE)
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
     status = models.CharField(max_length=12, choices=StatusSubscription.choices, default=StatusSubscription.EMITED)
     created_at = models.DateTimeField(default=timezone.now)
 
-    def clean(self):
-        from django.core.exceptions import ValidationError
-
-        if bool(self.lecture) == bool(self.workshop):
-            raise ValidationError('A inscrição deve ser feita em uma atividade por vez.')
-        
     class Meta:
         db_table = 'subscriptions'
