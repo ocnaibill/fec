@@ -5,14 +5,13 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 
-from .models import Event, Activity, Lecture, Workshop, Subscription
-from .serializers import EventSerializer, ActivitySerializer, LectureSerializer, WorkshopSerializer, SubscriptionSerializer
+from .models import Event, Activity, Guest, Subscription
+from .serializers import EventSerializer, ActivitySerializer, Guest, SubscriptionSerializer
 from rest_framework import status
 
 # Create your views here.
 
 # EVENTOS
-
 @api_view(['GET'])
 @permission_classes([AllowAny])  
 def list_events(request):
@@ -52,46 +51,37 @@ def list_event_activities(requests, event_pk):
     serializer = ActivitySerializer(activities, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-# PALESTRAS
 @api_view(['POST'])
-def add_lecture_to_event(requests):
-    serializer = LectureSerializer(data=requests.data)
+def create_activity_on_event(requests):
+    serializer = ActivitySerializer(data=requests.data)
 
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# PALESTRAS
 @api_view(['GET'])
 @permission_classes([])
 def list_event_lectures(requests, event_pk):
     try:
-        lectures = Lecture.objects.filter(event_id=event_pk)
-    except Lecture.DoesNotExist:
+        lectures = Activity.objects.filter(event_id=event_pk, type='palestra')
+    except Activity.DoesNotExist:
         return Response({'erro': 'Nenhuma palestra associada ao evento.'}, status=status.HTTP_404_NOT_FOUND)
 
-    serializer = LectureSerializer(lectures, many=True)
+    serializer = ActivitySerializer(lectures, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 # OFICINAS
-@api_view(['POST'])
-def add_workshop_to_event(requests):
-    serializer = WorkshopSerializer(data=requests.data)
-
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 @api_view(['GET'])
 @permission_classes([])
 def list_event_workshops(requests, event_pk):
     try:
-        workshop = Workshop.objects.filter(event_id=event_pk)
-    except Workshop.DoesNotExist:
+        workshops = Activity.objects.filter(event_id=event_pk, type='oficina')
+    except Activity.DoesNotExist:
         return Response({'erro': 'Nenhuma oficina associada ao evento.'}, status=status.HTTP_404_NOT_FOUND)
 
-    serializer = WorkshopSerializer(workshop, many=True)
+    serializer = ActivitySerializer(workshops, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 # INSCRIÇÕES
