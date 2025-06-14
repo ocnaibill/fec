@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Event, Activity, Lecture, Speaker, Workshop, Instructor
+from .models import Event, Activity, Guest
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
@@ -9,30 +9,11 @@ class EventAdmin(admin.ModelAdmin):
 
 @admin.register(Activity)
 class ActivityAdmin(admin.ModelAdmin):
-    list_display = ('title', 'time', 'event')
-    list_filter = ('event',)
-    search_fields = ('title', 'event__name')
-
-@admin.register(Lecture)
-class LectureCardAdmin(admin.ModelAdmin):
     list_display = ('title', 'date', 'time', 'event')
-    list_filter = ('event',)
+    list_filter = ('event', 'type')
     search_fields = ('title', 'event__name')
 
-@admin.register(Workshop)
-class WorkshopAdmin(admin.ModelAdmin):
-    list_display = ('title', 'date', 'time', 'event')  # Campos exibidos na lista
-    list_filter = ('event',)  # Filtro lateral por evento
-    search_fields = ('title', 'event__name')  # Campos para busca
-    
-@admin.register(Speaker)
-class SpeakerAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    search_fields = ('name',)
-    filter_horizontal = ('cards',)
-
-@admin.register(Instructor)
-class InstructorAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    search_fields = ('name',)
-    filter_horizontal = ('workshops',) 
+@admin.register(Guest)
+class GuestAdmin(admin.ModelAdmin):
+    list_display = ('user__name',)
+    search_fields = ('user__name',)
