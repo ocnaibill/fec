@@ -22,8 +22,8 @@ export default function Subscription() {
             try {
                 const response = await axios.get(`http://localhost:8000/api/event/${eventId}/details/`);
 
-                setLectures(response.data.lecture.map((lec, i) => ({...lec, type: 'lecture', dist: i})))
-                setWorkshops(response.data.workshop.map((wksp, i) => ({...wksp, type: 'workshop', dist: i+response.data.lecture.length})))
+                setLectures(response.data.lecture)
+                setWorkshops(response.data.workshop)
             } catch (error) {
                 console.error('Erro ao buscar atividades:', error);
             }
@@ -46,8 +46,8 @@ export default function Subscription() {
             selectedActivities.forEach((activity => {
                 requests.push(axios.post('http://localhost:8000/api/event/subscribe/',
                     {
-                        lecture_id: activity.type === 'lecture' ? activity.id : null,
-                        workshop_id: activity.type === 'workshop' ? activity.id : null,
+                        activity_id: activity.id,
+
                     },
                     {headers: { Authorization: `Token ${token}` }}
                 ))
@@ -59,6 +59,8 @@ export default function Subscription() {
             console.log('Inscrição realizado com sucesso!')
         } catch (err) {
             if (err.response) {
+                if(err.status == 401) return navigate('/login')
+
                 let err_activity_ids = JSON.parse(err.config.data)
                 let failedAct = err_activity_ids.lecture_id ? lectures.find(lec => lec.id === err_activity_ids.lecture_id) : workshops.find(wksp => wksp.id === err_activity_ids.workshop_id)
                 setError({...err.response.data, failedAct})
@@ -110,17 +112,17 @@ export default function Subscription() {
                     {activities.length > 0 ? activities.map((activity, index) => (
                         <div 
                             key={index}
-                            onClick={() => selectedActivities.map(act => act.dist).indexOf(activity.dist) !== -1 
-                                ? setSelectedActivities(selectedActivities.filter(act => activity.dist !== act.dist)) 
+                            onClick={() => selectedActivities.map(act => act.id).indexOf(activity.id) !== -1 
+                                ? setSelectedActivities(selectedActivities.filter(act => activity.id !== act.id)) 
                                 : setSelectedActivities([...selectedActivities, activity])
                             }
                             className={'relative w-full rounded-[12px] cursor-pointer'}
                             style={{
-                                boxShadow: selectedActivities.map(act => act.dist).indexOf(activity.dist) !== -1 ? '0px 0px 10px 2px #F06F37' : ''
+                                boxShadow: selectedActivities.map(act => act.id).indexOf(activity.id) !== -1 ? '0px 0px 10px 2px #F06F37' : ''
                             }}
                         >
                             <ActivityCard {...activity} />
-                            {selectedActivities.indexOf(activity.dist) !== -1 && <img src={checkIcon} className='w-[40px] absolute top-1 right-1'/>}
+                            {selectedActivities.indexOf(activity.id) !== -1 && <img src={checkIcon} className='w-[40px] absolute top-1 right-1'/>}
                         </div>
                     )) : (
                         <div>
@@ -131,6 +133,10 @@ export default function Subscription() {
                     )}
                     <button 
                         onClick={() => {
+                            const isAuthenticated = localStorage.getItem('authToken')
+                            console.log(isAuthenticated)
+                            if (!isAuthenticated) return navigate('/login')
+
                             return selectedActivities.length > 0 && setSubscribeState(1)
                         }}
                         className='lg:absolute fixed lg:w-[178px] lg:h-[50px] w-[134px] h-[44px] !bg-[#F06F37] text-[20px] !font-bold !p-0 bottom-4 right-6 z-10'

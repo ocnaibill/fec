@@ -321,7 +321,7 @@ export default function Events() {
                         time={formattedTime}
                         title={lecture.title}
                         description={lecture.description}
-                        speakers={lecture.speakers || []}
+                        speakers={lecture.guests || []}
                         style={{
                             fontFamily: '"all-round-gothic", sans-serif',
                             marginLeft: window.innerWidth >= 768 ? '284px' : 'auto',
@@ -366,7 +366,7 @@ export default function Events() {
                             time={formattedTime}
                             title={workshop.title}
                             description={workshop.description}
-                            speakers={workshop.instructors}
+                            speakers={workshop.guests}
                             isWorkshop={true}
                         style={{
                             fontFamily: '"all-round-gothic", sans-serif',
