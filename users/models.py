@@ -20,6 +20,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     institution = models.CharField(max_length=50, blank=True)
     registration_number = models.CharField(max_length=25, blank=True)
+    is_guest = models.BooleanField(default=False)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

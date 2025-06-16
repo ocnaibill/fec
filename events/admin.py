@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Event, Activity, Guest
+from users.models import CustomUser
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
@@ -17,3 +18,8 @@ class ActivityAdmin(admin.ModelAdmin):
 class GuestAdmin(admin.ModelAdmin):
     list_display = ('user__name',)
     search_fields = ('user__name',)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "user":
+            kwargs["queryset"] = CustomUser.objects.filter(is_guest=True)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
