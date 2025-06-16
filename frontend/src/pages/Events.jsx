@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import setaEsquerdaEvento from '../assets/images/setaEsquerdaEvento.svg';
 import setaDireitaEvento from '../assets/images/setaDireitaEvento.svg';
+import AtividadesHoje from '../components/AtividadesHoje';
 import EventsCard from '../components/EventsCard';
 import { useNavigate } from 'react-router-dom';
 
@@ -174,90 +175,9 @@ export default function Events() {
                     CRONOGRAMA
                 </p>      
 
+                <AtividadesHoje />
 
-
-            {/* Horários e atividades */}
-            <div
-                style={{
-                    marginTop: '32px',
-                    marginLeft: window.innerWidth >= 768 ? '284px' : '45px',  
-                    marginRight: 'auto',
-                    maxWidth: window.innerWidth >= 768 ? '700px' : '100%', 
-                    display: 'grid',
-                    gridTemplateColumns: window.innerWidth >= 768 ? 'repeat(2, 1fr)' : '1fr', 
-                    gridAutoRows: 'auto',
-                    gap: '16px', 
-                    alignItems: window.innerWidth < 768 ? 'center' : 'flex-start',
-                    justifyContent: window.innerWidth < 768 ? 'center' : 'flex-start', 
-                }}
-            >
-                {(() => {
-                    const columns = [];
-                    const activities = currentPage.activities || []; 
-
-                    for (let i = 0; i < activities.length; i += 3) {
-                        columns.push(activities.slice(i, i + 3));
-                    }
-
-                    return columns.map((activities, columnIndex) => (
-                        <div
-                            key={columnIndex}
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'flex-start',
-                                width: '100%',
-                            }}
-                        >
-                            {activities.map((activity, index) => (
-                                <div
-                                    key={index}
-                                    style={{
-                                        marginBottom: '12px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'flex-start',
-                                        width: '100%',
-                                    }}
-                                >
-                                    <div>
-                                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                                            <span
-                                                style={{
-                                                    fontFamily: '"all-round-gothic", sans-serif',
-                                                    fontWeight: 'bold',
-                                                    fontSize: '16px',
-                                                    color: '#2B3722',
-                                                    marginRight: '24px',
-                                                }}
-                                            >
-                                                {activity.time.slice(0, 5)} 
-                                            </span>
-                                            <span
-                                                style={{
-                                                    fontFamily: '"quicksand", sans-serif',
-                                                    fontSize: '16px',
-                                                    color: '#2B3722',
-                                                }}
-                                            >
-                                                {activity.title}
-                                            </span>
-                                        </div>
-                                        <div
-                                            style={{
-                                                width: '285px',
-                                                height: '2px',
-                                                backgroundColor: '#2B3722',
-                                                marginTop: '8px',
-                                            }}
-                                        ></div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    ));
-                })()}
-                </div>
+      
                 
         {/* Logos no desktop */}
             {currentPage.logo && (
