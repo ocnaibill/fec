@@ -73,13 +73,10 @@ export default function EventsCard({ children, style, date, time, title, descrip
                         {/* Nome do palestrante/instrutor */}
                         <span
                             className={`font-all-round-gothic font-bold text-[#2B3722] 
-                                        ${window.innerWidth >= 768 ? 'text-[18px]' : 'text-[16px]'}`}
+                                        ${window.innerWidth >= 768 ? 'text-[18px] mr-[8px]' : 'text-[16px]'}`}
                             style={{
                                 whiteSpace: 'nowrap', 
-                                textAlign: 'center', 
-                                display: 'inline-block', 
-                                width: '100%', 
-                                maxWidth: '200px', 
+                                textAlign: 'left', 
                             }}
                         >
                             {speaker.name}
@@ -87,10 +84,10 @@ export default function EventsCard({ children, style, date, time, title, descrip
                         {/* Sinopse do palestrante/instrutor */}
                         <span
                             className={`font-quicksand font-medium text-[#2B3722] 
-                                        ${window.innerWidth >= 768 ? 'ml-[8px] text-[18px]' : 'mt-[8px] text-[16px]'}`} 
+                                        ${window.innerWidth >= 768 ? 'text-[18px]' : 'mt-[8px] text-[16px]'}`} 
                             style={{
                                 lineHeight: '1.5',
-                                textAlign: window.innerWidth >= 768 ? 'left' : 'center', 
+                                textAlign: 'left', 
                             }}
                         >
                             {speaker.bio}
