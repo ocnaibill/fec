@@ -175,7 +175,7 @@ export default function Events() {
                     CRONOGRAMA
                 </p>      
 
-                <AtividadesHoje />
+                <AtividadesHoje eventId={currentPage.id} />
 
       
                 

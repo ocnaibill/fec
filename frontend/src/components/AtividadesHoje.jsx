@@ -1,40 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function AtividadesHoje() {
+export default function AtividadesHoje({ eventId }) {
     const [activitiesToday, setActivitiesToday] = useState([]);
 
     useEffect(() => {
         async function fetchActivities() {
             try {
-                // Faz a requisição para a API de eventos
                 const response = await axios.get('http://localhost:8000/api/event/list/');
                 const allEvents = response.data;
 
-                // Obtém a data atual no formato YYYY-MM-DD
                 const today = new Date().toISOString().split('T')[0];
 
-                // Extrai workshops e lectures de todos os eventos
-                const allActivities = allEvents.flatMap(event => [
-                    ...event.workshop.map(workshop => ({
+                const currentEvent = allEvents.find(event => event.id === eventId);
+                if (!currentEvent) {
+                    setActivitiesToday([]);
+                    return;
+                }
+
+                const allActivities = [
+                    ...currentEvent.workshop.map(workshop => ({
                         id: workshop.id,
                         title: workshop.title,
                         date: workshop.date,
                         time: workshop.time,
                         type: 'Workshop',
-                        eventName: event.name,
+                        eventName: currentEvent.name,
                     })),
-                    ...event.lecture.map(lecture => ({
+                    ...currentEvent.lecture.map(lecture => ({
                         id: lecture.id,
                         title: lecture.title,
                         date: lecture.date,
                         time: lecture.time,
                         type: 'Lecture',
-                        eventName: event.name,
+                        eventName: currentEvent.name,
                     })),
-                ]);
+                ];
 
-                // Filtra as atividades da data atual
                 const filteredActivities = allActivities.filter(activity => activity.date === today);
 
                 setActivitiesToday(filteredActivities);
@@ -44,7 +46,7 @@ export default function AtividadesHoje() {
         }
 
         fetchActivities();
-    }, []);
+    }, [eventId]);
 
     return (
         <div
