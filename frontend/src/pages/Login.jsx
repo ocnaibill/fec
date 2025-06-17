@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import fundo from '../assets/images/fundo2_fec.svg';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+
+    const navigate = useNavigate()
 
     const handleLogin = async () => {
         setError('');
@@ -132,7 +135,7 @@ export default function Login() {
                         className="font-medium text-[16px] text-[#FFF1BF] text-center mb-1"
                         style={{ fontFamily: '"Quicksand", sans-serif' }}
                     >
-                        Não tem conta? Registre-se.
+                        Não tem conta? <span className='cursor-pointer hover:underline' onClick={() => navigate('/signup')}>Registre-se.</span>
                     </span>
                     <span
                         className="font-medium text-[16px] text-[#FFF1BF] text-center"

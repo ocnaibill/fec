@@ -4,8 +4,11 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { signupSchema } from '../validation/signupSchema';
 import fundo from '../assets/images/fundo2_fec.svg';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function Signup() {
+    const navigate = useNavigate()
+
     const { register, handleSubmit, setValue, formState: {errors}, control} 
     = useForm({ 
         resolver: yupResolver(signupSchema), 
@@ -327,7 +330,7 @@ export default function Signup() {
                         className="font-medium text-[16px] text-[#FFF1BF] text-center mb-1"
                         style={{ fontFamily: '"Quicksand", sans-serif' }}
                     >
-                        Já possui conta? Faça login.
+                        Já possui conta? <span className='cursor-pointer hover:underline' onClick={() => navigate('/login')}>Faça login.</span>
                     </span>
                 </div>
             </div>
