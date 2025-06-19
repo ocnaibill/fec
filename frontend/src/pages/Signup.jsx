@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Signup() {
     const navigate = useNavigate()
 
-    const { register, handleSubmit, setValue, formState: {errors}, control} 
+    const { register, handleSubmit, setValue, setError, formState: {errors}, control} 
     = useForm({ 
         resolver: yupResolver(signupSchema), 
         defaultValues: {
@@ -18,7 +18,6 @@ export default function Signup() {
     })
 
     const [institution, setInstitution] = useState('UCB');
-    const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
     const cpfMask = (value) => {
@@ -33,6 +32,7 @@ export default function Signup() {
     const handleSignup = async (formData) => {
         setError('');
         setSuccess('');
+
         const { name, email, cpf, birthdate, institution, registrationNumber, password } = formData
         const body = {
             name,
@@ -43,15 +43,30 @@ export default function Signup() {
             registration_number: institution === 'UCB' ? registrationNumber : undefined,
             password
         }
-        console.log(body)
+
         try {
             const response = await axios.post('http://localhost:8000/api/auth/signup', body)
             setSuccess('Cadastro realizado com sucesso!')
         } catch (err) {
-            if (err.response) {
-                setError(err.response.data.error || 'Erro ao realizar cadastro.')
+            if (err.response && err.response.data) {
+                const errors = err.response.data
+
+                Object.keys(errors).forEach(field => {
+                    const message = Array.isArray(errors[field])
+                        ? errors[field][0]
+                        : errors[field]
+
+                    setError(field, {
+                        type: 'server',
+                        message: message
+                    })
+                })
+            } else {
+                setError('server', {
+                    type: 'manual',
+                    message: 'Erro de conexão com o servidor.'
+                })
             }
-            setError('Erro de conexão com o servidor.')
         }
     };
 
@@ -307,12 +322,12 @@ export default function Signup() {
                     </span>
                 </button>
 
-                {error && (
+                {errors.server && (
                     <span
                         className="text-red-500 mt-2 font-medium text-[14px]"
                         style={{ fontFamily: '"Quicksand", sans-serif' }}
                     >
-                        {error}
+                        {errors.server.message}
                     </span>
                 )}
 
