@@ -7,6 +7,7 @@ import Signup from './pages/Signup'
 import Events from './pages/Events'
 import Subscription from './pages/Subscription'
 import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/login" element={<MainLayout><Login /></MainLayout>} />
         <Route path="/signup" element={<MainLayout><Signup /></MainLayout>} />
         <Route path="/forgot-password" element={<MainLayout><ForgotPassword /></MainLayout>} />
+        <Route path="/reset-password/:uuid/:token" element={<MainLayout><ResetPassword /></MainLayout>} />
         <Route path="/events" element={<MainLayout><Events /></MainLayout>} />
         <Route path="/subscription" element={<MainLayout><Subscription /></MainLayout>} />
         <Route path="*" element={<MainLayout><NotFound /></MainLayout>} />
