@@ -8,6 +8,15 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from users.models import CustomUser
 
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
+from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+
+import os
+
 # Create your views here.
 @api_view(['POST'])
 @permission_classes([])
@@ -61,3 +70,25 @@ def logout(request):
         return Response({'message': 'Logout realizado com sucesso.'}, status=status.HTTP_200_OK)
     except:
         return Response({'erro': 'Erro ao realizar logout.'}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([])
+def password_reset_request(request):
+    email = request.data.get('email')
+    user = CustomUser.objects.filter(email=email).first()
+
+    if user:
+        uuid = urlsafe_base64_encode(force_bytes(user.pk))
+        token = default_token_generator.make_token(user)
+        front_url = os.environ.get('FRONTEND_URL', 'url_do_front')
+
+        reset_link = f"{front_url}/reset-password/{uuid}/{token}"
+        
+        send_mail(
+            subject='Redefinição de senha',
+            message=f'Clique no link para redefinir sua senha: {reset_link}',
+            from_email='no-reply@cajui.com',
+            recipient_list=[user.email]
+        )
+
+    return Response({'message': 'Se o e-mail for válido, enviaremos um link de redefinição.'})
