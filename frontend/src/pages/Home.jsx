@@ -533,7 +533,7 @@ export default function Home() {
               Lorem ipsum cras tempus tortor at rhoncus volutpat feugiat in erat non id orci pellentesque adipiscing vestibulum egestas tellus nulla neque lorem fringilla tortor proin ut habitant id non blandit lorem.
             </p>
             <Link
-              to="/inscricao"
+              to="/events"
               style={{
                 width: 224,
                 height: 42,
