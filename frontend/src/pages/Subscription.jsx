@@ -9,16 +9,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Subscription() {
-    // --- Hooks e Variáveis ---
+
     const navigate = useNavigate();
     const { search } = useLocation();
     const params = new URLSearchParams(search);
     const isAuthenticated = localStorage.getItem('authToken');
     
-    // URL base da API vinda do ambiente
     const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
 
-    // --- Estados do Componente ---
     const [lectures, setLectures] = useState([]);
     const [workshops, setWorkshops] = useState([]);
     const [subsActivities, setSubsActivities] = useState([]);
@@ -29,16 +27,13 @@ export default function Subscription() {
     const [selectedActivityType, setActivityType] = useState('PALESTRAS');
     const [subscribeState, setSubscribeState] = useState(0);
 
-    // Variável derivada para exibir a lista de atividades correta
     const activities = selectedActivityType === 'PALESTRAS' ? lectures : workshops;
     
-    // --- Efeito para buscar dados iniciais ---
     useEffect(() => {
         let eventId = params.get('event');
 
         async function fetchEvent() {
             try {
-                // URL ATUALIZADA
                 const response = await axios.get(`${baseUrl}/event/${eventId}/details/`);
                 setLectures(response.data.lecture);
                 setWorkshops(response.data.workshop);
@@ -49,7 +44,7 @@ export default function Subscription() {
 
         async function fetchUserSubscription() {
             try {
-                const response = await axios.get(`${baseUrl}/event/mysubs`, { // URL ATUALIZADA
+                const response = await axios.get(`${baseUrl}/event/mysubs`, { 
                     headers: {
                         Authorization: `Token ${isAuthenticated}`
                     }
@@ -64,16 +59,14 @@ export default function Subscription() {
         if (isAuthenticated) {
             fetchUserSubscription();
         }
-    }, [isAuthenticated]); // Adicionado isAuthenticated como dependência para re-executar se o status de login mudar
+    }, [isAuthenticated]); 
 
-    // --- Função de Submissão ---
     const handleSubmit = async () => {
         const token = localStorage.getItem('authToken');
         setLoading(true);
         try {
             let requests = [];
             selectedActivities.forEach((activity => {
-                // URL ATUALIZADA
                 requests.push(axios.post(`${baseUrl}/event/subscribe/`,
                     {
                         activity_id: activity.id,
@@ -90,7 +83,6 @@ export default function Subscription() {
             if (err.response) {
                 if(err.response.status === 401) return navigate('/login');
                 
-                // A sua lógica de tratamento de erro para conflitos já está boa
                 let err_activity_ids = JSON.parse(err.config.data);
                 let failedAct = err_activity_ids.lecture_id ? lectures.find(lec => lec.id === err_activity_ids.lecture_id) : workshops.find(wksp => wksp.id === err_activity_ids.workshop_id);
                 setError({ ...err.response.data, failedAct });
@@ -113,7 +105,6 @@ export default function Subscription() {
                 color: '#2B3722',
             }}
         >
-            {/* O seu JSX continua exatamente o mesmo aqui dentro, sem alterações */}
             {subscribeState === 0 && (
             <>
                 <p className='lg:w-[1090px] w-[360px] text-center text-[40px] leading-12 mb-8 lg:mt-[64px] mt-[62px]'>
@@ -273,7 +264,6 @@ export default function Subscription() {
     );
 }
 
-// ... Os seus sub-componentes ActivityCard e ConfirmActivityCard continuam os mesmos ...
 function ActivityCard({title, date, time, local, isSubscribed}) {
     return (
         <div className={`flex flex-col gap-3 w-full h-[135px] rounded-[12px] p-4 ${isSubscribed ? 'bg-[#cabd8e]' : 'bg-[#FFF1C0]'}`}>
