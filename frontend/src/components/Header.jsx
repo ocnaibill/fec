@@ -57,8 +57,13 @@ export default function Header() {
     return (
         <header className="w-full bg-[#2b3722] flex flex-row-reverse lg:flex-row items-center justify-between px-4 lg:px-[175px] h-[62px] lg:h-[100px]">
             
-            <Link to="/" className="hidden lg:flex items-center cursor-pointer">
-                <img src={LogoBranca} alt="Logo" className="w-[49px] h-[54px]" style={{ objectFit: 'contain' }}/>
+            <Link to="/" className="hidden lg:flex items-center cursor-pointer" style={{ fontFamily: '"all-round-gothic", sans-serif', fontWeight: 700, fontStyle: 'normal' }}>
+                <img
+                    src={LogoBranca}
+                    alt="Logo"
+                    className="w-[49px] h-[54px]"
+                    style={{ objectFit: 'contain' }}
+                />
                 <div className="flex flex-col justify-center ml-[14px]">
                     <span className="text-white font-bold text-lg leading-tight">III FESTIVAL DA</span>
                     <span className="text-white font-bold text-lg leading-tight">ECONOMIA CRIATIVA</span>
@@ -76,7 +81,7 @@ export default function Header() {
                 
                 {isAuthenticated ? (
                     <>
-                        <Link to="/perfil" className="hover:underline header-font">perfil</Link>
+                        <Link to="/account" className="hover:underline header-font">perfil</Link>
                         <button onClick={handleLogout} className="hover:underline header-font" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}>logout</button>
                     </>
                 ) : (
@@ -85,7 +90,7 @@ export default function Header() {
             </nav>
 
             <button className="lg:hidden z-50" onClick={toggleMobileMenu} style={{ background: 'transparent', border: 'none' }}>
-                {isMobileMenuOpen ? null : <Menu className="text-white" style={{ width: '36px', height: '33px' }} />}
+                {isMobileMenuOpen ? null : <Menu className="text-[#FDF2BF]" style={{ width: '36px', height: '33px' }} />}
             </button>
             
             {/* Menu Mobile */}
@@ -109,7 +114,7 @@ export default function Header() {
                             
                             {isAuthenticated ? (
                                 <>
-                                    <Link to="/perfil" onClick={handleSimpleLinkClick} className="hover:underline" style={{paddingRight: '30px'}}>perfil</Link>
+                                    <Link to="/account" onClick={handleSimpleLinkClick} className="hover:underline" style={{paddingRight: '30px'}}>perfil</Link>
                                     <button onClick={handleLogout} className="hover:underline" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>logout</button>
                                 </>
                             ) : (
