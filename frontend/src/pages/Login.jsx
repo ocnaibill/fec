@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import fundo from '../assets/images/fundo2_fec.svg';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -27,6 +28,27 @@ export default function Login() {
             if (response.ok) {
                 setSuccess('Login realizado com sucesso!');
                 localStorage.setItem('authToken', data.token);
+
+            toast(`Login realizado com sucesso!`, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                style: {
+                    backgroundColor: '#5E4497',
+                    color: '#FFF6D7',
+                    fontFamily: '"Quicksand", sans-serif',
+                    fontWeight: '500',
+                    fontSize: '16px',
+                    borderRadius: '8px',
+                    width: '451px',
+                    height: '60px',
+                },
+            });
+
+                navigate('/'); 
             } else {
                 setError(data.error || 'Erro ao realizar login.');
             }

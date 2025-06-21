@@ -8,10 +8,14 @@ import Events from './pages/Events'
 import Subscription from './pages/Subscription'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
+import { ToastContainer } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function App() {
   return (
     <Router>
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<MainLayout><Home /></MainLayout>} />
         <Route path="/login" element={<MainLayout><Login /></MainLayout>} />
