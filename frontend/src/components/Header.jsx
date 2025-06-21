@@ -55,6 +55,8 @@ export default function Header() {
           >
             apoio
           </button>
+        {/* Botão Login */}
+          <Link to="/login" className="hover:underline header-font">login</Link>
         </nav>
 
       {/* Menu Mobile */}
