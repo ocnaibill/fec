@@ -210,10 +210,10 @@ export default function Subscription() {
                     </p>
                     <span>
                         <p className='text-[16px] lg:text-start text-center text-[#FFF1C0] font-light'>
-                            Seu ingresso será enviado para o e-mail informado nos próximos minutos.
+                            Seu ingresso será enviado para sua aba de perfil aqui no site do festival.
                         </p>
                         <p className='text-[16px] lg:text-start text-center text-[#FFF1C0] font-light'>
-                            Nos vemos no Festival de Economia Criativa!
+                            Nos vemos no Festival da Economia Criativa!
                         </p>
                     </span>
                     <div className='w-full flex flex-col gap-6'>
