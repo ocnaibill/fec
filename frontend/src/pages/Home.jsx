@@ -530,7 +530,7 @@ export default function Home() {
                 textOverflow: 'ellipsis',
               }}
             >
-              Lorem ipsum cras tempus tortor at rhoncus volutpat feugiat in erat non id orci pellentesque adipiscing vestibulum egestas tellus nulla neque lorem fringilla tortor proin ut habitant id non blandit lorem.
+              Palestras e Oficinas do Festival da Economia Criativa com certificado de horas, disponíveis para inscrição acima.
             </p>
             <Link
               to="/events"
@@ -623,7 +623,7 @@ export default function Home() {
                 textOverflow: 'ellipsis',
               }}
             >
-              Lorem ipsum cras tempus tortor at rhoncus volutpat feugiat in erat non id orci pellentesque adipiscing vestibulum egestas tellus nulla neque lorem fringilla tortor proin ut habitant id non blandit lorem.
+              O evento acontece completamente dentro do Campus Taguatinga da Universidade Católica de Brasília.
             </p>
           </div>
         </div>
