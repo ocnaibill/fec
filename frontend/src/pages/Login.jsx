@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import fundo from '../assets/images/fundo2_fec.svg';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -12,50 +13,49 @@ export default function Login() {
     const navigate = useNavigate()
 
     const handleLogin = async () => {
-        setError('');
-        setSuccess('');
-        try {
-            const response = await fetch('http://localhost:8000/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            });
+    setError('');
+    setSuccess('');
 
-            const data = await response.json();
+    try {
+        const loginData = { email, password };
 
-            if (response.ok) {
-                setSuccess('Login realizado com sucesso!');
-                localStorage.setItem('authToken', data.token);
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, loginData);
 
-            toast(`Login realizado com sucesso!`, {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                style: {
-                    backgroundColor: '#5E4497',
-                    color: '#FFF6D7',
-                    fontFamily: '"Quicksand", sans-serif',
-                    fontWeight: '500',
-                    fontSize: '16px',
-                    borderRadius: '8px',
-                    width: '451px',
-                    height: '60px',
-                },
-            });
+        setSuccess('Login realizado com sucesso!');
+        localStorage.setItem('authToken', response.data.token); 
 
-                navigate('/'); 
-            } else {
-                setError(data.error || 'Erro ao realizar login.');
-            }
-        } catch (err) {
-            setError('Erro de conexão com o servidor.');
+        toast(`Login realizado com sucesso!`, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            style: {
+                backgroundColor: '#5E4497',
+                color: '#FFF6D7',
+                fontFamily: '"Quicksand", sans-serif',
+                fontWeight: '500',
+                fontSize: '16px',
+                borderRadius: '8px',
+                width: '451px',
+                height: '60px',
+            },
+        });
+
+        navigate('/'); 
+
+    } catch (err) {
+        if (err.response) {
+            setError(err.response.data.error || 'E-mail ou senha inválidos.');
+        } else if (err.request) {
+            setError('Erro de conexão com o servidor. Tente novamente.');
+        } else {
+            setError('Ocorreu um erro inesperado.');
         }
-    };
+    } finally {
+    }
+};
 
     return (
         <div

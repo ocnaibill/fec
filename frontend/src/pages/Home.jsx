@@ -7,248 +7,14 @@ import logoMatriz from '../assets/images/logoMatriz.svg'
 import logoFap from '../assets/images/logoFapDF.svg'
 import logoCatolicaDark from '../assets/images/logoCatolicaDark.svg'
 import IconeProgramacao from '../assets/images/icone-programacao.svg'
-import IconeConvidados1 from '../assets/images/icone-convidados-1.svg'
-import IconeConvidados2 from '../assets/images/icone-convidados-2.svg'
-import IconeConvidados3 from '../assets/images/icone-convidados-3.svg'
+import AboutCarousel from "../components/AboutCarousel";
 import ScheduleBoard from '../components/ScheduleBoard'
 import GuestsCarousel from '../components/GuestsCarousel'
-import carrossel1 from '../assets/images/carrossel1.png'
-import carrossel2 from '../assets/images/carrossel2.png'
-import carrossel3 from '../assets/images/carrossel3.png'
-import setaEsquerda from '../assets/images/setaEsquerda.svg'
-import setaDireita from '../assets/images/setaDireita.svg'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import React, {useEffect} from 'react';
 
 
-const carouselImages = [
-  carrossel1,
-  carrossel2,
-  carrossel3,
-];
 
-function Carousel({ mobile = false }) {
-  const [index, setIndex] = React.useState(1);
-
-  const total = carouselImages.length;
-  const left = (index - 1 + total) % total;
-  const center = index;
-  const right = (index + 1) % total;
-
-  const handlePrev = () => setIndex((prev) => (prev - 1 + total) % total);
-  const handleNext = () => setIndex((prev) => (prev + 1) % total);
-
-  // Tamanhos proporcionais para mobile e desktop
-  const carouselStyle = mobile
-    ? {
-        width: '100%',
-        maxWidth: 320,
-        aspectRatio: '320/220',
-        height: 'auto',
-        position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        margin: '0 auto',
-      }
-    : {
-        width: 396,
-        height: 437,
-        position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        margin: '0 auto',
-      };
-
-  const sideImgWidth = mobile ? 147 : 236;
-  const sideImgHeight = mobile ? 162 : 260;
-  const centerImgWidth = mobile ? 248 : 396;
-  const centerImgHeight = mobile ? 273 : 437;
-
-  return (
-    <div className="relative flex justify-center items-center w-full" style={carouselStyle}>
-      {/* Imagem da esquerda */}
-      <div
-        className="absolute left-1/2"
-        style={{
-          transform: mobile ? 'translateX(-120%)' : 'translateX(-135%)',
-          width: sideImgWidth,
-          height: sideImgHeight,
-          zIndex: 1,
-          filter: 'blur(4px)',
-          top: '50%',
-          marginTop: mobile ? -sideImgHeight / 2 : -sideImgHeight / 2,
-          overflow: 'hidden',
-          borderRadius: 12,
-        }}
-      >
-        <img
-          src={carouselImages[left]}
-          alt="Foto esquerda"
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            borderRadius: 12,
-          }}
-        />
-      </div>
-      {/* Imagem da direita */}
-      <div
-        className="absolute left-1/2"
-        style={{
-          transform: mobile ? 'translateX(20%)' : 'translateX(35%)',
-          width: sideImgWidth,
-          height: sideImgHeight,
-          zIndex: 1,
-          filter: 'blur(4px)',
-          top: '50%',
-          marginTop: mobile ? -sideImgHeight / 2 : -sideImgHeight / 2,
-          overflow: 'hidden',
-          borderRadius: 12,
-        }}
-      >
-        <img
-          src={carouselImages[right]}
-          alt="Foto direita"
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            borderRadius: 12,
-          }}
-        />
-      </div>
-      {/* Imagem central e botões */}
-      <div
-        className="relative flex items-center justify-between"
-        style={{
-          width: centerImgWidth,
-          height: centerImgHeight,
-          zIndex: 2,
-        }}
-      >
-        {/* Botão esquerda */}
-        <button
-          onClick={handlePrev}
-          style={{
-            width: mobile ? 55 : 64,
-            height: mobile ? 31 : 28,
-            background: '#E0E0E0',
-            border: 'none',
-            borderRadius: 36.65,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute',
-            left: mobile ? -8 : -4,
-            top: '50%',
-            transform: 'translateY(-50%) rotate(-90deg)',
-            cursor: 'pointer',
-            zIndex: 3,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-          }}
-          aria-label="Anterior"
-        >
-          <img
-            src={setaEsquerda}
-            alt="Anterior"
-            width={12}
-            height={10}
-            style={{ transform: 'rotate(90deg)' }}
-          />
-        </button>
-        {/* Imagem central */}
-        <img
-          src={carouselImages[center]}
-          alt="Foto central"
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            borderRadius: 12,
-            display: 'block',
-          }}
-        />
-        {/* Botão direita */}
-        <button
-          onClick={handleNext}
-          style={{
-            width: mobile ? 55 : 64,
-            height: mobile ? 31 : 28,
-            background: '#E0E0E0',
-            border: 'none',
-            borderRadius: 36.65,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute',
-            right: mobile ? -8 : -4,
-            top: '50%',
-            transform: 'translateY(-50%) rotate(90deg)',
-            cursor: 'pointer',
-            zIndex: 3,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-          }}
-          aria-label="Próximo"
-        >
-          <img
-            src={setaDireita}
-            alt="Próximo"
-            width={12}
-            height={10}
-            style={{ transform: 'rotate(-90deg)' }}
-          />
-        </button>
-        {/* Indicador de páginas */}
-        <div
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            bottom: mobile ? -8 : -12,
-            transform: 'translateY(50%)',
-            marginTop: 8,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 8,
-            zIndex: 4,
-            pointerEvents: 'none',
-            
-          }}
-        >
-          {carouselImages.map((_, i) =>
-            i === center ? (
-              <div
-                key={i}
-                style={{
-                  width: 24,
-                  height: 8,
-                  borderRadius: 8,
-                  background: '#333333',
-                  transition: 'background 0.2s, width 0.2s',
-                }}
-              />
-            ) : (
-              <div
-                key={i}
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: '50%',
-                  background: '#828282',
-                  transition: 'background 0.2s',
-                }}
-              />
-            )
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default function Home() {
   const location = useLocation();
@@ -258,100 +24,18 @@ export default function Home() {
     if (location.state?.scrollTo) {
       const section = document.getElementById(location.state.scrollTo);
       if (section) {
-        section.scrollIntoView({ behavior: 'smooth' });
+        section.scrollIntoView({ behavior: "smooth" });
         navigate(location.pathname, { replace: true, state: {} });
       }
     }
   }, [location, navigate]);
 
-  const schedule = [
-    {
-      date: '23/06',
-      weekday: 'SEGUNDA-FEIRA',
-      events: [
-        {
-          time: '09:00',
-          title: 'Abertura do festival',
-          local: 'Auditório Central',
-        }
-      ]
-    },
-    {
-      date: '24/06',
-      weekday: 'TERÇA-FEIRA',
-      events: [
-      ]
-    },
-    {
-      date: '25/06',
-      weekday: 'QUARTA-FEIRA',
-      events: [
-      ]
-    },
-    {
-      date: '26/06',
-      weekday: 'QUINTA-FEIRA',
-      events: [
-      ]
-    },
-    {
-      date: '27/06',
-      weekday: 'SEXTA-FEIRA',
-      events: [
-      ]
-    },
-  ]
 
-  const guests = [
-    {
-      avatar: {
-        src: IconeConvidados1,
-        alt: 'Foto do convidado 1'
-      },
-      name: 'nome1',
-      description: 'Lorem ipsum in nulla dis sed amet in orci cursus venenatis quam rhoncus erat eget eu aliquet est est in phasellus tincidunt amet purus nibh elementum nunc laoreet a pharetra.'
-    },
-    {
-      avatar: {
-        src: IconeConvidados2,
-        alt: 'Foto do convidado 2'
-      },
-      name: 'nome2',
-      description: 'Lorem ipsum in nulla dis sed amet in orci cursus venenatis quam rhoncus erat eget eu aliquet est est in phasellus tincidunt amet purus nibh elementum nunc laoreet a pharetra.'
-    },
-    {
-      avatar: {
-        src: IconeConvidados3,
-        alt: 'Foto do convidado 3'
-      },
-      name: 'nome3',
-      description: 'Lorem ipsum in nulla dis sed amet in orci cursus venenatis quam rhoncus erat eget eu aliquet est est in phasellus tincidunt amet purus nibh elementum nunc laoreet a pharetra.'
-    },
-    {
-      avatar: {
-        src: IconeConvidados1,
-        alt: 'Foto do convidado 1'
-      },
-      name: 'nome4',
-      description: 'Lorem ipsum in nulla dis sed amet in orci cursus venenatis quam rhoncus erat eget eu aliquet est est in phasellus tincidunt amet purus nibh elementum nunc laoreet a pharetra.'
-    },
-    {
-      avatar: {
-        src: IconeConvidados2,
-        alt: 'Foto do convidado 2'
-      },
-      name: 'nome5',
-      description: 'Lorem ipsum in nulla dis sed amet in orci cursus venenatis quam rhoncus erat eget eu aliquet est est in phasellus tincidunt amet purus nibh elementum nunc laoreet a pharetra.'
-    },
-    {
-      avatar: {
-        src: IconeConvidados3,
-        alt: 'Foto do convidado 3'
-      },
-      name: 'nome6',
-      description: 'Lorem ipsum in nulla dis sed amet in orci cursus venenatis quam rhoncus erat eget eu aliquet est est in phasellus tincidunt amet purus nibh elementum nunc laoreet a pharetra.'
-    },
-  ]
+   const aboutImages = [
+    logoCajui,
+    logoOlfato,
+    logoMatriz,
+  ];
 
   return (
     <div className="flex flex-col items-center lg:bg-[#FAF9F6] radial-gradient(ellipse_at_center,_#FFFFFF_0%,_#FFF1BF_100%)" style={{
@@ -448,188 +132,182 @@ export default function Home() {
         </div>  
 
        {/* CARROSSEL E SOBRE O FESTIVAL DESKTOP */}
-          <div
-            className="hidden lg:flex"
-            style={{
-              width: '100%',
-              marginTop: 164,
-              justifyContent: 'center',
-              alignItems: 'center',
-              position: 'relative',
-              height: 600,
-              background:'#FAF9F6',
-              marginBottom: 142
-            }}
-          >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center', // Centraliza verticalmente o carrossel e o texto
-              justifyContent: 'center', // Centraliza horizontalmente
-              height: 453,
-              maxWidth: 1150, // ajuste conforme o layout desejado
-              width: '100%',
-              margin: '0 auto', // Centraliza o bloco todo
-            }}
-          >
-        {/* Carrossel */}
+      <div
+        className="hidden lg:flex"
+        style={{
+          width: "100%",
+          marginTop: 164,
+          justifyContent: "center",
+          alignItems: "center",
+          position: "relative",
+          height: 600,
+          background: "#FAF9F6",
+          marginBottom: 142
+        }}
+      >
         <div
           style={{
-            marginTop:30,
-            width: 680,
-            height: 500,
-            position: 'relative',
-            flexShrink: 0,
-            overflow: 'hidden',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Carousel />
-        </div>
-        {/* Sobre o Festival */}
-        <div id="sobre"
-          style={{
-            marginLeft: 60,
-            width: 398,
-            minWidth: 398,
-            maxWidth: 398,
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
             height: 453,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
+            maxWidth: 1150,
+            width: "100%",
+            margin: "0 auto"
           }}
         >
-          <h1
-            style={{
-              fontFamily: '"all-round-gothic", sans-serif',
-              color: '#2B3722',
-              fontWeight: 700,
-              fontSize: '2.1rem',
-              letterSpacing: '1px',
-              margin: 0,
-              width: 398,
-              maxWidth: 398,
-              height: 55,
-              lineHeight: '55px',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            SOBRE O FESTIVAL
-          </h1>
-          <p
-            style={{
-              fontFamily: '"Quicksand", sans-serif',
-              fontWeight: 500,
-              color: '#2B3722',
-              fontSize: '1rem',
-              margin: 0,
-              marginTop: 30,
-              width: 398,
-              maxWidth: 398,
-              height: 150,
-              lineHeight: '1.5',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-          >
-            Lorem ipsum cras tempus tortor at rhoncus volutpat feugiat in erat non id orci pellentesque adipiscing vestibulum egestas tellus nulla neque lorem fringilla tortor proin ut habitant id non blandit lorem at fringilla et fermentum lacus vulputate pharetra arcu nunc feugiat aliquam amet mauris netus.
-          </p>
-        </div>
-      </div>
-    </div>
-
-      {/* SOBRE O FESTIVAL + CARROSSEL MOBILE */}
-        <div className="w-full flex flex-col items-center lg:hidden"
-          style={{
-            marginTop: 2, // 220px abaixo do botão
-            paddingLeft: 16,
-            paddingRight: 16,
-            marginBottom: 225
-          }}
-        >
-          <h1
-            style={{
-              fontFamily: '"all-round-gothic", sans-serif',
-              color: '#2B3722',
-              fontWeight: 700,
-              fontSize: '2.1rem',
-              letterSpacing: '1px',
-              textAlign: 'center',
-              margin: 0,
-              width: '100%',
-              maxWidth: 430,
-            }}
-          >
-            SOBRE O FESTIVAL
-          </h1>
+          {/* Carrossel */}
           <div
             style={{
-              marginTop: 20,
-              width: '100%',
-              maxWidth: 396,
-              aspectRatio: '396/273.82', // Mantém proporção
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
+              marginTop: 30,
+              width: 680,
+              height: 500,
+              position: "relative",
+              flexShrink: 0,
+              overflow: "hidden",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center"
             }}
           >
-            <Carousel
-              mobile 
-            />
+            <AboutCarousel images={aboutImages}/>
           </div>
-          <p
+          {/* Sobre o Festival */}
+          <div
+            id="sobre"
             style={{
-              marginTop: 24,
-              fontFamily: '"Quicksand", sans-serif',
-              fontWeight: 500,
-              color: '#2B3722',
-              fontSize: '0.9rem',
-              width: '100%',
+              marginLeft: 60,
+              width: 398,
+              minWidth: 398,
               maxWidth: 398,
-              height: 180,
-              lineHeight: '1.5',
-              paddingLeft: 18,
-              paddingRight: 18,
-              boxSizing: 'border-box',
-              textAlign: 'left',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
+              height: 453,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center"
             }}
           >
-            Lorem ipsum cras tempus tortor at rhoncus volutpat feugiat in erat non id orci pellentesque adipiscing vestibulum egestas tellus nulla neque lorem fringilla tortor proin ut habitant id non blandit lorem at fringilla et fermentum lacus vulputate pharetra arcu nunc feugiat aliquam amet mauris netus.
-          </p>
-        </div>
-
-        {/* PROGRAMAÇÃO */}
-        <div id="programacao" className="lg:bg-[#FAF9F6] h-[791px] w-full flex flex-col justify-center items-center gap-14 mb-[226px]">
-          <div className="flex flex-col justify-center lg:items-start items-center md:gap-14 gap-8">
-            <div className="h-[55px] flex flex-row items-center md:gap-8 gap-4">
-              <img className="h-[34px]" src={IconeProgramacao} />
-              <h2
-                className="font-bold md:text-[46px] text-[40px]"
-                style={{
-                  color: '#2B3722',
-                  fontFamily: '"all-round-gothic", sans-serif',
-                }}
-              >
-                PROGRAMAÇÃO
-              </h2>
-            </div>
-
-            <div
-              className="lg:w-[1290px] w-[370px] lg:h-[555px] h-[520px] bg-[#2B3722] rounded-2xl lg:px-8 px-0 py-8"
-              style={{ boxShadow: '12px -10px 15px rgba(0, 0, 0, 0.25)' }}
+            <h1
+              style={{
+                fontFamily: '"all-round-gothic", sans-serif',
+                color: "#2B3722",
+                fontWeight: 700,
+                fontSize: "2.1rem",
+                letterSpacing: "1px",
+                margin: 0,
+                width: 398,
+                maxWidth: 398,
+                height: 55,
+                lineHeight: "55px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap"
+              }}
             >
-              <ScheduleBoard schedule={schedule} />
-            </div>
+              SOBRE O FESTIVAL
+            </h1>
+            <p
+              style={{
+                fontFamily: '"Quicksand", sans-serif',
+                fontWeight: 500,
+                color: "#2B3722",
+                fontSize: "1rem",
+                margin: 0,
+                marginTop: 30,
+                width: 398,
+                maxWidth: 398,
+                lineHeight: "1.5",
+                textOverflow: "ellipsis"
+              }}
+            >
+              Mais do que um evento, o festival é um ponto de encontro. Realizado na Universidade Católica de Brasília, é um lugar onde o saber acadêmico dialoga com a prática, onde a inovação caminha lado a lado com as tradições culturais, onde quem está começando pode se inspirar em quem já trilhou caminhos. A programação é diversa e abraça áreas como Comunicação (Publicidade e Propaganda, Jornalismo, Cinema e Design Visual), Arquitetura, Gastronomia e tantos outros campos que vivem da criatividade e da conexão com a cultura.
+            </p>
           </div>
         </div>
+      </div>
+
+      {/* SOBRE O FESTIVAL + CARROSSEL MOBILE */}
+      <div
+        className="w-full flex flex-col items-center lg:hidden"
+        style={{
+          marginTop: 2,
+          paddingLeft: 16,
+          paddingRight: 16,
+          marginBottom: 225
+        }}
+      >
+        <h1
+          style={{
+            fontFamily: '"all-round-gothic", sans-serif',
+            color: "#2B3722",
+            fontWeight: 700,
+            fontSize: "2.1rem",
+            letterSpacing: "1px",
+            textAlign: "center",
+            margin: 0,
+            width: "100%",
+            maxWidth: 430
+          }}
+        >
+          SOBRE O FESTIVAL
+        </h1>
+        <div
+          style={{
+            marginTop: 20,
+            width: "100%",
+            maxWidth: 396,
+            aspectRatio: "396/273.82",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <AboutCarousel images={aboutImages}/>
+        </div>
+        <p
+          style={{
+            marginTop: 24,
+            fontFamily: '"Quicksand", sans-serif',
+            fontWeight: 500,
+            color: "#2B3722",
+            fontSize: "0.9rem",
+            width: "100%",
+            maxWidth: 398,
+            lineHeight: "1.5",
+            paddingLeft: 18,
+            paddingRight: 18,
+            boxSizing: "border-box",
+            textAlign: "left",
+            textOverflow: "ellipsis"
+          }}
+        >
+          Mais do que um evento, o festival é um ponto de encontro. Realizado na Universidade Católica de Brasília, é um lugar onde o saber acadêmico dialoga com a prática, onde a inovação caminha lado a lado com as tradições culturais, onde quem está começando pode se inspirar em quem já trilhou caminhos. A programação é diversa e abraça áreas como Comunicação (Publicidade e Propaganda, Jornalismo, Cinema e Design Visual), Arquitetura, Gastronomia e tantos outros campos que vivem da criatividade e da conexão com a cultura.
+        </p>
+      </div>
+
+            {/* SEÇÃO PROGRAMAÇÃO ATUALIZADA */}
+            <div id="programacao" className="w-full flex flex-col justify-center items-center gap-14 mb-[226px] px-4">
+                <div className="flex flex-col justify-center items-center lg:items-start md:gap-14 gap-8 w-full max-w-7xl">
+                    <div className="h-[55px] flex flex-row items-center self-center lg:self-start md:gap-8 gap-4">
+                        <img className="h-[34px]" src={IconeProgramacao} alt="Ícone de Programação"/>
+                        <h2 className="font-bold text-4xl md:text-[46px] text-[#2B3722] font-all-round-gothic"
+                        style={{ fontFamily: '"all-round-gothic", sans-serif' }}>
+                            PROGRAMAÇÃO
+                        </h2>
+                    </div>
+
+                    {/* Container do quadro com altura flexível.*/}
+                    <div
+                        className="w-full max-w-[370px] lg:max-w-[1290px] h-auto min-h-[520px] lg:min-h-[555px]
+                                   bg-[#2B3722] rounded-2xl p-4 lg:p-8 flex flex-col
+                                   shadow-[12px_-10px_15px_rgba(0,0,0,0.25)] mx-auto"
+                    >
+                        <ScheduleBoard />
+                    </div>
+                </div>
+            </div>
+
       
       {/* CONVIDADOS */}
       <div id="convidados" className="h-[791px] w-full flex flex-col justify-center items-center gap-14 mb-[82px]">
@@ -644,7 +322,7 @@ export default function Home() {
               fontFamily: '"all-round-gothic", sans-serif'
             }}
           >CONVIDADOS</h2>
-          <GuestsCarousel guests={guests} />  
+          <GuestsCarousel />  
         </div>   
       </div>
       
@@ -694,7 +372,7 @@ export default function Home() {
               height: '4px',
             }}
           >
-            Lorem ipsum cras tempus tortor at rhoncus volutpat feugiat in erat non id orci pellentesque adipiscing vestibulum egestas tellus nulla neque lorem fringilla tortor proin ut habitant id non blandit lorem.
+            Palestras e Oficinas do Festival da Economia Criativa com certificado de horas, disponíveis para inscrição acima.
           </p>
             <Link
               to="/events"
@@ -792,7 +470,7 @@ export default function Home() {
                 height: '60px',
               }}
             >
-              Lorem ipsum cras tempus tortor at rhoncus volutpat feugiat in erat non id orci pellentesque adipiscing vestibulum egestas tellus nulla neque lorem fringilla tortor proin ut habitant id non blandit lorem.
+              O evento acontece completamente dentro do Campus Taguatinga da Universidade Católica de Brasília.
             </p>
           </div>
           </div>

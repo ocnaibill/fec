@@ -9,13 +9,31 @@ import { useNavigate } from 'react-router-dom';
 export default function Events() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [pages, setPages] = useState([]); 
+    const [allActivities, setAllActivities] = useState([]); 
     const navigate = useNavigate()
 
     useEffect(() => {
         async function fetchEvents() {
             try {
-                const response = await axios.get('http://localhost:8000/api/event/list/');
-                setPages(response.data); 
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/event/list/`);
+                const fetchedEvents = response.data;
+                setPages(fetchedEvents); 
+                
+                let combinedActivities = [];
+                fetchedEvents.forEach(event => {
+                    const lectures = event.lecture.map(l => ({ ...l, isWorkshop: false }));
+                    const workshops = event.workshop.map(w => ({ ...w, isWorkshop: true }));
+                    combinedActivities.push(...lectures, ...workshops);
+                });
+
+                combinedActivities.sort((a, b) => {
+                    const dateComparison = new Date(a.date) - new Date(b.date);
+                    if (dateComparison !== 0) return dateComparison;
+                    return a.time.localeCompare(b.time);
+                });
+
+                setAllActivities(combinedActivities);
+
             } catch (error) {
                 console.error('Erro ao buscar eventos:', error);
             }
@@ -33,28 +51,31 @@ export default function Events() {
     };
 
     const currentPage = pages[currentIndex] || {}; 
-    return (
 
-            <div className="min-h-screen w-full bg-[#FFF1C0] relative pt-[64px]">
-                {/* Título e logo */}
-                <div className="flex items-center justify-center md:absolute md:top-[64px] md:left-[282px] md:justify-start">
-                    <div
-                        className="text-[28px] md:text-[60px] font-bold"
-                        style={{
-                            fontFamily: '"all-round-gothic", sans-serif',
-                            color: '#2B3722',
-                        }}
-                    >
-                        EVENTOS
-                    </div>
+    const lecturesForCurrentPage = allActivities.filter(activity => !activity.isWorkshop && activity.event === currentPage.id);
+    const workshopsForCurrentPage = allActivities.filter(activity => activity.isWorkshop && activity.event === currentPage.id);
+
+    return (
+        <div className="min-h-screen w-full bg-[#FFF1C0] relative pt-[64px]">
+            {/* Título e logo */}
+            <div className="flex items-center justify-center md:absolute md:top-[64px] md:left-[282px] md:justify-start">
+                <div
+                    className="text-[28px] md:text-[60px] font-bold"
+                    style={{
+                        fontFamily: '"all-round-gothic", sans-serif',
+                        color: '#2B3722',
+                    }}
+                >
+                    EVENTOS
+                </div>
                 {currentPage.logo && (
                     <img
-                        src={`http://localhost:8000${currentPage.logo}`} 
+                        src={currentPage.logo}
                         alt={`${currentPage.name || 'Evento'} Logo`} 
                         className="ml-[12px] w-[50px] h-[50px] md:hidden" 
                     />
                 )}
-                </div>
+            </div>
 
             {/* Div com os botões e o texto */}
             <div
@@ -126,8 +147,7 @@ export default function Events() {
                 </button>
             </div>
 
-
-          {/* Sinopses */}
+            {/* Sinopses */}
             <p
                 className="mt-[20px] text-[14px] md:text-[16px]"
                 style={{
@@ -149,96 +169,55 @@ export default function Events() {
 
             <div className='w-full flex md:justify-start md:ml-[290px] justify-center mt-8'>
                 <button 
-                            onClick={() => {
-                                const isAuthenticated = localStorage.getItem('authToken')
-                                if (!isAuthenticated) return navigate('/login')
-
-                                return navigate(`/subscription?event=${currentPage.id}`)
-                            }}
-                            className='w-[120px] h-[42px] !bg-[#C43934] text-[#FFF1C0] text-[18px] !font-bold !p-0 z-10'
-                            style={{
-                                fontFamily: '"all-round-gothic", sans-serif',
-                            }}
-                        >
-                            INSCREVA-SE
-                </button>
-            </div>
-                            
-            {/* "CRONOGRAMA" */}
-                <p
+                    onClick={() => {
+                        const isAuthenticated = localStorage.getItem('authToken')
+                        if (!isAuthenticated) return navigate('/login')
+                        return navigate(`/subscription?event=${currentPage.id}`)
+                    }}
+                    className='w-[120px] h-[42px] !bg-[#C43934] text-[#FFF1C0] text-[18px] !font-bold !p-0 z-10'
                     style={{
                         fontFamily: '"all-round-gothic", sans-serif',
-                        fontWeight: 'bold',
-                        fontSize: '50px',
-                        color: '#2B3722',
-                        textAlign: window.innerWidth >= 768 ? 'left' : 'center', 
-                        marginTop: '46px', 
-                        marginLeft: window.innerWidth >= 768 ? '284px' : 'auto', 
-                        marginRight: window.innerWidth >= 768 ? '0' : 'auto', 
                     }}
                 >
-                    CRONOGRAMA
-                </p>      
-
-                <AtividadesHoje eventId={currentPage.id} />
-
-      
-                
-        {/* Logos no desktop */}
-            {currentPage.logo && (
-                <>
-                    <img
-                        src={`http://localhost:8000${currentPage.logo}`} 
-                        alt={`${currentPage.name || 'Evento'} Logo`}
-                        className="hidden md:block"
-                        style={{
-                            position: 'absolute',
-                            top: '196px',
-                            right: '-200px',
-                            height: 'auto',
-                            width: '400px',
-                        }}
-                    />
-                    <img
-                        src={`http://localhost:8000${currentPage.logo}`} 
-                        alt={`${currentPage.name || 'Evento'} Logo`}
-                        className="hidden md:block"
-                        style={{
-                            position: 'absolute',
-                            top: '1190px',
-                            left: '-200px',
-                            height: 'auto',
-                            width: '400px',
-                        }}
-                    />
-                </>
-            )}
-            
-         {/* Texto "PALESTRAS" */}
+                    INSCREVA-SE
+                </button>
+            </div>
+                        
+            {/* "CRONOGRAMA" */}
             <p
                 style={{
                     fontFamily: '"all-round-gothic", sans-serif',
                     fontWeight: 'bold',
                     fontSize: '50px',
                     color: '#2B3722',
-                    textAlign: window.innerWidth >= 768 ? 'left' : 'center',
-                    marginTop: '148px',
-                    marginLeft: window.innerWidth >= 768 ? '284px' : 'auto',
-                    marginRight: window.innerWidth >= 768 ? '0' : 'auto',
-                    marginBottom: '48px',
+                    textAlign: window.innerWidth >= 768 ? 'left' : 'center', 
+                    marginTop: '46px', 
+                    marginLeft: window.innerWidth >= 768 ? '284px' : 'auto', 
+                    marginRight: window.innerWidth >= 768 ? '0' : 'auto', 
                 }}
             >
+                CRONOGRAMA
+            </p> 
+
+            <AtividadesHoje eventId={currentPage.id} />
+
+            {/* Logos no desktop */}
+            {currentPage.logo && (
+                <>
+                    <img src={currentPage.logo} alt="" className="hidden md:block" style={{ position: 'absolute', top: '196px', right: '-200px', height: 'auto', width: '400px' }} />
+                    <img src={currentPage.logo} alt="" className="hidden md:block" style={{ position: 'absolute', top: '1190px', left: '-200px', height: 'auto', width: '400px' }} />
+                </>
+            )}
+            
+            {/* Texto "PALESTRAS" */}
+            <p style={{ fontFamily: '"all-round-gothic", sans-serif', fontWeight: 'bold', fontSize: '50px', color: '#2B3722', textAlign: window.innerWidth >= 768 ? 'left' : 'center', marginTop: '148px', marginLeft: window.innerWidth >= 768 ? '284px' : 'auto', marginRight: window.innerWidth >= 768 ? '0' : 'auto', marginBottom: '48px' }}>
                 PALESTRAS
             </p>
 
-           {/* CARDS DE PALESTRAS */}
-            {(currentPage.lecture || []).map((lecture, index) => {
-                const formattedDate = new Date(lecture.date + 'T00:00:00').toLocaleDateString('pt-BR', {
-                    day: '2-digit',
-                    month: '2-digit',
-                });
+            {/* CARDS DE PALESTRAS - AGORA FILTRADOS E ORDENADOS */}
+            {lecturesForCurrentPage.map((lecture, index) => {
+                const formattedDate = new Date(lecture.date + 'T00:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
                 const formattedTime = lecture.time.slice(0, 5);
-
                 return (
                     <EventsCard
                         key={index}
@@ -247,6 +226,7 @@ export default function Events() {
                         title={lecture.title}
                         description={lecture.description}
                         speakers={lecture.guests || []}
+                        isWorkshop={false}
                         style={{
                             fontFamily: '"all-round-gothic", sans-serif',
                             marginLeft: window.innerWidth >= 768 ? '284px' : 'auto',
@@ -258,41 +238,24 @@ export default function Events() {
                 );
             })}
 
-            {/* Texto "OFICINAS */}
-            <p
-                style={{
-                    fontFamily: '"all-round-gothic", sans-serif',
-                    fontWeight: 'bold',
-                    fontSize: '50px',
-                    color: '#2B3722',
-                    textAlign: window.innerWidth >= 768 ? 'left' : 'center',
-                    marginTop: '100px',
-                    marginLeft: window.innerWidth >= 768 ? '284px' : 'auto',
-                    marginRight: window.innerWidth >= 768 ? '0' : 'auto',
-                    marginBottom: '48px',
-                }}
-            >
+            {/* Texto "OFICINAS" */}
+            <p style={{ fontFamily: '"all-round-gothic", sans-serif', fontWeight: 'bold', fontSize: '50px', color: '#2B3722', textAlign: window.innerWidth >= 768 ? 'left' : 'center', marginTop: '100px', marginLeft: window.innerWidth >= 768 ? '284px' : 'auto', marginRight: window.innerWidth >= 768 ? '0' : 'auto', marginBottom: '48px' }}>
                 OFICINAS
             </p>
 
-            {/* CARDS DE OFICINAS */}
-                {(currentPage.workshop || []).map((workshop, index) => {
-                     const formattedDate = new Date(workshop.date + 'T00:00:00').toLocaleDateString('pt-BR', {
-                        day: '2-digit',
-                        month: '2-digit',
-                    });
-
-                    const formattedTime = workshop.time.slice(0, 5);
-
-                    return (
-                        <EventsCard
-                            key={index}
-                            date={formattedDate}
-                            time={formattedTime}
-                            title={workshop.title}
-                            description={workshop.description}
-                            speakers={workshop.guests}
-                            isWorkshop={true}
+            {/* CARDS DE OFICINAS - AGORA FILTRADOS E ORDENADOS */}
+            {workshopsForCurrentPage.map((workshop, index) => {
+                const formattedDate = new Date(workshop.date + 'T00:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+                const formattedTime = workshop.time.slice(0, 5);
+                return (
+                    <EventsCard
+                        key={index}
+                        date={formattedDate}
+                        time={formattedTime}
+                        title={workshop.title}
+                        description={workshop.description}
+                        speakers={workshop.guests}
+                        isWorkshop={true}
                         style={{
                             fontFamily: '"all-round-gothic", sans-serif',
                             marginLeft: window.innerWidth >= 768 ? '284px' : 'auto',
@@ -300,27 +263,16 @@ export default function Events() {
                             marginTop: '48px',
                             width: window.innerWidth >= 768 ? 'calc(100% - 561px)' : 'calc(100% - 32px)',
                         }}
-                        >
-                            <p
-                                style={{
-                                    fontFamily: '"quicksand", sans-serif',
-                                    fontSize: '18px',
-                                    color: '#2B3722',
-                                    textAlign: 'center',
-                                }}
-                            >
-                                {workshop.description}
-                            </p>
-                        </EventsCard>
-                    );
-                })}
+                    >
+                        <p style={{ fontFamily: '"quicksand", sans-serif', fontSize: '18px', color: '#2B3722', textAlign: 'center' }}>
+                            {workshop.description}
+                        </p>
+                    </EventsCard>
+                );
+            })}
 
             {/* espaçamento final para respiro do footer */}
-            <main className="mt-[32px] flex flex-col items-center">
-
-            </main>
-            
+            <main className="mt-[32px] flex flex-col items-center"></main>
         </div>
-        
     );
 }

@@ -46,7 +46,8 @@ export default function Signup() {
         }
 
         try {
-            const response = await axios.post('http://localhost:8000/api/auth/signup', body)
+        const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+        const response = await axios.post(`${baseUrl}/auth/signup`, body);
             setSuccess('Cadastro realizado com sucesso!')
                 toast(`Cadastro realizado com sucesso! Por favor, faça login!`, {
                     position: "top-center",
