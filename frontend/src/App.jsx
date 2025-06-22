@@ -8,6 +8,7 @@ import Events from './pages/Events'
 import Subscription from './pages/Subscription'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
+import Scanner from './pages/Scanner'
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/reset-password/:uuid/:token" element={<MainLayout><ResetPassword /></MainLayout>} />
         <Route path="/events" element={<MainLayout><Events /></MainLayout>} />
         <Route path="/subscription" element={<MainLayout><Subscription /></MainLayout>} />
+        <Route path="/credentials-scanner" element={<MainLayout><Scanner /></MainLayout>} />
         <Route path="*" element={<MainLayout><NotFound /></MainLayout>} />
       </Routes>
     </Router>
