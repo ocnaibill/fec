@@ -3,7 +3,16 @@ import calendarioIcon from '../assets/images/yellowCalendarIcon.svg';
 import localIcon from '../assets/images/yellowLocalIcon.svg'; 
 import downloadIcon from '../assets/images/yellowDownloadIcon.svg'; 
 
-export default function EventCard({ title, date, time, location, isCertificate }) {
+export default function EventCard({ title, date, time, location, isCertificate, onViewTicket }) {
+
+     const formattedDate = new Date(date + 'T00:00:00').toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        timeZone: 'UTC' 
+    });
+    
+    const formattedTime = time.slice(0, 5);
+
     return (
         <div
             className="event-card w-[calc(100%-16px)] h-[130px] bg-[#2B3722] rounded-[12px] shadow-md p-4 flex justify-between items-center mb-4 lg:w-[892px]"
@@ -16,7 +25,7 @@ export default function EventCard({ title, date, time, location, isCertificate }
                 <div className="flex items-center gap-2">
                     <img src={calendarioIcon} alt="Calendário" className="w-4 h-4" />
                     <span className="text-[16px] font-['all-round-gothic'] text-[#FFF1BF]">
-                        {date}, {time}
+                        {formattedDate}, {formattedTime}
                     </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -28,7 +37,8 @@ export default function EventCard({ title, date, time, location, isCertificate }
             </div>
 
             {/* Botão à direita */}
-            <div className="flex items-center gap-2 text-[#FFF1BF] font-bold font-['all-round-gothic'] text-[14px] cursor-pointer">
+            <div className="flex items-center gap-2 text-[#FFF1BF] font-bold font-['all-round-gothic'] text-[14px] cursor-pointer"
+            onClick={!isCertificate ? onViewTicket : undefined}>
                 {isCertificate ? (
                     <>
                         <span>Baixar Certificado</span>
