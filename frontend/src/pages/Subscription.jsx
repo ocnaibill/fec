@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import fundo from '../assets/images/fundo2_fec.svg';
 import LocalIcon from '../assets/images/localIcon.svg';
 import DateIcon from '../assets/images/calendarIcon.svg';
@@ -19,14 +19,17 @@ export default function Subscription() {
 
     const [lectures, setLectures] = useState([]);
     const [workshops, setWorkshops] = useState([]);
+
     const [subsActivities, setSubsActivities] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+
     const [activeConflict, setActiveConflict] = useState(null);
     const [selectedActivities, setSelectedActivities] = useState([]);
-    const [selectedActivityType, setActivityType] = useState('PALESTRAS');
-    const [subscribeState, setSubscribeState] = useState(0);
 
+    const [selectedActivityType, setActivityType] = useState('PALESTRAS');
+
+    const [subscribeState, setSubscribeState] = useState(0);
     const activities = selectedActivityType === 'PALESTRAS' ? lectures : workshops;
     
     useEffect(() => {
@@ -60,6 +63,38 @@ export default function Subscription() {
             fetchUserSubscription();
         }
     }, [isAuthenticated]); 
+
+    
+    const activityCardsRefs = useRef([])
+    const confirmActivityCardsRefs = useRef([])
+
+    useEffect(() => {
+        if (activities.length === 0) return;
+
+        const maxHeight = Math.max(
+            ...activityCardsRefs.current.map((ref) => ref?.offsetHeight || 0)
+        )
+
+        activityCardsRefs.current.forEach((ref) => {
+            if (ref) ref.style.height = `${maxHeight}px`
+        })
+
+    }, [ activities ])
+
+    useEffect(() => {
+        if (subscribeState !== 1) return;
+
+        const maxHeight = Math.max(
+            ...confirmActivityCardsRefs.current.map((ref) => ref?.offsetHeight || 0)
+        )
+        console.log(maxHeight)
+
+        confirmActivityCardsRefs.current.forEach((ref) => {
+            if (ref) ref.style.height = `${maxHeight}px`
+        })
+
+    }, [ subscribeState ])
+
 
     const handleSubmit = async () => {
         const token = localStorage.getItem('authToken');
@@ -133,9 +168,10 @@ export default function Subscription() {
                                     setSelectedActivities([...selectedActivities, activity]);
                                 }
                             }}
+                            ref={(el) => (activityCardsRefs.current[index] = el)}
                             className={`relative w-full rounded-[12px] ${subscribed ? '' : 'cursor-pointer'}`}
                             style={{
-                                boxShadow: isSelected ? '0px 0px 10px 2px #F06F37' : ''
+                                boxShadow: isSelected ? '0px 0px 10px 2px #F06F37' : '',
                             }}
                         >
                             <ActivityCard {...activity} isSubscribed={subscribed} />
@@ -165,13 +201,18 @@ export default function Subscription() {
                     <p className='text-[24px] text-center text-[#fff1c0] leading-12'>
                         FINALIZAR INSCRIÇÃO
                     </p>
-                    <div className='w-full flex flex-col gap-0.5 rounded-[12px] overflow-hidden'>
+                    <div className='w-full flex flex-1 flex-col gap-4 overflow-hidden'>
                         {selectedActivities.map((activity, index) => {
                             const hasConflict = subsActivities.filter(sub => sub.date === activity.date && sub.start_time === activity.start_time);
-                            return <ConfirmActivityCard key={index} {...activity} hasConflict={hasConflict} setConflict={setActiveConflict}/>
+                            return (<div 
+                                className='w-full rounded-[12px] overflow-hidden'
+                                ref={(ref) => (confirmActivityCardsRefs.current[index] = ref)}
+                                key={index}
+                            >
+                                <ConfirmActivityCard {...activity} hasConflict={hasConflict} setConflict={setActiveConflict}/>
+                            </div>)
                         })}
                     </div>
-                    <div className='flex-grow'></div>
                     <div className='w-full flex flex-col gap-6'>
                         <button onClick={handleSubmit} className='w-full h-[44px] !bg-[#F06F37] text-[20px] !font-bold !p-0 bottom-4 right-6 z-10'>
                             CONFIRMAR INSCRIÇÃO
@@ -266,7 +307,7 @@ export default function Subscription() {
 
 function ActivityCard({title, date, start_time, local, isSubscribed}) {
     return (
-        <div className={`flex flex-col gap-3 w-full h-[135px] rounded-[12px] p-4 ${isSubscribed ? 'bg-[#cabd8e]' : 'bg-[#FFF1C0]'}`}>
+        <div className={`flex flex-col justify-between w-full h-full rounded-[12px] p-4 ${isSubscribed ? 'bg-[#cabd8e]' : 'bg-[#FFF1C0]'}`}>
             <p className='text-[24px]'>{title}</p>
             <div>
                 <span className='flex gap-3 text-[16px] font-light'><img src={DateIcon} alt="Date"/>{new Date(date).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}, {start_time.slice(0, 5)}</span>
@@ -291,13 +332,13 @@ function ConfirmActivityCard({title, date, start_time, hasConflict, setConflict}
     }
 
     return (
-        <div className='relative flex flex-col gap-3 w-full h-[100px] bg-[#FFF1C0] p-4'>
+        <div className='relative flex flex-col justify-center gap-0.75 w-full h-full bg-[#FFF1C0] p-4'>
             <div className='flex justify-between'>
                 <span className='flex gap-3 text-[16px] font-light'><img src={DateIcon} alt="Date"/>{formattedDate}, {formattedTime}</span>
             </div>
             <p className='text-[24px]'>{title}</p>
             {hasConflict.length > 0 && (<>
-                <div className='absolute top-0 right-0 h-[100px] w-5 bg-[#EAC452]'></div>
+                <div className='absolute top-0 right-0 h-full w-5 bg-[#EAC452]'></div>
                 <img src={conflictIcon} className='absolute right-6 top-1 cursor-pointer' onClick={() => setConflict(conflictObj)} alt="Conflict"/>
             </>)}
         </div>
