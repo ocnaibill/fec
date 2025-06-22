@@ -1,13 +1,18 @@
 from django.shortcuts import render
 
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from django.utils.http import urlsafe_base64_encode
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from users.permissions import IsCredentiator
 from rest_framework.response import Response
 
 from .models import Event, Activity, Guest, Subscription
 from .serializers import EventSerializer, ActivitySerializer, Guest, SubscriptionSerializer
 from rest_framework import status
+
+from datetime import datetime, time
+import uuid
 
 # Create your views here.
 
@@ -105,4 +110,20 @@ def list_subscriptions(requests):
         return Response({'erro': 'Nenhuma inscrição realizada.'})
     
     serializer = SubscriptionSerializer(subs, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsCredentiator])
+def get_subscription(request, sub_uuid):
+    try:
+        uuid_obj = uuid.UUID(sub_uuid)
+    except ValueError:
+        return Response({'erro': 'Código em formato inválido.'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+    try:
+        sub = Subscription.objects.get(uuid=uuid_obj)
+    except Subscription.DoesNotExist:
+        return Response({'erro': 'Nenhuma inscrição associada a este código.'}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = SubscriptionSerializer(sub)
     return Response(serializer.data, status=status.HTTP_200_OK)

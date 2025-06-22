@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.db.models import Q
 from .models import Event, Activity, Guest, Subscription, StatusSubscription
 from users.models import CustomUser
+from users.serializers import UserSerializer
 
 class GuestSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source='user.name', read_only=True)
@@ -35,6 +36,7 @@ class EventSerializer(serializers.ModelSerializer):
 
 class SubscriptionSerializer(serializers.ModelSerializer):
     activity = ActivitySerializer(read_only=True)
+    user = UserSerializer(read_only=True)
     alert = serializers.SerializerMethodField()
 
     user_id = serializers.PrimaryKeyRelatedField(
@@ -55,6 +57,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
             'user_id',
             'activity_id',
             'id',
+            'user',
             'status',
             'created_at',
             'activity',
