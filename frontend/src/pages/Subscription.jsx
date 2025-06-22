@@ -87,7 +87,6 @@ export default function Subscription() {
         const maxHeight = Math.max(
             ...confirmActivityCardsRefs.current.map((ref) => ref?.offsetHeight || 0)
         )
-        console.log(maxHeight)
 
         confirmActivityCardsRefs.current.forEach((ref) => {
             if (ref) ref.style.height = `${maxHeight}px`
@@ -203,7 +202,8 @@ export default function Subscription() {
                     </p>
                     <div className='w-full flex flex-1 flex-col gap-4 overflow-hidden'>
                         {selectedActivities.map((activity, index) => {
-                            const hasConflict = subsActivities.filter(sub => sub.date === activity.date && sub.start_time === activity.start_time);
+                            const hasConflict = subsActivities.filter(sub => sub.date === activity.date && (sub.start_time < activity.end_time && sub.end_time > activity.start_time));
+
                             return (<div 
                                 className='w-full rounded-[12px] overflow-hidden'
                                 ref={(ref) => (confirmActivityCardsRefs.current[index] = ref)}
