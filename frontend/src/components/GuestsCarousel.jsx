@@ -48,14 +48,11 @@ export default function GuestsCarousel() {
                     });
                 });
 
-            const publicBaseUrl = 'https://feconomiacriativa.catolica.edu.br';
-                const internalBaseUrl = 'http://172.17.0.110'; 
-
                 const formattedGuests = Array.from(uniqueGuests.values()).map(guest => {
                     let finalPhotoUrl = usuarioSemFoto;
 
-                    if (guest.photo_url) {
-                        finalPhotoUrl = guest.photo_url.replace(internalBaseUrl, publicBaseUrl);
+                    if (guest.photo) {
+                        finalPhotoUrl = baseUrl.replace('api', `media/${guest.photo}`);
                     }
 
                     return {

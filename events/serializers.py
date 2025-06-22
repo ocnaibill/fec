@@ -6,6 +6,7 @@ from users.serializers import UserSerializer
 
 class GuestSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source='user.name', read_only=True)
+    photo = serializers.CharField(source='user.photo', read_only=True)
 
     class Meta:
         model = Guest

@@ -31,10 +31,6 @@ class Guest(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     bio = models.TextField()
 
-    @property
-    def photo(self):
-        return self.user.photo if self.user.photo else None
-
     class Meta:
         db_table = 'guests'
 
