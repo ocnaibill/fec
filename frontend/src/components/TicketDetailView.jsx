@@ -42,27 +42,31 @@ useEffect(() => {
 
     return (
 <div className="w-full px-4" style={{marginBottom: '30px'}}>
-    <div className="w-full bg-[#2B3722] rounded-xl mt-6 p-6">
-        {/* Cabeçalho com botão de voltar e título */}
-        <div className="w-full flex items-center justify-center relative">
-            <button
-                onClick={onBack}
-                style={{ backgroundColor: '#2B3722', padding: '8px' }}
-                className="absolute left-0"
-            >
-                <img src={setaPerfil} alt="Voltar" />
-            </button>
-            <h1
-                className="text-2xl md:text-3xl text-center text-[#FFF1BF] font-bold"
-                style={{ fontFamily: '"all-round-gothic", sans-serif', fontSize: '45px' }}
-            >
-                {activity.title}
-            </h1>
+<div className="w-full max-w-[450px] mx-auto bg-[#2B3722] rounded-xl mt-6 p-6">
+{/* Cabeçalho com botão de voltar e título */}
+<div className="w-full flex items-center justify-center relative">
+    <button
+        onClick={onBack}
+        style={{ backgroundColor: '#2B3722', padding: '8px' }}
+        className="p-2"
+    >
+        <img src={setaPerfil} alt="Voltar" />
+    </button>
+    <h1
+        className="text-xl md:text-3xl text-center text-[#FFF1BF] font-bold flex-1"
+        style={{
+            fontFamily: '"all-round-gothic", sans-serif',
+            fontSize: 'clamp(30px, 5vw, 45px)', 
+            alignContent: 'center',
+        }}
+    >
+        {activity.title}
+    </h1>
         </div>
 
         {/* Container interno amarelo */}
         <div className="bg-[#FFF1C0] min-h-[181px] w-full rounded-md flex flex-col items-center justify-center">
-    <div className="w-full px-4 mt-3 text-[#2B3722]">
+        <div className="w-full px-4 mt-3 text-[#2B3722]">
         <p
             className="font-medium text-base mb-3"
             style={{ fontFamily: '"Quicksand", sans-serif' }}
