@@ -7,6 +7,9 @@ from django.utils import timezone
 from .managers import CustomUserManager
 
 # Create your models here.
+class Roles(models.TextChoices):
+    VISITOR = 'visitante', 'Visitante'
+    CREDENCIADOR = 'credenciador', 'Credenciador'
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=80, null=False, blank=False)
@@ -21,6 +24,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     institution = models.CharField(max_length=50, blank=True)
     registration_number = models.CharField(max_length=25, blank=True)
     is_guest = models.BooleanField(default=False)
+    role = models.CharField(max_length=20, choices=Roles.choices, default=Roles.VISITOR)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
