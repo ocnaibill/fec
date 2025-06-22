@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
+import { Swiper, SwiperSlide} from 'swiper/react';
+
+import { Navigation, Autoplay } from 'swiper/modules';
 
 import 'swiper/css';
+import 'swiper/css/autoplay';
 
 import setaDireita from '../assets/images/setaDireita.svg';
 import setaEsquerda from '../assets/images/setaEsquerda.svg';
@@ -115,21 +117,25 @@ export default function GuestsCarousel() {
 
             <button id='guest-prev' 
                 className='z-10 flex absolute top-1/2 translate-x-[-50%] translate-y-[-50%] justify-center items-center w-[34px] h-[64px] !bg-[#E0E0E0] !p-0 !rounded-[37px] !border-none'
-                style={{ left: `calc(100% * 1/2 - 800px)` }}
+                style={{ left: `calc(100% * 1/2 - 800px)`,
+                     left: window.innerWidth < 768 ? '28px' : `calc(100% * 1/2 - 800px)`,
+                }}
             >
                 <img src={setaEsquerda} alt="Anterior" className='w-[13px] h-[22px]' />
             </button>
             <button id='guest-next' 
                 className='z-10 flex absolute top-1/2 translate-x-[50%] translate-y-[-50%] justify-center items-center w-[34px] h-[64px] !bg-[#E0E0E0] !p-0 !rounded-[37px] !border-none'
-                style={{ right: `calc(100% * 1/2 - 800px)` }}
+                style={{ right: `calc(100% * 1/2 - 800px)`,
+                     right: window.innerWidth < 768 ? '28px' : `calc(100% * 1/2 - 800px)`, }}
             >
                 <img src={setaDireita} alt="Próximo" className='w-[13px] h-[22px]' />
             </button>
 
             <Swiper
                 onSwiper={(swiper) => { swiperRef.current = swiper; }}
-                modules={[Navigation]}
+                modules={[Navigation, Autoplay]}
                 navigation={{ prevEl: '#guest-prev', nextEl: '#guest-next' }}
+                autoplay={{ delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: true }}
                 slidesPerView={'auto'}
                 spaceBetween={40}
                 loop={true}

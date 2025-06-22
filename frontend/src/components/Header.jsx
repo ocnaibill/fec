@@ -35,7 +35,7 @@ export default function Header() {
         setIsMobileMenuOpen(false);
         toast(`Logout realizado com sucesso!`, {
             position: "top-center",
-            autoClose: 5000,
+            autoClose: 2000,
             hideProgressBar: true,
             closeOnClick: true,
             pauseOnHover: true,
@@ -47,7 +47,7 @@ export default function Header() {
                 fontWeight: '500',
                 fontSize: '16px',
                 borderRadius: '8px',
-                width: '451px',
+                width: '350px',
                 height: '60px',
             },
         });

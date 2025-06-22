@@ -27,6 +27,21 @@ useEffect(() => {
   }, []); 
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+      useEffect(() => {
+        if (isPaused || images.length === 0) {
+            return;
+        }
+
+        const intervalId = setInterval(() => {
+            goToNext();
+        }, 3000);
+
+
+        return () => clearInterval(intervalId);
+
+    }, [currentIndex, isPaused, images.length]); 
 
   const goToNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
@@ -47,7 +62,9 @@ useEffect(() => {
   };
 
   return (
-    <div className="about-carousel-container">
+    <div className="about-carousel-container"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}>
       <div className="about-carousel-wrapper">
         {images.map((image, index) => (
           <div key={index} className={`about-slide ${getPositionClass(index)}`}>

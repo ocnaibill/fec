@@ -10,17 +10,33 @@ export default function Events() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [pages, setPages] = useState([]); 
     const [allActivities, setAllActivities] = useState([]); 
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate()
 
     useEffect(() => {
         async function fetchEvents() {
+            setLoading(true);
             try {
-                const response = await axios.get(`${import.meta.env.VITE_API_URL}/event/list/`);
-                const fetchedEvents = response.data;
-                setPages(fetchedEvents); 
+                const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+                const response = await axios.get(`${baseUrl}/event/list/`);
+                
+                const publicBaseUrl = 'https://feconomiacriativa.catolica.edu.br';
+                const internalBaseUrl = 'http://172.17.0.110';
+
+                const correctedEvents = response.data.map(event => {
+                    let correctedLogoUrl = event.logo; 
+                    
+                    if (correctedLogoUrl && correctedLogoUrl.startsWith(internalBaseUrl)) {
+                        correctedLogoUrl = correctedLogoUrl.replace(internalBaseUrl, publicBaseUrl);
+                    }
+                    
+                    return { ...event, logo: correctedLogoUrl };
+                });
+
+                setPages(correctedEvents);
                 
                 let combinedActivities = [];
-                fetchedEvents.forEach(event => {
+                correctedEvents.forEach(event => {
                     const lectures = event.lecture.map(l => ({ ...l, isWorkshop: false }));
                     const workshops = event.workshop.map(w => ({ ...w, isWorkshop: true }));
                     combinedActivities.push(...lectures, ...workshops);
