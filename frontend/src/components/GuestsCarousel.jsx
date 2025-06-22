@@ -1,150 +1,142 @@
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation } from 'swiper/modules'
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
 
-import 'swiper/css'
+import 'swiper/css';
 
-import setaDireita from '../assets/images/setaDireita.svg'
-import setaEsquerda from '../assets/images/setaEsquerda.svg'
-
-export default function GuestsCarousel({ guests }) {
-  return (
-    <>
-      {/* Desktop */}
-      <div className='lg:flex hidden'>
-        <div className='w-[1214px] relative lg:block hidden'>
-          <Swiper
-            initialSlide={2}
-            slidesPerView={4}
-            spaceBetween={58}
-            allowTouchMove={false}
-            loop={true}
-
-            modules={[ Navigation ]}
-            navigation={{
-              prevEl: '#guest-prev',
-              nextEl: '#guest-next'
-            }}
-
-            className='w-full h-full overflow-visible'
-          >
-            {[...guests, ...guests].map(guest => (
-              <SwiperSlide className='!w-[260px]'>
-                  <GuestCard {...guest} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-        <div className='w-[1280px] relative lg:mx-[138px] lg:block hidden'>
-          <button id='guest-prev' 
-            className='z-10 flex absolute top-1/2 translate-x-[-50%] translate-y-[-50%] justify-center items-center w-[34px] h-[64px] !bg-[#E0E0E0] !p-0 !rounded-[37px] !border-none'
-            style={{ left: `calc(100% * 1/2 - 711px)` }}
-          >
-              <img src={setaEsquerda} className='w-[13px] h-[22px]'></img>
-          </button>
-          <button id='guest-next' 
-            className='z-10 flex absolute top-1/2 translate-x-[50%] translate-y-[-50%] justify-center items-center w-[34px] h-[64px] !bg-[#E0E0E0] !p-0 !rounded-[37px] !border-none'
-            style={{ right: `calc(100% * 1/2 - 711px)` }}
-          >
-              <img src={setaDireita} className='w-[13px] h-[22px]'></img>
-          </button>
-          <Swiper
-            initialSlide={0}
-            slidesPerView={4}
-            spaceBetween={80}
-            allowTouchMove={false}
-            loop={true}
-
-            modules={[ Navigation ]}
-            navigation={{
-              prevEl: '#guest-prev',
-              nextEl: '#guest-next'
-            }}
-
-            className='w-full h-full overflow-visible'
-          >
-            {[...guests, ...guests].map(guest => (
-              <SwiperSlide className='!w-[260px]'>
-                  <GuestCard {...guest} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-        <div className='w-[1214px] relative lg:block hidden'>
-          <Swiper
-            initialSlide={4}
-            slidesPerView={4}
-            spaceBetween={58}
-            allowTouchMove={false}
-            loop={true}
-
-            modules={[ Navigation ]}
-            navigation={{
-              prevEl: '#guest-prev',
-              nextEl: '#guest-next'
-            }}
-
-            className='w-full h-full overflow-visible'
-          >
-            {[...guests, ...guests].map(guest => (
-              <SwiperSlide className='!w-[260px]'>
-                  <GuestCard {...guest} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-      </div>
-
-      {/* Mobile */}
-      <div className='w-full relative block lg:hidden'>
-        <button id='guest-prev' 
-          className='z-10 flex absolute top-1/2 translate-x-[-50%] translate-y-[-50%] justify-center items-center w-[34px] h-[64px] !bg-[#E0E0E0] !p-0 !rounded-[37px] !border-none'
-          style={{ left: `calc(100% * 1/2 - 159px)` }}
-        >
-            <img src={setaEsquerda} className='w-[13px] h-[22px]'></img>
-        </button>
-        <button id='guest-next' 
-          className='z-10 flex absolute top-1/2 translate-x-[50%] translate-y-[-50%] justify-center items-center w-[34px] h-[64px] !bg-[#E0E0E0] !p-0 !rounded-[37px] !border-none'
-          style={{ right: `calc(100% * 1/2 - 159px)` }}
-        >
-            <img src={setaDireita} className='w-[13px] h-[22px]'></img>
-        </button>
-        <Swiper
-
-          slidesPerView='auto'
-          spaceBetween={58}
-          centeredSlides={true}
-          loop={true}
-
-          modules={[ Navigation ]}
-          navigation={{
-            prevEl: '#guest-prev',
-            nextEl: '#guest-next'
-          }}
-
-          className='w-full h-full overflow-visible'
-        >
-          {[...guests, ...guests].map(guest => (
-            <SwiperSlide className='!w-[260px]'>
-                <GuestCard {...guest} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
-    </>
-  )
-}
+import setaDireita from '../assets/images/setaDireita.svg';
+import setaEsquerda from '../assets/images/setaEsquerda.svg';
 
 function GuestCard({ avatar, name, description }) {
   return (
     <div className="bg-[#31477C] w-full h-full rounded-[16px] p-8 flex flex-col justify-start items-center gap-3 flex-shrink-0">
-      <div className="bg-white rounded-full overflow-hidden border border-gray-300">
-        <img src={avatar?.src} alt={avatar?.alt} className="w-24 h-24 object-cover" />
+      <div className="bg-white rounded-full overflow-hidden border border-gray-300 w-24 h-24 flex-shrink-0">
+        <img src={avatar?.src} alt={avatar?.alt} className="w-full h-full object-cover" />
       </div>
-      <p className="font-bold text-[18px] text-white">{name}</p>
+      <p className="font-bold text-[18px] text-white text-center font-all-round-gothic flex-shrink-0">{name}</p>
+
       <p 
-        className="text-[14px] font-medium text-white text-left"
-        style={{ fontFamily: 'Quicksand' }}
+        className="text-[14px] font-medium text-white text-left font-quicksand flex-1 overflow-y-auto w-full hide-scrollbar"
       >{description}</p>
     </div>
   );
+}
+
+export default function GuestsCarousel() {
+    const [allGuests, setAllGuests] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const swiperRef = useRef(null);
+
+    useEffect(() => {
+        const fetchGuests = async () => {
+            try {
+                const baseUrl = 'https://feconomiacriativa.catolica.edu.br';
+                const apiUrl = `${baseUrl}/api/event/list/`;
+                const response = await axios.get(apiUrl);
+                
+                const allEvents = response.data;
+                const uniqueGuests = new Map();
+
+                allEvents.forEach(event => {
+                    [...event.lecture, ...event.workshop].forEach(activity => {
+                        activity.guests.forEach(guest => {
+                            if (!uniqueGuests.has(guest.name)) {
+                                uniqueGuests.set(guest.name, guest);
+                            }
+                        });
+                    });
+                });
+
+                const formattedGuests = Array.from(uniqueGuests.values()).map(guest => ({
+                    name: guest.name,
+                    description: guest.bio,
+                    avatar: {
+                        src: `${baseUrl}${guest.photo}`,
+                        alt: `Foto de ${guest.name}`
+                    }
+                }));
+
+                setAllGuests(formattedGuests);
+            } catch (error) {
+                console.error("Erro ao buscar os convidados:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchGuests();
+    }, []);
+
+
+    useEffect(() => {
+        if (swiperRef.current && allGuests.length > 0) {
+            const timer = setTimeout(() => {
+                swiperRef.current.update();
+
+                swiperRef.current.loopDestroy();
+                swiperRef.current.loopCreate();
+            }, 150); 
+            
+            return () => clearTimeout(timer);
+        }
+    }, [allGuests]); 
+
+    if (loading) {
+        return <div className="text-center p-8">Carregando convidados...</div>;
+    }
+
+    if (allGuests.length === 0) {
+        return <div className="text-center p-8">Nenhum convidado encontrado.</div>;
+    }
+    
+    return (
+        <div className='w-full relative'>
+            {/* Estilos para esconder a barra de rolagem */}
+            <style>
+                {`
+                .hide-scrollbar::-webkit-scrollbar {
+                    display: none;
+                }
+                .hide-scrollbar {
+                    -ms-overflow-style: none;  /* IE and Edge */
+                    scrollbar-width: none;  /* Firefox */
+                }
+                `}
+            </style>
+
+            <button id='guest-prev' 
+                className='z-10 flex absolute top-1/2 translate-x-[-50%] translate-y-[-50%] justify-center items-center w-[34px] h-[64px] !bg-[#E0E0E0] !p-0 !rounded-[37px] !border-none'
+                style={{ left: `calc(100% * 1/2 - 800px)` }}
+            >
+                <img src={setaEsquerda} alt="Anterior" className='w-[13px] h-[22px]' />
+            </button>
+            <button id='guest-next' 
+                className='z-10 flex absolute top-1/2 translate-x-[50%] translate-y-[-50%] justify-center items-center w-[34px] h-[64px] !bg-[#E0E0E0] !p-0 !rounded-[37px] !border-none'
+                style={{ right: `calc(100% * 1/2 - 800px)` }}
+            >
+                <img src={setaDireita} alt="Próximo" className='w-[13px] h-[22px]' />
+            </button>
+
+            <Swiper
+                onSwiper={(swiper) => { swiperRef.current = swiper; }}
+                modules={[Navigation]}
+                navigation={{ prevEl: '#guest-prev', nextEl: '#guest-next' }}
+                slidesPerView={'auto'}
+                spaceBetween={40}
+                loop={true}
+                centeredSlides={true}
+                className='w-full h-full !px-[110px] lg:!px-[120px]'
+                observer={true}
+                observeParents={true}
+            >
+                {/* Mapeamos sobre o array original, o loop={true} cuida do resto */}
+                {allGuests.map((guest, index) => (
+                    <SwiperSlide key={index} className='!w-[320px] !h-[440px] py-4'>
+                        <GuestCard {...guest} />
+                    </SwiperSlide>
+                ))}
+            </Swiper>
+        </div>
+    );
 }

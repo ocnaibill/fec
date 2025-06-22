@@ -5,6 +5,7 @@ import { signupSchema } from '../validation/signupSchema';
 import fundo from '../assets/images/fundo2_fec.svg';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function Signup() {
     const navigate = useNavigate()
@@ -45,8 +46,28 @@ export default function Signup() {
         }
 
         try {
-            const response = await axios.post('http://localhost:8000/api/auth/signup', body)
+        const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+        const response = await axios.post(`${baseUrl}/auth/signup`, body);
             setSuccess('Cadastro realizado com sucesso!')
+                toast(`Cadastro realizado com sucesso! Por favor, faça login!`, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    style: {
+                        backgroundColor: '#5E4497',
+                        color: '#FFF6D7',
+                        fontFamily: '"Quicksand", sans-serif',
+                        fontWeight: '500',
+                        fontSize: '16px',
+                        borderRadius: '8px',
+                        width: '451px',
+                        height: '60px',
+                    },
+                });
+                navigate('/login'); 
         } catch (err) {
             if (err.response && err.response.data) {
                 const errors = err.response.data

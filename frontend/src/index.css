@@ -127,3 +127,23 @@ input:focus, input:active {
 .animate-slide-right {
     animation: slide-right 0.3s ease-in-out;
 }
+
+
+
+
+.mobile-nav-links a,
+.mobile-nav-links button {
+  color: #2B3722 !important;
+    font-family: "all-round-gothic", sans-serif !important;
+    font-weight: 700 !important;
+    font-style: normal !important;
+}
+.mobile-nav-links a,
+.mobile-nav-links {
+    font-family: "all-round-gothic", sans-serif !important;
+    font-weight: 700 !important;
+    font-style: normal !important;
+}
+
+
+
