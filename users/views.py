@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
 from .serializers import UserSerializer
+
+from .serializers import UserSerializer, UserUpdateSerializer
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
@@ -49,6 +51,28 @@ def login(request):
             {"error": "Credenciais inválidas. Verifique seu e-mail e senha."},
             status=status.HTTP_401_UNAUTHORIZED
         )
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_data(request):
+    user = request.user
+    serializer = UserSerializer(user, context={'request': request})
+    return Response(serializer.data, status=200)
+
+
+@api_view(['PATCH']) 
+@permission_classes([IsAuthenticated])
+def update_user_data(request):
+    user = request.user
+    
+    serializer = UserUpdateSerializer(instance=user, data=request.data, partial=True)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 @permission_classes([])
