@@ -1,13 +1,11 @@
 from django.shortcuts import render
 
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from django.utils.http import urlsafe_base64_encode
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from users.permissions import IsCredentiator
 from rest_framework.response import Response
 
-from .models import Event, Activity, Guest, Subscription
+from .models import Event, Activity, Guest, Subscription, StatusSubscription
 from .serializers import EventSerializer, ActivitySerializer, Guest, SubscriptionSerializer
 from rest_framework import status
 
@@ -127,3 +125,32 @@ def get_subscription(request, sub_uuid):
 
     serializer = SubscriptionSerializer(sub)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['PATCH'])
+@permission_classes([IsCredentiator])
+def validate_subscription(request, sub_uuid):
+    try:
+        uuid_obj = uuid.UUID(sub_uuid)
+    except ValueError:
+        return Response({'erro': 'Código em formato inválido.'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+    
+    try:
+        sub = Subscription.objects.get(uuid=uuid_obj)
+        activity = sub.activity
+    except Subscription.DoesNotExist:
+        return Response({'erro': 'Nenhuma inscrição associada a este código.'}, status=status.HTTP_404_NOT_FOUND)
+
+    if sub.status != 'emitida': 
+        return Response({'erro': f'Inscrição inválida. O status da inscrição é {sub.status}'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+    if activity.date != datetime.now().date():
+        return Response({'erro': 'A atividade não ocorre no dia de hoje.'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+    
+    if activity.end_time <= datetime.now().time():
+        return Response({'erro': f'A atividade já foi encerrada.'}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+    
+    sub.status = StatusSubscription.VALIDATED
+    sub.save()
+    
+    serializer = SubscriptionSerializer(sub)
+    return Response(serializer.data, status=status.HTTP_202_ACCEPTED)

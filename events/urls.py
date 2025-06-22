@@ -12,4 +12,5 @@ urlpatterns = [
     path('subscribe/', views.subscribe_to_event, name='subscribe'),
     path('mysubs/', views.list_subscriptions, name='list_user_subscribed_activities'),
     path('search-subscription/<str:sub_uuid>', views.get_subscription, name='get_subscription'),
+    path('validate-subscription/<str:sub_uuid>', views.validate_subscription, name='validate_subscription'),
 ]
