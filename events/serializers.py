@@ -58,6 +58,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
             'user_id',
             'activity_id',
             'id',
+            'uuid',
             'user',
             'status',
             'created_at',

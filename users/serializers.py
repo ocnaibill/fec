@@ -33,6 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
             'institution',
             'registration_number',
             'photo',
+            'role',
             'password'
         ]
 
