@@ -36,7 +36,7 @@ useEffect(() => {
 }, [subscription.id]);
 
     const formattedDate = new Date(activity.date + 'T00:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', timeZone: 'UTC' });
-    const formattedTime = activity.time.slice(0, 5);
+    const formattedTime = activity.start_time.slice(0, 5);
 
     const guestFirstNames = activity.guests.map(guest => guest.name.split(' ')[0]).join(', ');
 

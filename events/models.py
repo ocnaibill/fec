@@ -33,8 +33,7 @@ class Guest(models.Model):
 
     @property
     def photo(self):
-
-        return self.user.photo
+        return self.user.photo if self.user.photo else None
 
     class Meta:
         db_table = 'guests'

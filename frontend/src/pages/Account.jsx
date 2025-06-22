@@ -257,7 +257,7 @@ export default function Account() {
                                     key={item.id} 
                                     title={item.activity.title}
                                     date={item.activity.date}
-                                    time={item.activity.time}
+                                    time={item.activity.start_time}
                                     location={item.activity.local} 
                                     isCertificate={selectedOption === 'certificados'}
                                     onViewTicket={() => handleViewTicket(item)} 

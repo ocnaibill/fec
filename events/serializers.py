@@ -86,8 +86,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         self._has_conflict = conflicting_subs.exists()
 
         return data
-        
-    
+
     def create(self, validated_data):
         user = validated_data.pop('user_id')
         activity = validated_data.pop('activity_id')

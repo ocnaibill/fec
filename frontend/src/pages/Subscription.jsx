@@ -167,7 +167,7 @@ export default function Subscription() {
                     </p>
                     <div className='w-full flex flex-col gap-0.5 rounded-[12px] overflow-hidden'>
                         {selectedActivities.map((activity, index) => {
-                            const hasConflict = subsActivities.filter(sub => sub.date === activity.date && sub.time === activity.time);
+                            const hasConflict = subsActivities.filter(sub => sub.date === activity.date && sub.start_time === activity.start_time);
                             return <ConfirmActivityCard key={index} {...activity} hasConflict={hasConflict} setConflict={setActiveConflict}/>
                         })}
                     </div>
@@ -243,13 +243,13 @@ export default function Subscription() {
                         <p className='w-full mt-5'>A atividade:</p>
                         <span className='flex w-full justify-between bg-[#e2d4a0] p-2 rounded-[10px]'>
                             <p>{activeConflict.selected.title}</p>
-                            <p>{activeConflict.selected.date} - {activeConflict.selected.time}</p>
+                            <p>{activeConflict.selected.date} - {activeConflict.selected.start_time}</p>
                         </span>
                         <p className='w-full mt-5'>Possui conflito de horário com:</p>
                         {activeConflict.conflicts.map((conflict, index) => (
                             <span key={index} className='flex w-full justify-between bg-[#e2d4a0] p-2 rounded-[10px]'>
                                 <p>{conflict.title}</p>
-                                <p>{conflict.date} - {conflict.time}</p>
+                                <p>{conflict.date} - {conflict.start_time}</p>
                             </span>
                         ))}
                         <p className='w-full mt-5 text-center'>Somente uma das atividades poderá ser credenciado posteriormente.</p>
@@ -264,12 +264,12 @@ export default function Subscription() {
     );
 }
 
-function ActivityCard({title, date, time, local, isSubscribed}) {
+function ActivityCard({title, date, start_time, local, isSubscribed}) {
     return (
         <div className={`flex flex-col gap-3 w-full h-[135px] rounded-[12px] p-4 ${isSubscribed ? 'bg-[#cabd8e]' : 'bg-[#FFF1C0]'}`}>
             <p className='text-[24px]'>{title}</p>
             <div>
-                <span className='flex gap-3 text-[16px] font-light'><img src={DateIcon} alt="Date"/>{new Date(date).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}, {time.slice(0, 5)}</span>
+                <span className='flex gap-3 text-[16px] font-light'><img src={DateIcon} alt="Date"/>{new Date(date).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}, {start_time.slice(0, 5)}</span>
                 <span className='flex gap-3 text-[16px] font-light'><img src={LocalIcon} alt="Local"/>{local}</span>
             </div>
             {isSubscribed && <span className='absolute lg:top-2 lg:bottom-0 bottom-2 right-2 lg:text-4xl text-3xl rounded-[8px] p-1' >INSCRITO</span>}
@@ -277,17 +277,17 @@ function ActivityCard({title, date, time, local, isSubscribed}) {
     )
 }
 
-function ConfirmActivityCard({title, date, time, hasConflict, setConflict}) {
+function ConfirmActivityCard({title, date, start_time, hasConflict, setConflict}) {
     const formattedDate = new Date(date).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-    const formattedTime = time.slice(0, 5);
+    const formattedTime = start_time.slice(0, 5);
     
     const conflictObj = {
         selected: {
             title,
             date: formattedDate,
-            time: formattedTime
+            start_time: formattedTime
         },
-        conflicts: hasConflict.map(c => ({...c, date: new Date(c.date).toLocaleDateString('pt-BR', { timeZone: 'UTC' }), time: c.time.slice(0, 5)}))
+        conflicts: hasConflict.map(c => ({...c, date: new Date(c.date).toLocaleDateString('pt-BR', { timeZone: 'UTC' }), start_time: c.start_time.slice(0, 5)}))
     }
 
     return (

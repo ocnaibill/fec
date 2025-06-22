@@ -39,7 +39,7 @@ export default function AtividadesHoje({ eventId }) {
                     }
                     acc[date].push(activity);
                     // Ordena as atividades dentro de cada dia pelo horário
-                    acc[date].sort((a, b) => a.time.localeCompare(b.time));
+                    acc[date].sort((a, b) => a.start_time.localeCompare(b.start_time));
                     return acc;
                 }, {});
                 
@@ -92,7 +92,7 @@ export default function AtividadesHoje({ eventId }) {
                             <React.Fragment key={activity.id}>
                                 {/* Linha 1, Coluna 1: O Horário */}
                                 <span className="font-all-round-gothic font-bold text-base text-[#2B3722] whitespace-nowrap">
-                                    {activity.time.slice(0, 5)}
+                                    {activity.start_time.slice(0, 5)}
                                 </span>
                                 
                                 {/* Linha 1, Coluna 2: O Título */}

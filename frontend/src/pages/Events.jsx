@@ -29,7 +29,7 @@ export default function Events() {
                 combinedActivities.sort((a, b) => {
                     const dateComparison = new Date(a.date) - new Date(b.date);
                     if (dateComparison !== 0) return dateComparison;
-                    return a.time.localeCompare(b.time);
+                    return a.start_time.localeCompare(b.start_time);
                 });
 
                 setAllActivities(combinedActivities);
@@ -217,7 +217,7 @@ export default function Events() {
             {/* CARDS DE PALESTRAS - AGORA FILTRADOS E ORDENADOS */}
             {lecturesForCurrentPage.map((lecture, index) => {
                 const formattedDate = new Date(lecture.date + 'T00:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
-                const formattedTime = lecture.time.slice(0, 5);
+                const formattedTime = lecture.start_time.slice(0, 5);
                 return (
                     <EventsCard
                         key={index}
@@ -246,7 +246,7 @@ export default function Events() {
             {/* CARDS DE OFICINAS - AGORA FILTRADOS E ORDENADOS */}
             {workshopsForCurrentPage.map((workshop, index) => {
                 const formattedDate = new Date(workshop.date + 'T00:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
-                const formattedTime = workshop.time.slice(0, 5);
+                const formattedTime = workshop.start_time.slice(0, 5);
                 return (
                     <EventsCard
                         key={index}

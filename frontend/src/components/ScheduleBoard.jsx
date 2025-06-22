@@ -40,7 +40,7 @@ function ScheduleColumn({ date, weekday, events, index, isMobile }) {
             <div className="flex-1 overflow-y-auto pr-2">
                 {events.length > 0 ? (
                     events.map((event, eventIndex) => 
-                        <ScheduleItem key={event.id || eventIndex} time={event.time} title={event.title} local={event.local} />
+                        <ScheduleItem key={event.id || eventIndex} time={event.start_time} title={event.title} local={event.local} />
                     )
                 ) : (
                     <p className="font-quicksand text-center text-white/70 mt-4">Sem programação até o momento</p>
@@ -85,8 +85,8 @@ export default function ScheduleBoard() {
 
                 festivalWeek.forEach(day => {
                     day.events.sort((a, b) => {
-                        if (a.time < b.time) return -1;
-                        if (a.time > b.time) return 1;
+                        if (a.start_time < b.start_time) return -1;
+                        if (a.start_time > b.start_time) return 1;
                         return a.title.localeCompare(b.title);
                     });
                 });
