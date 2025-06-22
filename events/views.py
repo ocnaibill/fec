@@ -103,7 +103,7 @@ def list_subscriptions(requests):
     user = requests.user
 
     try:
-        subs = Subscription.objects.filter(user_id=user.id)
+        subs = Subscription.objects.filter(user_id=user.id, status=StatusSubscription.EMITED)
     except Subscription.DoesNotExist:
         return Response({'erro': 'Nenhuma inscrição realizada.'})
     
