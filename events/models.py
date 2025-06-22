@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from users.models import CustomUser
 from django.utils import timezone
 from django.core.exceptions import ValidationError
@@ -73,6 +74,10 @@ class Subscription(models.Model):
     qrcode = models.ImageField(upload_to='subscriptions-qrcodes/', blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._original_status = self.status
+
     def generate_qrcode(self):
         qr = qrcode.make(self.uuid)
         buffer = BytesIO()
@@ -80,10 +85,30 @@ class Subscription(models.Model):
         qr.save(buffer, format='PNG')
         self.qrcode.save(f'{self.uuid}.png', ContentFile(buffer.getvalue()), save=False)
 
+    def mark_conflitants_when_validated(self):
+        end_time = self.activity.end_time
+        
+        conflicting_subs = Subscription.objects.filter(
+            user=self.user,
+            status=StatusSubscription.EMITED
+        ).exclude(id=self.id).filter(
+            activity__date=self.activity.date,
+            activity__start_time__lt=end_time,
+            activity__end_time__gt=self.activity.start_time,
+        )
+
+        conflicting_subs.update(status=StatusSubscription.CONFLITANT)
+
     def save(self, *args, **kwargs):
         if not self.qrcode:
             self.generate_qrcode()
+
+        status_changed = self.pk and self._original_status != self.status
         super().save(*args, **kwargs)
+
+        if status_changed and self.status == StatusSubscription.VALIDATED:
+            self.mark_conflitants_when_validated()
+        self._original_status = self.status
 
     class Meta:
         db_table = 'subscriptions'
