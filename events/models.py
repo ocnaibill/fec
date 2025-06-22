@@ -45,7 +45,8 @@ class Activity(models.Model):
     title = models.CharField(max_length=50, unique=True)
     description = models.TextField()
     date = models.DateField()
-    time = models.TimeField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()
     local = models.CharField(max_length=50)
     type = models.CharField(max_length=8, choices=TypeActivity.choices)
     event = models.ForeignKey(Event, related_name='activities', on_delete=models.CASCADE)
@@ -55,7 +56,7 @@ class Activity(models.Model):
         db_table = 'activities'
 
     def __str__(self):
-        return f"{self.title} at {self.time}"
+        return f"{self.title} at {self.start_time}"
     
 class StatusSubscription(models.TextChoices):
     EMITED = 'emitida', 'Emitida'

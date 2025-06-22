@@ -15,7 +15,7 @@ class ActivitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Activity
-        fields = ['id', 'event', 'title', 'description', 'date', 'time', 'local', 'type', 'guests']
+        fields = ['id', 'event', 'title', 'description', 'date', 'start_time', 'end_time', 'local', 'type', 'guests']
     
 class EventSerializer(serializers.ModelSerializer):
     lecture = serializers.SerializerMethodField()
@@ -70,13 +70,13 @@ class SubscriptionSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Não é possível emitir o mesmo ingresso novamente.')
         
         date = activity.date
-        time = activity.time
+        time = activity.start_time
 
         conflicting_subs = Subscription.objects.filter(
             user=user,
             status=StatusSubscription.EMITED
         ).filter(
-            Q(activity__date=date, activity__time=time)
+            Q(activity__date=date, activity__start_time=time)
         )
 
         self._has_conflict = conflicting_subs.exists()

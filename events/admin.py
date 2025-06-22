@@ -10,7 +10,7 @@ class EventAdmin(admin.ModelAdmin):
 
 @admin.register(Activity)
 class ActivityAdmin(admin.ModelAdmin):
-    list_display = ('title', 'date', 'time', 'event')
+    list_display = ('title', 'date', 'start_time', 'event')
     list_filter = ('event', 'type')
     search_fields = ('title', 'event__name')
 
