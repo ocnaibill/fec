@@ -22,6 +22,7 @@ from core.views import hello
 
 urlpatterns = [
     path('api/admin/', admin.site.urls),
+    path('api/users/', include('users.urls')),
     path('api/hello/', hello),
     path('api/auth/', include('users.urls')),
     path('api/about-carousel/', include('about_carousel.urls')),

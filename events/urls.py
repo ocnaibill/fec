@@ -10,6 +10,7 @@ urlpatterns = [
     path('<int:event_pk>/lectures/', views.list_event_lectures, name='event_lectures'),
     path('<int:event_pk>/workshops/', views.list_event_workshops, name='event_workshops'),
     path('subscribe/', views.subscribe_to_event, name='subscribe'),
+    path('cancel-subscription/<int:subscription_id>/', views.cancel_subscription, name='cancel_subscription'),
     path('mysubs/', views.list_subscriptions, name='list_user_subscribed_activities'),
     path('search-subscription/<str:sub_uuid>', views.get_subscription, name='get_subscription'),
     path('validate-subscription/<str:sub_uuid>', views.validate_subscription, name='validate_subscription'),

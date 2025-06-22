@@ -7,20 +7,20 @@ import 'swiper/css';
 
 import setaDireita from '../assets/images/setaDireita.svg';
 import setaEsquerda from '../assets/images/setaEsquerda.svg';
+import usuarioSemFoto from '../assets/images/usuarioSemFoto.svg';
 
 function GuestCard({ avatar, name, description }) {
-  return (
-    <div className="bg-[#31477C] w-full h-full rounded-[16px] p-8 flex flex-col justify-start items-center gap-3 flex-shrink-0">
-      <div className="bg-white rounded-full overflow-hidden border border-gray-300 w-24 h-24 flex-shrink-0">
-        <img src={avatar?.src} alt={avatar?.alt} className="w-full h-full object-cover" />
-      </div>
-      <p className="font-bold text-[18px] text-white text-center font-all-round-gothic flex-shrink-0">{name}</p>
-
-      <p 
-        className="text-[14px] font-medium text-white text-left font-quicksand flex-1 overflow-y-auto w-full hide-scrollbar"
-      >{description}</p>
-    </div>
-  );
+    return (
+        <div className="bg-[#31477C] w-full h-full rounded-[16px] p-8 flex flex-col justify-start items-center gap-3 flex-shrink-0">
+            <div className="bg-white rounded-full overflow-hidden border border-gray-300 w-24 h-24 flex-shrink-0">
+                <img src={avatar.src} alt={avatar.alt} className="w-full h-full object-cover" />
+            </div>
+            <p className="font-bold text-[18px] text-white text-center font-all-round-gothic flex-shrink-0">{name}</p>
+            <p className="text-[14px] font-medium text-white text-left font-quicksand flex-1 overflow-y-auto w-full hide-scrollbar">
+                {description}
+            </p>
+        </div>
+    );
 }
 
 export default function GuestsCarousel() {
@@ -31,16 +31,16 @@ export default function GuestsCarousel() {
     useEffect(() => {
         const fetchGuests = async () => {
             try {
-                const baseUrl = 'https://feconomiacriativa.catolica.edu.br';
-                const apiUrl = `${baseUrl}/api/event/list/`;
+                const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+                const apiUrl = `${baseUrl}/event/list/`;
                 const response = await axios.get(apiUrl);
                 
                 const allEvents = response.data;
                 const uniqueGuests = new Map();
 
                 allEvents.forEach(event => {
-                    [...event.lecture, ...event.workshop].forEach(activity => {
-                        activity.guests.forEach(guest => {
+                    [...(event.lecture || []), ...(event.workshop || [])].forEach(activity => {
+                        (activity.guests || []).forEach(guest => {
                             if (!uniqueGuests.has(guest.name)) {
                                 uniqueGuests.set(guest.name, guest);
                             }
@@ -48,14 +48,25 @@ export default function GuestsCarousel() {
                     });
                 });
 
-                const formattedGuests = Array.from(uniqueGuests.values()).map(guest => ({
-                    name: guest.name,
-                    description: guest.bio,
-                    avatar: {
-                        src: `${baseUrl}${guest.photo}`,
-                        alt: `Foto de ${guest.name}`
+            const publicBaseUrl = 'https://feconomiacriativa.catolica.edu.br';
+                const internalBaseUrl = 'http://172.17.0.110'; 
+
+                const formattedGuests = Array.from(uniqueGuests.values()).map(guest => {
+                    let finalPhotoUrl = usuarioSemFoto;
+
+                    if (guest.photo_url) {
+                        finalPhotoUrl = guest.photo_url.replace(internalBaseUrl, publicBaseUrl);
                     }
-                }));
+
+                    return {
+                        name: guest.name,
+                        description: guest.bio,
+                        avatar: {
+                            src: finalPhotoUrl,
+                            alt: `Foto de ${guest.name}`
+                        }
+                    };
+                });
 
                 setAllGuests(formattedGuests);
             } catch (error) {

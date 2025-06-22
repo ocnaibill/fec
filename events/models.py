@@ -29,8 +29,12 @@ class Event(models.Model):
 
 class Guest(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    photo = models.FileField(upload_to='guests_photos/', null=True, blank=True, validators=[validate_svg_or_image])
     bio = models.TextField()
+
+    @property
+    def photo(self):
+
+        return self.user.photo
 
     class Meta:
         db_table = 'guests'

@@ -16,10 +16,10 @@ import uuid
 
 # EVENTOS
 @api_view(['GET'])
-@permission_classes([AllowAny])  
+@permission_classes([AllowAny]) 
 def list_events(request):
     events = Event.objects.all()
-    serializer = EventSerializer(events, many=True)
+    serializer = EventSerializer(events, many=True, context={'request': request})
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
@@ -105,7 +105,7 @@ def list_subscriptions(requests):
     try:
         subs = Subscription.objects.filter(user_id=user.id, status=StatusSubscription.EMITED)
     except Subscription.DoesNotExist:
-        return Response({'erro': 'Nenhuma inscrição realizada.'})
+        return Response({'erro': 'Nenhuma inscrição realizada.'}, status=status.HTTP_404_NOT_FOUND)
     
     serializer = SubscriptionSerializer(subs, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
@@ -154,3 +154,14 @@ def validate_subscription(request, sub_uuid):
     
     serializer = SubscriptionSerializer(sub)
     return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def cancel_subscription(request, subscription_id):
+    try:
+        subscription = Subscription.objects.get(id=subscription_id, user=request.user)
+        subscription.status = StatusSubscription.CANCELED
+        subscription.save()
+        return Response({'message': 'Inscrição cancelada com sucesso.'}, status=status.HTTP_200_OK)
+    except Subscription.DoesNotExist:
+        return Response({'error': 'Inscrição não encontrada.'}, status=status.HTTP_404_NOT_FOUND)

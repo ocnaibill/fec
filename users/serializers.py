@@ -32,6 +32,7 @@ class UserSerializer(serializers.ModelSerializer):
             'birthdate',
             'institution',
             'registration_number',
+            'photo',
             'password'
         ]
 
@@ -44,3 +45,28 @@ class UserSerializer(serializers.ModelSerializer):
                 'registration_number': 'Número de matrícula é obrigatório para UCB.'
             })
         return data
+    
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = [
+            'name', 
+            'email', 
+            'cpf', 
+            'birthdate', 
+            'institution', 
+            'registration_number',
+            'photo' 
+        ]
+
+    def validate_email(self, value):
+        user = self.instance
+        if CustomUser.objects.filter(email=value).exclude(pk=user.pk).exists():
+            raise serializers.ValidationError("Este e-mail já está em uso.")
+        return value
+
+    def validate_cpf(self, value):
+        user = self.instance
+        if CustomUser.objects.filter(cpf=value).exclude(pk=user.pk).exists():
+            raise serializers.ValidationError("Este CPF já está cadastrado.")
+        return value

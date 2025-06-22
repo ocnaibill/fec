@@ -34,7 +34,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'chave-padrao-segura')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['feconomiacriativa.catolica.edu.br', '127.0.0.1', 'localhost', '172.17.0.110']
+ALLOWED_HOSTS = ['feconomiacriativa.catolica.edu.br', '127.0.0.1', 'localhost', '172.17.0.110', 'testserver']
 
 
 # Application definition
@@ -161,7 +161,7 @@ USE_X_FORWARDED_PORT = True
 #CSRF settings
 SRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'httpss')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
