@@ -58,7 +58,8 @@ class SubscriptionSerializer(serializers.ModelSerializer):
             'status',
             'created_at',
             'activity',
-            'alert'
+            'alert',
+            'qrcode'
         ]
         read_only_fields = ['id', 'status', 'alert']
 
