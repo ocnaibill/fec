@@ -26,7 +26,7 @@ export default function Login() {
 
         toast(`Login realizado com sucesso!`, {
             position: "top-center",
-            autoClose: 5000,
+            autoClose: 2000,
             hideProgressBar: true,
             closeOnClick: true,
             pauseOnHover: true,
@@ -38,7 +38,7 @@ export default function Login() {
                 fontWeight: '500',
                 fontSize: '16px',
                 borderRadius: '8px',
-                width: '451px',
+                width: '350px',
                 height: '60px',
             },
         });
