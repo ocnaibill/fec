@@ -203,25 +203,6 @@ export default function Events() {
             </div>
                         
             {/* "CRONOGRAMA" */}
-{hasAnyActivity && (
-    <>
-        <p
-            style={{
-                fontFamily: '"all-round-gothic", sans-serif',
-                fontWeight: 'bold',
-                fontSize: '50px',
-                color: '#2B3722',
-                textAlign: window.innerWidth >= 768 ? 'left' : 'center',
-                marginTop: '46px',
-                marginLeft: window.innerWidth >= 768 ? '284px' : 'auto',
-                marginRight: window.innerWidth >= 768 ? '0' : 'auto',
-            }}
-        >
-            CRONOGRAMA
-        </p>
-
-        <AtividadesHoje eventId={currentPage.id} />
-
         {/* Logos no desktop */}
         {currentPage.logo && (
             <>
@@ -251,6 +232,27 @@ export default function Events() {
                 />
             </>
         )}
+        
+{hasAnyActivity && (
+    <>
+        <p
+            style={{
+                fontFamily: '"all-round-gothic", sans-serif',
+                fontWeight: 'bold',
+                fontSize: '50px',
+                color: '#2B3722',
+                textAlign: window.innerWidth >= 768 ? 'left' : 'center',
+                marginTop: '46px',
+                marginLeft: window.innerWidth >= 768 ? '284px' : 'auto',
+                marginRight: window.innerWidth >= 768 ? '0' : 'auto',
+            }}
+        >
+            CRONOGRAMA
+        </p>
+
+        <AtividadesHoje eventId={currentPage.id} />
+
+
 
         {/* Texto "PALESTRAS" */}
         {hasLectures && (
