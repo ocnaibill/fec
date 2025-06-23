@@ -9,12 +9,13 @@ import setaDireita from '../assets/images/setaDireita.svg';
 import setaEsquerda from '../assets/images/setaEsquerda.svg';
 
 
-function ScheduleItem({ time, title, local }) {
+function ScheduleItem({ time, title, local, type }) {
+    console.log(type)
     return (
         <div className="text-[16px] text-[#e0e0e0] flex items-center gap-x-4 w-full mb-3">
             <p className="font-bold font-all-round-gothic flex-shrink-0">{time.slice(0, 5)}</p>
             <div className="flex flex-col items-start">
-                <p className="font-medium font-quicksand text-left">{title}</p>
+                <p className="text-left"><span className='font-bold'>{type}: </span>{title}</p>
                 {local && <p className="font-light font-quicksand text-sm text-white/70">📍 {local}</p>}
             </div>
         </div>
@@ -40,7 +41,7 @@ function ScheduleColumn({ date, weekday, events, index, isMobile }) {
             <div className="flex-1 overflow-y-auto pr-2">
                 {events.length > 0 ? (
                     events.map((event, eventIndex) => 
-                        <ScheduleItem key={event.id || eventIndex} time={event.start_time} title={event.title} local={event.local} />
+                        <ScheduleItem key={event.id || eventIndex} time={event.start_time} title={event.title} local={event.local} type={event.type}/>
                     )
                 ) : (
                     <p className="font-quicksand text-center text-white/70 mt-4">Sem programação até o momento</p>
@@ -72,8 +73,8 @@ export default function ScheduleBoard() {
 
                 let allActivities = [];
                 allEvents.forEach(event => {
-                    allActivities.push(...event.workshop.map(w => ({ ...w, type: 'Workshop' })));
-                    allActivities.push(...event.lecture.map(l => ({ ...l, type: 'Lecture' })));
+                    allActivities.push(...event.workshop.map(w => ({ ...w, type: 'Oficina' })));
+                    allActivities.push(...event.lecture.map(l => ({ ...l, type: 'Palestra' })));
                 });
 
                 allActivities.forEach(activity => {
@@ -87,9 +88,11 @@ export default function ScheduleBoard() {
                     day.events.sort((a, b) => {
                         if (a.start_time < b.start_time) return -1;
                         if (a.start_time > b.start_time) return 1;
-                        return a.title.localeCompare(b.title);
-                    });
+                        return (a.type.localeCompare(b.type)) * -1;
+                    })
                 });
+
+                console.log(festivalWeek)
                 
                 setScheduleData(festivalWeek);
 
