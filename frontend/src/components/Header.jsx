@@ -3,6 +3,7 @@ import { Menu, X } from 'lucide-react';
 import LogoBranca from '../assets/images/logo-branca.svg';
 import { Link, useNavigate, useLocation } from 'react-router-dom'; 
 import { toast } from 'react-toastify'; 
+import axios from 'axios';
 
 export default function Header() {
     const navigate = useNavigate();
@@ -10,8 +11,26 @@ export default function Header() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
+    const [role, setRole] = useState('')
+
     useEffect(() => {
         const token = localStorage.getItem('authToken');
+
+        async function fetchCurrentUser() {
+            try {
+                const response = await axios.get(`${baseUrl}/auth/me`,{ 
+                    headers: {
+                        Authorization: `Token ${token}`
+                    }
+                })
+                setRole(response.data.role)
+            } catch(err) {
+                console.error(err)
+            }
+        }
+
+        fetchCurrentUser()
         setIsAuthenticated(!!token);
     }, [location]); 
 
@@ -27,7 +46,6 @@ export default function Header() {
     const handleSimpleLinkClick = () => {
         setIsMobileMenuOpen(false);
     };
-
 
     const handleLogout = () => {
         localStorage.removeItem('authToken');
@@ -82,6 +100,7 @@ export default function Header() {
                 {isAuthenticated ? (
                     <>
                         <Link to="/account" className="hover:underline header-font">perfil</Link>
+                        {role === 'credenciador' && (<Link to="/credentials-scanner" className="hover:underline header-font">scanner</Link>)}
                         <button onClick={handleLogout} className="hover:underline header-font" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}>logout</button>
                     </>
                 ) : (
@@ -115,6 +134,7 @@ export default function Header() {
                             {isAuthenticated ? (
                                 <>
                                     <Link to="/account" onClick={handleSimpleLinkClick} className="hover:underline" style={{paddingRight: '30px'}}>perfil</Link>
+                                    {role === 'credenciador' && (<Link to="/credentials-scanner" onClick={handleSimpleLinkClick} className="hover:underline" style={{paddingRight: '30px'}}>scanner</Link>)}
                                     <button onClick={handleLogout} className="hover:underline" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>logout</button>
                                 </>
                             ) : (

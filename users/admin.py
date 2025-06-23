@@ -10,11 +10,11 @@ class CustomUserAdmin(UserAdmin):
 
     
     
-    list_display = ('email', 'name', 'is_staff', 'is_guest', 'is_superuser')
+    list_display = ('email', 'name', 'is_staff', 'is_guest', 'role', 'is_superuser')
     
-    list_filter = ('is_staff', 'is_superuser', 'is_guest', 'groups')
+    list_filter = ('is_staff', 'is_superuser', 'is_guest', 'role', 'groups')
     
-    list_editable = ('is_staff', 'is_guest', 'is_superuser')
+    list_editable = ('is_staff', 'is_guest', 'role', 'is_superuser')
     
     search_fields = ('email', 'name')
     ordering = ('email',)
@@ -23,7 +23,7 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('name', 'cpf', 'birthdate', 'photo', 'institution', 'registration_number')}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'is_guest', 'groups', 'user_permissions')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'is_guest', 'role', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
     
