@@ -71,6 +71,9 @@ export default function Events() {
     const lecturesForCurrentPage = allActivities.filter(activity => !activity.isWorkshop && activity.event === currentPage.id);
     const workshopsForCurrentPage = allActivities.filter(activity => activity.isWorkshop && activity.event === currentPage.id);
 
+    const hasLectures = lecturesForCurrentPage.length > 0;
+    const hasWorkshops = workshopsForCurrentPage.length > 0;
+    const hasAnyActivity = hasLectures || hasWorkshops;
     return (
         <div className="min-h-screen w-full bg-[#FFF1C0] relative pt-[64px]">
             {/* Título e logo */}
@@ -200,94 +203,188 @@ export default function Events() {
             </div>
                         
             {/* "CRONOGRAMA" */}
-            <p
-                style={{
-                    fontFamily: '"all-round-gothic", sans-serif',
-                    fontWeight: 'bold',
-                    fontSize: '50px',
-                    color: '#2B3722',
-                    textAlign: window.innerWidth >= 768 ? 'left' : 'center', 
-                    marginTop: '46px', 
-                    marginLeft: window.innerWidth >= 768 ? '284px' : 'auto', 
-                    marginRight: window.innerWidth >= 768 ? '0' : 'auto', 
-                }}
-            >
-                CRONOGRAMA
-            </p> 
+        {/* Logos no desktop */}
+        {currentPage.logo && (
+            <>
+                <img
+                    src={currentPage.logo}
+                    alt=""
+                    className="hidden md:block"
+                    style={{
+                        position: 'absolute',
+                        top: '196px',
+                        right: '-200px',
+                        height: 'auto',
+                        width: '400px',
+                    }}
+                />
+                <img
+                    src={currentPage.logo}
+                    alt=""
+                    className="hidden md:block"
+                    style={{
+                        position: 'absolute',
+                        top: '1190px',
+                        left: '-200px',
+                        height: 'auto',
+                        width: '400px',
+                    }}
+                />
+            </>
+        )}
+        
+{hasAnyActivity && (
+    <>
+        <p
+            style={{
+                fontFamily: '"all-round-gothic", sans-serif',
+                fontWeight: 'bold',
+                fontSize: '50px',
+                color: '#2B3722',
+                textAlign: window.innerWidth >= 768 ? 'left' : 'center',
+                marginTop: '46px',
+                marginLeft: window.innerWidth >= 768 ? '284px' : 'auto',
+                marginRight: window.innerWidth >= 768 ? '0' : 'auto',
+            }}
+        >
+            CRONOGRAMA
+        </p>
 
-            <AtividadesHoje eventId={currentPage.id} />
+        <AtividadesHoje eventId={currentPage.id} />
 
-            {/* Logos no desktop */}
-            {currentPage.logo && (
-                <>
-                    <img src={currentPage.logo} alt="" className="hidden md:block" style={{ position: 'absolute', top: '196px', right: '-200px', height: 'auto', width: '400px' }} />
-                    <img src={currentPage.logo} alt="" className="hidden md:block" style={{ position: 'absolute', top: '1190px', left: '-200px', height: 'auto', width: '400px' }} />
-                </>
-            )}
-            
-            {/* Texto "PALESTRAS" */}
-            <p style={{ fontFamily: '"all-round-gothic", sans-serif', fontWeight: 'bold', fontSize: '50px', color: '#2B3722', textAlign: window.innerWidth >= 768 ? 'left' : 'center', marginTop: '148px', marginLeft: window.innerWidth >= 768 ? '284px' : 'auto', marginRight: window.innerWidth >= 768 ? '0' : 'auto', marginBottom: '48px' }}>
-                PALESTRAS
-            </p>
 
-            {/* CARDS DE PALESTRAS - AGORA FILTRADOS E ORDENADOS */}
-            {lecturesForCurrentPage.map((lecture, index) => {
-                const formattedDate = new Date(lecture.date + 'T00:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
-                const formattedTime = lecture.start_time.slice(0, 5);
-                return (
-                    <EventsCard
-                        key={index}
-                        date={formattedDate}
-                        time={formattedTime}
-                        title={lecture.title}
-                        description={lecture.description}
-                        speakers={lecture.guests || []}
-                        isWorkshop={false}
-                        style={{
-                            fontFamily: '"all-round-gothic", sans-serif',
-                            marginLeft: window.innerWidth >= 768 ? '284px' : 'auto',
-                            marginRight: window.innerWidth >= 768 ? '277px' : 'auto',
-                            marginTop: '48px',
-                            width: window.innerWidth >= 768 ? 'calc(100% - 561px)' : 'calc(100% - 32px)',
-                        }}
-                    />
-                );
-            })}
 
-            {/* Texto "OFICINAS" */}
-            <p style={{ fontFamily: '"all-round-gothic", sans-serif', fontWeight: 'bold', fontSize: '50px', color: '#2B3722', textAlign: window.innerWidth >= 768 ? 'left' : 'center', marginTop: '100px', marginLeft: window.innerWidth >= 768 ? '284px' : 'auto', marginRight: window.innerWidth >= 768 ? '0' : 'auto', marginBottom: '48px' }}>
-                OFICINAS
-            </p>
+        {/* Texto "PALESTRAS" */}
+        {hasLectures && (
+            <>
+                <p
+                    style={{
+                        fontFamily: '"all-round-gothic", sans-serif',
+                        fontWeight: 'bold',
+                        fontSize: '50px',
+                        color: '#2B3722',
+                        textAlign: window.innerWidth >= 768 ? 'left' : 'center',
+                        marginTop: '148px',
+                        marginLeft: window.innerWidth >= 768 ? '284px' : 'auto',
+                        marginRight: window.innerWidth >= 768 ? '0' : 'auto',
+                        marginBottom: '48px',
+                    }}
+                >
+                    PALESTRAS
+                </p>
 
-            {/* CARDS DE OFICINAS - AGORA FILTRADOS E ORDENADOS */}
-            {workshopsForCurrentPage.map((workshop, index) => {
-                const formattedDate = new Date(workshop.date + 'T00:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
-                const formattedTime = workshop.start_time.slice(0, 5);
-                return (
-                    <EventsCard
-                        key={index}
-                        date={formattedDate}
-                        time={formattedTime}
-                        title={workshop.title}
-                        description={workshop.description}
-                        speakers={workshop.guests}
-                        isWorkshop={true}
-                        style={{
-                            fontFamily: '"all-round-gothic", sans-serif',
-                            marginLeft: window.innerWidth >= 768 ? '284px' : 'auto',
-                            marginRight: window.innerWidth >= 768 ? '277px' : 'auto',
-                            marginTop: '48px',
-                            width: window.innerWidth >= 768 ? 'calc(100% - 561px)' : 'calc(100% - 32px)',
-                        }}
-                    >
-                        <p style={{ fontFamily: '"quicksand", sans-serif', fontSize: '18px', color: '#2B3722', textAlign: 'center' }}>
-                            {workshop.description}
-                        </p>
-                    </EventsCard>
-                );
-            })}
+                {/* CARDS DE PALESTRAS */}
+                {lecturesForCurrentPage.map((lecture, index) => {
+                    const formattedDate = new Date(
+                        lecture.date + 'T00:00:00'
+                    ).toLocaleDateString('pt-BR', {
+                        day: '2-digit',
+                        month: '2-digit',
+                    });
+                    const formattedTime = lecture.start_time.slice(0, 5);
+                    return (
+                        <EventsCard
+                            key={index}
+                            date={formattedDate}
+                            time={formattedTime}
+                            title={lecture.title}
+                            description={lecture.description}
+                            speakers={lecture.guests || []}
+                            isWorkshop={false}
+                            style={{
+                                fontFamily: '"all-round-gothic", sans-serif',
+                                marginLeft:
+                                    window.innerWidth >= 768
+                                        ? '284px'
+                                        : 'auto',
+                                marginRight:
+                                    window.innerWidth >= 768
+                                        ? '277px'
+                                        : 'auto',
+                                marginTop: '48px',
+                                width:
+                                    window.innerWidth >= 768
+                                        ? 'calc(100% - 561px)'
+                                        : 'calc(100% - 32px)',
+                            }}
+                        />
+                    );
+                })}
+            </>
+        )}
 
-            {/* espaçamento final para respiro do footer */}
+        {/* Texto "OFICINAS" */}
+        {hasWorkshops && (
+            <>
+                <p
+                    style={{
+                        fontFamily: '"all-round-gothic", sans-serif',
+                        fontWeight: 'bold',
+                        fontSize: '50px',
+                        color: '#2B3722',
+                        textAlign: window.innerWidth >= 768 ? 'left' : 'center',
+                        marginTop: '100px',
+                        marginLeft: window.innerWidth >= 768 ? '284px' : 'auto',
+                        marginRight: window.innerWidth >= 768 ? '0' : 'auto',
+                        marginBottom: '48px',
+                    }}
+                >
+                    OFICINAS
+                </p>
+
+                {/* CARDS DE OFICINAS */}
+                {workshopsForCurrentPage.map((workshop, index) => {
+                    const formattedDate = new Date(
+                        workshop.date + 'T00:00:00'
+                    ).toLocaleDateString('pt-BR', {
+                        day: '2-digit',
+                        month: '2-digit',
+                    });
+                    const formattedTime = workshop.start_time.slice(0, 5);
+                    return (
+                        <EventsCard
+                            key={index}
+                            date={formattedDate}
+                            time={formattedTime}
+                            title={workshop.title}
+                            description={workshop.description}
+                            speakers={workshop.guests}
+                            isWorkshop={true}
+                            style={{
+                                fontFamily: '"all-round-gothic", sans-serif',
+                                marginLeft:
+                                    window.innerWidth >= 768
+                                        ? '284px'
+                                        : 'auto',
+                                marginRight:
+                                    window.innerWidth >= 768
+                                        ? '277px'
+                                        : 'auto',
+                                marginTop: '48px',
+                                width:
+                                    window.innerWidth >= 768
+                                        ? 'calc(100% - 561px)'
+                                        : 'calc(100% - 32px)',
+                            }}
+                        >
+                            <p
+                                style={{
+                                    fontFamily: '"quicksand", sans-serif',
+                                    fontSize: '18px',
+                                    color: '#2B3722',
+                                    textAlign: 'center',
+                                }}
+                            >
+                                {workshop.description}
+                            </p>
+                        </EventsCard>
+                    );
+                })}
+            </>
+        )}
+    </>
+)}
+           {/* espaçamento final para respiro do footer */}
             <main className="mt-[32px] flex flex-col items-center"></main>
         </div>
     );
