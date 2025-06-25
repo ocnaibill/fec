@@ -30,12 +30,10 @@ export default function Scanner() {
     
     function askPermission() {
         Html5Qrcode.getCameras().then(devices => {
-            if (devices && devices.length) {
-                cameraId = devices[0].id
+            console.log("Câmeras disponíveis: ", devices)
 
-                startScanning()
-                setScanState('active')
-            }
+            startScanning()
+            setScanState('active')
         })
     }
 
@@ -43,7 +41,7 @@ export default function Scanner() {
         scannerRef.current = new Html5Qrcode('scanner')
 
         scannerRef.current.start(
-            cameraId,
+            { facingMode: "environment" },
             {
                 fps: 5,
                 qrbox: { width: 300, height: 300 }
