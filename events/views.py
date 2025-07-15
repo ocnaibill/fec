@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from users.permissions import IsCredentiator
 from rest_framework.response import Response
 
+from django.db.models import Q
 from .models import Event, Activity, Guest, Subscription, StatusSubscription
 from .serializers import EventSerializer, ActivitySerializer, Guest, SubscriptionSerializer
 from rest_framework import status
@@ -103,7 +104,7 @@ def list_subscriptions(requests):
     user = requests.user
 
     try:
-        subs = Subscription.objects.filter(user_id=user.id, status=StatusSubscription.EMITED)
+        subs = Subscription.objects.filter(Q(user_id=user.id) & ~Q(status=StatusSubscription.CANCELED))
     except Subscription.DoesNotExist:
         return Response({'erro': 'Nenhuma inscrição realizada.'}, status=status.HTTP_404_NOT_FOUND)
     
