@@ -3,15 +3,23 @@ import calendarioIcon from '../assets/images/yellowCalendarIcon.svg';
 import localIcon from '../assets/images/yellowLocalIcon.svg'; 
 import downloadIcon from '../assets/images/yellowDownloadIcon.svg'; 
 
-export default function EventCard({ title, date, time, location, isCertificate, onViewTicket }) {
+export default function AccountCard({ title, date, time, location, isCertificate, onViewTicket, onDownloadCertificate }) {
 
-     const formattedDate = new Date(date + 'T00:00:00').toLocaleDateString('pt-BR', {
+    const formattedDate = new Date(date + 'T00:00:00').toLocaleDateString('pt-BR', {
         day: '2-digit',
         month: '2-digit',
         timeZone: 'UTC' 
     });
     
     const formattedTime = time.slice(0, 5);
+
+    const handleClick = () => {
+        if (isCertificate) {
+            onDownloadCertificate();
+        } else {
+            onViewTicket();
+        }
+    };
 
     return (
         <div
@@ -36,9 +44,10 @@ export default function EventCard({ title, date, time, location, isCertificate, 
                 </div>
             </div>
 
-            {/* Botão à direita */}
-            <div className="flex items-center gap-2 text-[#FFF1BF] font-bold font-['all-round-gothic'] text-[14px] cursor-pointer"
-            onClick={!isCertificate ? onViewTicket : undefined}>
+            <div 
+                className="flex items-center gap-2 text-[#FFF1BF] font-bold font-['all-round-gothic'] text-[14px] cursor-pointer transition-transform transform hover:scale-105"
+                onClick={handleClick}
+            >
                 {isCertificate ? (
                     <>
                         <span>Baixar Certificado</span>
@@ -48,7 +57,6 @@ export default function EventCard({ title, date, time, location, isCertificate, 
                     <span>Ver Ingresso</span>
                 )}
             </div>
-            
         </div>
     );
 }
