@@ -26,5 +26,6 @@ urlpatterns = [
     path('api/hello/', hello),
     path('api/auth/', include('users.urls')),
     path('api/about-carousel/', include('about_carousel.urls')),
+    path('api/certificates/', include('certificates.urls')),
     path('api/event/', include('events.urls')),
 ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
