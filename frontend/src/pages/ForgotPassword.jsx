@@ -15,14 +15,18 @@ export default function ForgotPassword() {
     })
     const [popup, setPopup] = useState(false)
     const [error, setError] = useState('')
+    
+    const [submittedEmail, setSubmittedEmail] = useState('');
 
     const navigate = useNavigate()
 
     const handleForgotPassword = async (body) => {
         setError('')
         try {
-            await axios.post('http://localhost:8000/api/auth/password-reset', body)
-
+            const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+            await axios.post(`${baseUrl}/auth/password-reset`, body)
+            
+            setSubmittedEmail(body.email); 
             setPopup(true)
         } catch {
             setError('Erro de conexão com o servidor.')
@@ -103,9 +107,10 @@ export default function ForgotPassword() {
                     </span>
                 </div>
 
-                {popup && <div className='absolute top-[-100px] w-[398px] md:w-[471px] h-[80px] bg-[#5E4497] rounded-[8px] p-2.5 flex items-center gap-2.5'>
-                    <p className='flex-1 text-[16px]'>
-                        Verifique seu email meuemail@servidor.com com as instruções para recuperação de senha
+                {/* <<-- POP-UP DE RECUPERAÇÃO -->> */}
+                {popup && <div className='absolute top-[-110px] w-[398px] md:w-[471px] bg-[#5E4497] rounded-[8px] p-2.5 flex items-center gap-2.5 text-white'>
+                    <p className='flex-1 text-[16px] leading-tight'>
+                        Verifique seu e-mail <span className="font-bold">{submittedEmail}</span> com as instruções para recuperação de senha. Caso ele exista e esteja registrado no Festival de Economia Criativa, você receberá o link em sua caixa de entrada!
                     </p>
                     <img src={CloseIcon} onClick={() => setPopup(false)} className='w-[24px] cursor-pointer' />
                 </div>}
