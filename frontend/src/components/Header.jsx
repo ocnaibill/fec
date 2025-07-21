@@ -94,7 +94,7 @@ export default function Header() {
                 <button onClick={() => navigate('/', { state: { scrollTo: 'sobre' } })} className="hover:underline header-font" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}>sobre</button>
                 <button onClick={() => navigate('/', { state: { scrollTo: 'programacao' } })} className="hover:underline header-font" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}>programação</button>
                 <button onClick={() => navigate('/', { state: { scrollTo: 'convidados' } })} className="hover:underline header-font" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}>convidados</button>
-                <Link to="/events" className="hover:underline header-font">inscrição e local</Link>
+                <Link to="/events" className="hover:underline header-font">inscrição</Link>
                 <button onClick={() => navigate('/', { state: { scrollTo: 'apoio' } })} className="hover:underline header-font" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit' }}>apoio</button>
                 
                 {isAuthenticated ? (
@@ -128,7 +128,7 @@ export default function Header() {
                             <button onClick={() => handleMobileLinkClick('sobre')} className="hover:underline" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>sobre</button>
                             <button onClick={() => handleMobileLinkClick('programacao')} className="hover:underline" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>programação</button>
                             <button onClick={() => handleMobileLinkClick('convidados')} className="hover:underline" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>convidados</button>
-                            <Link to="/events" onClick={handleSimpleLinkClick} className="hover:underline" style={{paddingRight: '30px'}}>inscrição e local</Link>
+                            <Link to="/events" onClick={handleSimpleLinkClick} className="hover:underline" style={{paddingRight: '30px'}}>inscrição</Link>
                             <button onClick={() => handleMobileLinkClick('apoio')} className="hover:underline" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>apoio</button>
                             
                             {isAuthenticated ? (
