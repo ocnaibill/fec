@@ -332,7 +332,7 @@ export default function Home() {
           className="w-full flex justify-center inscricao-shadow"
           style={{
             background: '#31477c',
-            height: '641px',
+            height: '660px',
             position: 'relative',
           }}
         >
@@ -356,7 +356,8 @@ export default function Home() {
               color: '#fff',
               fontSize: '2rem',
               fontWeight: 700,
-              marginBottom: '32px',
+              marginTop: '42px',
+              marginBottom: '38px',
               letterSpacing: '1px',
             }}
           >
@@ -367,13 +368,15 @@ export default function Home() {
               fontFamily: '"Quicksand", sans-serif',
               color: '#fff',
               fontWeight: 500,
-              fontSize: '1rem',
+              fontSize: '20px',
               marginBottom: '60px',
               height: '4px',
             }}
           >
-            Palestras e Oficinas do Festival da Economia Criativa com certificado de horas, disponíveis para inscrição acima.
+          As inscrições para a participação no III Festival da Economia Criativa estão abertas até dia 27 de junho nos eventos Conecom e Semana do Design, com direito a certificado de horas complementares.
+          <p>Participe e faça parte da Economia Criativa do Distrito Federal!</p>
           </p>
+          
             <Link
               to="/events"
               style={{
@@ -395,6 +398,7 @@ export default function Home() {
                 boxSizing: 'border-box', // garante altura exata
                 lineHeight: '42px', // garante alinhamento vertical
                 padding: 0, // remove padding padrão
+                marginTop: '32px',
               }}
             >
               INSCREVA-SE
@@ -464,14 +468,13 @@ export default function Home() {
               style={{
                 fontFamily: '"Quicksand", sans-serif',
                 fontWeight: 500,
-                fontSize: '16px',
+                fontSize: '20px',
                 color: '#fff',
                 marginTop: '29px',
                 height: '60px',
               }}
             >
-              O evento acontece completamente dentro do Campus Taguatinga da Universidade Católica de Brasília.
-            </p>
+O evento acontecerá no Campus Taguatinga da Universidade Católica de Brasília, com palestras principalmente no Bloco K e a Feira acontecendo simultaneamente na área de convivência do Bloco Central. O III Festival da Economia Criativa é totalmente aberta ao público, não perca!            </p>
           </div>
           </div>
         </div>
@@ -535,22 +538,25 @@ export default function Home() {
             <Link
               to="/events"
               style={{
-                width: 224,
-                height: 42,
+                width: '124px',
+                height: '42px',
                 background: '#C43934',
                 color: '#fff',
                 border: 'none',
-                borderRadius: 6,
+                borderRadius: '6px',
                 fontFamily: '"all-round-gothic", sans-serif',
                 fontWeight: 700,
                 fontSize: '0.8rem',
                 cursor: 'pointer',
                 letterSpacing: '1px',
-                marginTop: 32,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                textDecoration: 'none'
+                textDecoration: 'none',
+                boxSizing: 'border-box', 
+                lineHeight: '42px', 
+                padding: 0, 
+                marginTop: '32px',
               }}
             >
               INSCREVA-SE
@@ -624,7 +630,7 @@ export default function Home() {
               }}
             >
               O evento acontece completamente dentro do Campus Taguatinga da Universidade Católica de Brasília.
-            </p>
+             </p>
           </div>
         </div>
 
