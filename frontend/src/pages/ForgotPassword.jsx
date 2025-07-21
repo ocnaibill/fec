@@ -10,28 +10,30 @@ import CloseIcon from '../assets/images/CloseIcon.svg'
 
 
 export default function ForgotPassword() {
-    const { register, handleSubmit,  formState: {errors}} = useForm({
+    const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(forgotSchema)
-    })
-    const [popup, setPopup] = useState(false)
-    const [error, setError] = useState('')
-    
+    });
+    const [popup, setPopup] = useState(false);
+    const [error, setError] = useState('');
     const [submittedEmail, setSubmittedEmail] = useState('');
-
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const handleForgotPassword = async (body) => {
-        setError('')
+        setError('');
+        setSubmittedEmail(body.email);
+        setPopup(true);
+
         try {
             const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
-            await axios.post(`${baseUrl}/auth/password-reset`, body)
+            await axios.post(`${baseUrl}/auth/password-reset`, body);
             
-            setSubmittedEmail(body.email); 
-            setPopup(true)
-        } catch {
-            setError('Erro de conexão com o servidor.')
+
+        } catch (err) {
+            console.error("Falha na solicitação de recuperação de senha:", err);
+            setPopup(false); 
+            setError('Não foi possível enviar o e-mail. Verifique a conexão ou tente mais tarde.');
         }
-    }
+    };
 
     return (
         <div
