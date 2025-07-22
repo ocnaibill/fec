@@ -6,8 +6,9 @@ from django.core.files.base import ContentFile
 import os
 import re
 from django.conf import settings
+from users.models import Roles 
 
-def generate_certificate_pdf(certificate_uuid, username, activity_tittle, template_path = None):
+def generate_certificate_pdf(instance, template_path = None):
     def _format_text(text : str) -> list[list[tuple[str, str]]]:
         lines = text.splitlines()
 
@@ -75,18 +76,38 @@ def generate_certificate_pdf(certificate_uuid, username, activity_tittle, templa
     # TITULO
     _write_on_image(draw, (x, y - 280), '**CERTIFICADO**', 120)
 
-    _write_on_image(
-        draw, (x, y),
-        f'''
-        Certificamos que *{username}* participou\n
-        da atividade *{activity_tittle}*\n
-        no III Festival da Economia Criativa com carga horária de 4 horas.
-        ''',
-        fontsize=70
-    )
+    if not instance.activity and instance.user.role == Roles.CREDENCIADOR:
+        _write_on_image(
+            draw, (x, y),
+            f'''
+            Certificamos que *{instance.user.name}* participou da\n
+            organização do III Festival da Economia Criativa, com carga horária de 30 horas.
+            ''',
+            fontsize=70
+        )
+    elif instance.user.is_guest and instance.activity.has_participate(instance.user):
+        _write_on_image(
+            draw, (x, y),
+            f'''
+            Certificamos que *{instance.user.name}* ministrou\n
+            a {instance.activity.type} *{instance.activity.title}*\n
+            no III Festival da Economia Criativa, com carga horária de 4 horas.
+            ''',
+            fontsize=70
+        )
+    else: 
+        _write_on_image(
+            draw, (x, y),
+            f'''
+            Certificamos que *{instance.user.name}* participou\n
+            da atividade *{instance.activity.title}* no\n
+            III Festival da Economia Criativa, com carga horária de 4 horas.
+            ''',
+            fontsize=70
+        )
 
     front_url = os.environ.get('FRONTEND_URL', 'url_do_front')
-    qr_link =f'{front_url}/certificates/validate/{certificate_uuid}'
+    qr_link =f'{front_url}/certificates/validate/{instance.uuid}'
     qr_size = 450
 
     qr = qrcode.make(qr_link)
@@ -103,4 +124,4 @@ def generate_certificate_pdf(certificate_uuid, username, activity_tittle, templa
     with open('./teste.pdf', 'wb') as f:
         f.write(pdf_buffer.getvalue())
 
-    return ContentFile(pdf_buffer.getvalue(), name=f'certificado_{username}_{activity_tittle}.pdf')
+    return ContentFile(pdf_buffer.getvalue(), name=f'certificado_{instance.user.name}_{instance.uuid}.pdf')
