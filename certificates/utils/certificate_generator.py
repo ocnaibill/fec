@@ -6,7 +6,8 @@ from django.core.files.base import ContentFile
 import os
 import re
 from django.conf import settings
-from users.models import Roles 
+from ..models import CertificateType
+from users.models import Roles
 
 def generate_certificate_pdf(instance, template_path = None):
     def _format_text(text : str) -> list[list[tuple[str, str]]]:
@@ -35,7 +36,6 @@ def generate_certificate_pdf(instance, template_path = None):
 
     def _write_on_image(draw_obj, xy : tuple[str, str], text : str, fontsize : int, fill : str = '#2B3722') -> None:
         structured_text = _format_text(text)
-        print(structured_text)
 
         font_regular_path = os.path.join(settings.BASE_DIR, 'static', 'fonts', 'Quicksand-Regular.ttf')
         font_medium_path = os.path.join(settings.BASE_DIR, 'static', 'fonts', 'Quicksand-SemiBold.ttf')
@@ -65,7 +65,7 @@ def generate_certificate_pdf(instance, template_path = None):
                 x += piecesize
 
             y += fontsize
-        
+    
     template_path = template_path or os.path.join(settings.BASE_DIR, 'static', 'certificates', 'template.jpg')
 
     image = Image.open(template_path).convert("RGB")
@@ -76,7 +76,8 @@ def generate_certificate_pdf(instance, template_path = None):
     # TITULO
     _write_on_image(draw, (x, y - 280), '**CERTIFICADO**', 120)
 
-    if not instance.activity and instance.user.role == Roles.CREDENCIADOR:
+
+    if instance.type == CertificateType.CREDENCIADOR:
         _write_on_image(
             draw, (x, y),
             f'''
@@ -85,7 +86,7 @@ def generate_certificate_pdf(instance, template_path = None):
             ''',
             fontsize=70
         )
-    elif instance.user.is_guest and instance.activity.has_participate(instance.user):
+    elif instance.type == CertificateType.GUEST:
         _write_on_image(
             draw, (x, y),
             f'''
@@ -95,7 +96,7 @@ def generate_certificate_pdf(instance, template_path = None):
             ''',
             fontsize=70
         )
-    else: 
+    elif instance.type == CertificateType.COMMON:
         _write_on_image(
             draw, (x, y),
             f'''
@@ -120,8 +121,5 @@ def generate_certificate_pdf(instance, template_path = None):
     img_buffer.seek(0)
 
     pdf_buffer = BytesIO(img2pdf.convert(img_buffer))
-
-    with open('./teste.pdf', 'wb') as f:
-        f.write(pdf_buffer.getvalue())
 
     return ContentFile(pdf_buffer.getvalue(), name=f'certificado_{instance.user.name}_{instance.uuid}.pdf')

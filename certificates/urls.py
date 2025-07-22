@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import CertificateGenerateView, CertificateValidateView
-
+from .views import CertificateGenerateView, CertificateValidateView, AvailableCertificatesView 
 urlpatterns = [
-    path('generate/<int:subscription_id>/', CertificateGenerateView.as_view(), name='generate-certificate'),
-        path('validate/<uuid:uuid>/', CertificateValidateView.as_view(), name='validate-certificate'),
+    path('generate/', CertificateGenerateView.as_view(), name='generate-certificate'),
+    path('validate/<uuid:uuid>/', CertificateValidateView.as_view(), name='validate-certificate'),
+    path('available/', AvailableCertificatesView.as_view(), name='available-certificates'),
 ]

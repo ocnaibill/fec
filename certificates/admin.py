@@ -1,17 +1,18 @@
 from django.contrib import admin, messages
 from django.urls import path
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.template.response import TemplateResponse
+from django.core.exceptions import ValidationError
 
-from .models import Certificate
-from events.models import Subscription, StatusSubscription # Verifique se a importação está correta
+from .models import Certificate, CertificateType
+from events.models import Subscription, StatusSubscription
 
 @admin.register(Certificate)
 class CertificateAdmin(admin.ModelAdmin):
-    list_display = ('uuid', 'get_user_name', 'get_activity_title', 'created_at', 'file')
-    list_filter = ('created_at',)
+    list_display = ('uuid', 'get_user_name', 'get_activity_title', 'type', 'created_at')
+    list_filter = ('created_at', 'type')
     search_fields = ('uuid', 'user__name', 'activity__title')
-    readonly_fields = ('uuid', 'user', 'activity', 'file', 'created_at')
+    readonly_fields = ('uuid', 'user', 'activity', 'file', 'created_at', 'type')
 
     @admin.display(description='Usuário', ordering='user__name')
     def get_user_name(self, obj):
@@ -19,56 +20,64 @@ class CertificateAdmin(admin.ModelAdmin):
 
     @admin.display(description='Atividade', ordering='activity__title')
     def get_activity_title(self, obj):
-        return obj.activity.title
-
-    def has_add_permission(self, request):
-        # Impede a criação manual de certificados vazios pelo admin
-        return False
+        return obj.activity.title if obj.activity else '---'
     
-    # --- Lógica para a página de geração em massa ---
+    def has_add_permission(self, request):
+        return False
 
     def get_urls(self):
-        """
-        Adiciona a URL para nossa view customizada ao admin.
-        A URL será algo como: /admin/certificates/certificate/generate-all/
-        """
         urls = super().get_urls()
         custom_urls = [
             path(
                 'generate-all/',
                 self.admin_site.admin_view(self.generate_all_view),
-                name='certificates-generate-all', # Nome para referenciar a URL
+                name='certificates-generate-all',
             ),
         ]
         return custom_urls + urls
 
     def generate_all_view(self, request):
-        """
-        A view que lida com a página de confirmação e a geração dos certificados.
-        """
-        # Se o formulário for enviado (método POST)
         if request.method == 'POST':
-            # 1. Encontra todas as inscrições válidas que ainda não têm certificado
-            subscriptions_to_process = Subscription.objects.filter(
-                status=StatusSubscription.VALIDATED,
-                certificate__isnull=True
-            )
+            subscriptions = Subscription.objects.filter(status=StatusSubscription.VALIDATED)
             count = 0
-            for subscription in subscriptions_to_process:
-                Certificate.objects.get_or_create(subscription=subscription)
-                count += 1
-            
-            # 2. Envia uma mensagem de sucesso para o admin
-            self.message_user(request, f'{count} certificado(s) foram gerados com sucesso.', messages.SUCCESS)
-            
-            # 3. Redireciona de volta para o painel principal do admin
-            return redirect('admin:index')
+            errors = 0
 
-        # Se for um acesso normal (método GET), mostra a página de confirmação
+            for sub in subscriptions:
+                if Certificate.objects.filter(
+                    user=sub.user, 
+                    activity=sub.activity, 
+                    type=CertificateType.COMMON
+                ).exists():
+                    continue
+
+                certificate = Certificate(
+                    user=sub.user,
+                    activity=sub.activity,
+                    type=CertificateType.COMMON
+                )
+                try:
+                    certificate.full_clean()
+                    certificate.save()
+                    count += 1
+                except ValidationError as e:
+                    errors += 1
+                    self.message_user(
+                        request,
+                        f"Erro para {sub.user.name} em '{sub.activity.title}': {e.message_dict}",
+                        messages.ERROR
+                    )
+            
+            if count > 0:
+                self.message_user(request, f'{count} certificado(s) de participação foram gerados.', messages.SUCCESS)
+            if errors > 0:
+                self.message_user(request, f'Ocorreram {errors} erros de validação.', messages.WARNING)
+            if count == 0 and errors == 0:
+                self.message_user(request, 'Nenhum novo certificado a ser gerado.', messages.INFO)
+            
+            return redirect('admin:certificates_certificate_changelist')
+
         context = dict(
            self.admin_site.each_context(request),
-           title="Gerar Certificados em Massa", # Título da página
+           title="Gerar Certificados para Inscrições Validadas",
         )
-        
-        # Renderiza o template que criaremos a seguir
         return TemplateResponse(request, "admin/generate_all_certificates.html", context)

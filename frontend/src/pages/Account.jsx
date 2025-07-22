@@ -35,6 +35,7 @@ export default function Account() {
     const [institutionChoice, setInstitutionChoice] = useState('UCB');
     const [mySubscriptions, setMySubscriptions] = useState([]);
     const [selectedSubscription, setSelectedSubscription] = useState(null);
+    const [certificateData, setCertificateData] = useState([]);
 
     const handleViewTicket = (subscription) => {
         setSelectedSubscription(subscription);
@@ -174,18 +175,42 @@ export default function Account() {
         }
     }, []);
 
+   const fetchCertificateData = useCallback(async () => {
+        try {
+            const token = localStorage.getItem('authToken');
+            if (!token) return;
+            const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+            // Chama o novo endpoint
+            const response = await axios.get(`${baseUrl}/certificates/available/`, {
+                headers: { Authorization: `Token ${token}` },
+            });
+            setCertificateData(response.data);
+        } catch (error) {
+            console.error('Erro ao buscar os dados de certificados:', error);
+            toast.error("Não foi possível carregar seus certificados disponíveis.");
+        }
+    }, []);
+
     useEffect(() => {
         fetchUserData();
         fetchMySubscriptions();
-    }, [fetchUserData, fetchMySubscriptions]);
+        fetchCertificateData(); 
+    }, [fetchUserData, fetchMySubscriptions, fetchCertificateData]);
 
-    const handleDownloadCertificate = async (subscriptionId) => {
+
+    const handleDownloadCertificate = async (activityId, certificateType) => {
         toast.info("Gerando seu certificado, por favor aguarde...");
         const token = localStorage.getItem('authToken');
         const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
     
         try {
-            const response = await axios.get(`${baseUrl}/certificates/generate/${subscriptionId}/`, {
+            // Alterado para POST, enviando 'activity_id' e 'type'
+            const response = await axios.post(`${baseUrl}/certificates/generate/`, 
+            {
+                activity_id: activityId,
+                type: certificateType,
+            }, 
+            {
                 headers: {
                     Authorization: `Token ${token}`,
                 },
@@ -196,21 +221,31 @@ export default function Account() {
             const fileURL = URL.createObjectURL(file);
             
             window.open(fileURL, '_blank');
-            
-            toast.dismiss(); 
+            toast.dismiss();
     
         } catch (error) {
             console.error("Erro ao gerar certificado:", error);
-            const errorMsg = await error.response?.data?.detail || "Não foi possível gerar o certificado.";
+            
+            let errorMsg = "Não foi possível gerar o certificado.";
+
+            if (error.response && error.response.data instanceof Blob) {
+                try {
+                    const errorJson = JSON.parse(await error.response.data.text());
+                    errorMsg = Object.values(errorJson).flat().join(' ');
+                } catch (e) {
+                    errorMsg = "Ocorreu um erro inesperado no servidor.";
+                }
+            } else if (error.response?.data?.detail) {
+                errorMsg = error.response.data.detail;
+            }
+            
             toast.error(errorMsg);
         }
     };
     
-
-    const dataToShow = selectedOption === 'meusEventos' 
-        ? mySubscriptions 
-        : mySubscriptions.filter(sub => sub.status === 'validada'); 
-
+     const dataToShow = selectedOption === 'meusEventos' 
+        ? mySubscriptions.map(sub => ({ ...sub.activity, subscription_id: sub.id, status: sub.status })) 
+        : certificateData; 
 
     return (
         <div className="min-h-screen w-full flex flex-col items-center justify-start pt-[50px] bg-cover bg-center" style={{ backgroundImage: `url(${fundo2})` }}>
@@ -256,20 +291,36 @@ export default function Account() {
                         </button>
                     </div>
                     
-                    <div className="mt-6 w-full flex flex-col items-center gap-4 mb-8">
+                  <div className="mt-6 w-full flex flex-col items-center gap-4 mb-8">
                         {dataToShow.length > 0 ? (
-                            dataToShow.map((item) => (
-                                <AccountCard
-                                    key={item.id} 
-                                    title={item.activity.title}
-                                    date={item.activity.date}
-                                    time={item.activity.start_time}
-                                    location={item.activity.local} 
-                                    isCertificate={selectedOption === 'certificados'}
-                                    onViewTicket={() => handleViewTicket(item)}
-                                    onDownloadCertificate={() => handleDownloadCertificate(item.id)}
-                                />
-                            ))
+                            dataToShow.map((item) => {
+                                if (selectedOption === 'meusEventos') {
+                                    return (
+                                        <AccountCard
+                                            key={item.subscription_id} 
+                                            title={item.title}
+                                            date={item.date}
+                                            time={item.start_time}
+                                            location={item.local} 
+                                            isCertificate={false}
+                                            onViewTicket={() => handleViewTicket({ id: item.subscription_id, activity: item, status: item.status })}
+                                        />
+                                    );
+                                } 
+                                else {
+                                    return (
+                                        <AccountCard
+                                            key={item.key}
+                                            title={item.title}
+                                            date={item.date}
+                                            time={item.start_time} 
+                                            location={item.location} 
+                                            isCertificate={true}
+                                            onDownloadCertificate={() => handleDownloadCertificate(item.activity_id, item.type)}
+                                        />
+                                    );
+                                }
+                            })
                         ) : (
                             <p className="text-[#2B3722] font-bold mt-10">
                                 {selectedOption === 'meusEventos' ? 'Você não está inscrito em nenhum evento.' : 'Nenhum certificado disponível.'}

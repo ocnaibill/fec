@@ -4,12 +4,10 @@ from users.models import CustomUser, Roles
 from events.models import Activity, Subscription, StatusSubscription, Guest
 from django.utils import timezone
 from django.core.exceptions import ValidationError
-from .utils.certificate_generator import generate_certificate_pdf
 
-# Create your models here.
 class CertificateType(models.TextChoices):
     COMMON = 'comum', 'Comum'
-    CREDENCIADOR = 'credenciador', 'Credenciador',
+    CREDENCIADOR = 'credenciador', 'Credenciador'
     GUEST = 'convidado', 'Convidado'
 
 class Certificate(models.Model):
@@ -49,10 +47,15 @@ class Certificate(models.Model):
             return
 
     def save(self, *args, **kwargs):
+        from .utils.certificate_generator import generate_certificate_pdf
+        
         is_new = self.pk is None
+        if is_new:
+            self.full_clean()
+        
         super().save(*args, **kwargs)
 
-        if is_new:
+        if is_new and not self.file:
             pdf_file = generate_certificate_pdf(self)
             self.file.save(f'certificado-{self.uuid}.pdf', pdf_file, save=False)   
             super().save(update_fields=['file'])
