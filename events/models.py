@@ -52,6 +52,9 @@ class Activity(models.Model):
     event = models.ForeignKey(Event, related_name='activities', on_delete=models.CASCADE)
     guests = models.ManyToManyField(Guest) 
 
+    def has_participate(self, user : CustomUser) -> bool:
+        return self.guests.filter(user=user).exists()
+    
     class Meta:
         db_table = 'activities'
 
