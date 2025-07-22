@@ -10,16 +10,16 @@ from events.models import Subscription, StatusSubscription # Verifique se a impo
 class CertificateAdmin(admin.ModelAdmin):
     list_display = ('uuid', 'get_user_name', 'get_activity_title', 'created_at', 'file')
     list_filter = ('created_at',)
-    search_fields = ('uuid', 'subscription__user__name', 'subscription__activity__title')
-    readonly_fields = ('uuid', 'subscription', 'file', 'created_at')
+    search_fields = ('uuid', 'user__name', 'activity__title')
+    readonly_fields = ('uuid', 'user', 'activity', 'file', 'created_at')
 
-    @admin.display(description='Usuário', ordering='subscription__user__name')
+    @admin.display(description='Usuário', ordering='user__name')
     def get_user_name(self, obj):
-        return obj.subscription.user.name
+        return obj.user.name
 
-    @admin.display(description='Atividade', ordering='subscription__activity__title')
+    @admin.display(description='Atividade', ordering='activity__title')
     def get_activity_title(self, obj):
-        return obj.subscription.activity.title
+        return obj.activity.title
 
     def has_add_permission(self, request):
         # Impede a criação manual de certificados vazios pelo admin
