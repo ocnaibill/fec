@@ -15,18 +15,19 @@ export default function ResetPassword() {
     const { uuid, token } = useParams()
     const navigate = useNavigate()
 
-    const handleResetPassword = async (body) => {
-        setError('')
+const handleResetPassword = async (body) => {
+    setError('')
+    const { newPassword } = body
+    try {
+        // Use a variável de ambiente para a URL da API
+        const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+        await axios.post(`${baseUrl}/auth/password-reset-confirm`, {
+            uuid,
+            token,
+            new_password: newPassword
+        })
 
-        const { newPassword } = body
-        try {
-            await axios.post('http://localhost:8000/api/auth/password-reset-confirm', {
-                uuid,
-                token,
-                new_password: newPassword
-            })
-
-            navigate('/login')
+        navigate('/login')
         } catch(err) {
             setError(err.response?.data?.error || 'Erro de conexão com o servidor.')
         }
