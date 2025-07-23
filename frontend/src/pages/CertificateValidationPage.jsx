@@ -43,24 +43,61 @@ export default function CertificateValidationPage() {
         }
 
         if (certificateData) {
+            const isCredenciador = certificateData.type === 'credenciador';
+
             return (
                 <div className="text-center font-['all-round-gothic']">
                     <FaCheckCircle className="text-green-500 text-6xl mx-auto mb-4" />
                     <h1 className="text-3xl font-bold text-[#FFF1BF]">Certificado Autêntico</h1>
                     
                     <div className="mt-6 text-left w-full max-w-lg mx-auto">
+                        {/* Bloco de Nome (comum a todos) */}
                         <div className="mb-4">
                             <p className="text-sm font-bold text-[#FFF1BF] opacity-80">NOME:</p>
                             <p className="text-lg font-semibold text-white">{certificateData.user_name}</p>
                         </div>
-                        <div className="mb-4">
-                            <p className="text-sm font-bold text-[#FFF1BF] opacity-80">PARTICIPOU DA ATIVIDADE:</p>
-                            <p className="text-lg font-semibold text-white">{certificateData.activity_title}</p>
-                        </div>
-                        <div className="mb-4">
-                            <p className="text-sm font-bold text-[#FFF1BF] opacity-80">DATA DO EVENTO:</p>
-                            <p className="text-lg font-semibold text-white">{new Date(certificateData.activity_date + 'T00:00:00').toLocaleDateString('pt-BR')}</p>
-                        </div>
+                        
+                        {/* // --- LÓGICA CONDICIONAL PARA EXIBIÇÃO --- */}
+
+                        {isCredenciador ? (
+                            // Bloco de exibição para CREDENCIADOR
+                            <>
+                                <div className="mb-4">
+                                    <p className="text-sm font-bold text-[#FFF1BF] opacity-80">PARTICIPOU DA ATIVIDADE:</p>
+                                    <p className="text-lg font-semibold text-white">Participou da Organização do Festival</p>
+                                </div>
+                                <div className="mb-4">
+                                    <p className="text-sm font-bold text-[#FFF1BF] opacity-80">CARGA HORÁRIA:</p>
+                                    <p className="text-lg font-semibold text-white">30 horas</p>
+                                </div>
+                                <div className="mb-4">
+                                    <p className="text-sm font-bold text-[#FFF1BF] opacity-80">INÍCIO DA ATIVIDADE:</p>
+                                    <p className="text-lg font-semibold text-white">{new Date(certificateData.festival_start_date + 'T00:00:00').toLocaleDateString('pt-BR')}</p>
+                                </div>
+                                <div className="mb-4">
+                                    <p className="text-sm font-bold text-[#FFF1BF] opacity-80">FIM DA ATIVIDADE:</p>
+                                    <p className="text-lg font-semibold text-white">{new Date(certificateData.festival_end_date + 'T00:00:00').toLocaleDateString('pt-BR')}</p>
+                                </div>
+                            </>
+                        ) : (
+                            // Bloco de exibição para COMUM e GUEST
+                            <>
+                                <div className="mb-4">
+                                    <p className="text-sm font-bold text-[#FFF1BF] opacity-80">PARTICIPOU DA ATIVIDADE:</p>
+                                    <p className="text-lg font-semibold text-white">{certificateData.activity_title}</p>
+                                </div>
+                                <div className="mb-4">
+                                    <p className="text-sm font-bold text-[#FFF1BF] opacity-80">CARGA HORÁRIA:</p>
+                                    <p className="text-lg font-semibold text-white">4 horas</p>
+                                </div>
+                                <div className="mb-4">
+                                    <p className="text-sm font-bold text-[#FFF1BF] opacity-80">DATA DO EVENTO:</p>
+                                    <p className="text-lg font-semibold text-white">{new Date(certificateData.activity_date + 'T00:00:00').toLocaleDateString('pt-BR')}</p>
+                                </div>
+                            </>
+                        )}
+                        
+                        {/* Bloco de rodapé (comum a todos) */}
                         <div className="border-t border-white/20 my-4"></div>
                         <div className="mb-4">
                             <p className="text-sm font-bold text-[#FFF1BF] opacity-80">CERTIFICADO EMITIDO EM:</p>
@@ -68,12 +105,12 @@ export default function CertificateValidationPage() {
                         </div>
                         <div>
                             <p className="text-sm font-bold text-[#FFF1BF] opacity-80">CÓDIGO DE VERIFICAÇÃO ÚNICO:</p>
-                            <p className="text-md text-gray-300 break-all">{certificateData.uuid}</p>
+                            <p className="text-md text-white-300 break-all">{certificateData.uuid}</p>
                             <div className="text-center mt-6">
-                                    <Link to="/" className="bg-[#F06F37] text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-600 font-['all-round-gothic']">
-                                        Voltar à página inicial
-                                    </Link>
-                                </div>
+                                <Link to="/" className="bg-[#F06F37] text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-600 font-['all-round-gothic']">
+                                    Voltar à página inicial
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -85,7 +122,6 @@ export default function CertificateValidationPage() {
 
     return (
         <div className="min-h-screen w-full flex flex-col items-center justify-center p-4 bg-cover bg-center" style={{ backgroundImage: `url(${fundo2})` }}>
-            
             <div className="bg-[#2B3722] p-8 rounded-[12px] shadow-2xl w-full max-w-2xl text-center">
                 {renderContent()}
             </div>
