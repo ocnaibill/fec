@@ -3,9 +3,63 @@ from django.urls import path
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 from django.core.exceptions import ValidationError
+from django.core.mail import EmailMessage  
 
 from .models import Certificate, CertificateType
 from events.models import Subscription, StatusSubscription
+
+@admin.action(description='Enviar certificados selecionados por e-mail')
+def send_certificate_email(modeladmin, request, queryset):
+    """
+    Ação que envia um e-mail com o certificado em PDF para cada usuário selecionado.
+    """
+    success_count = 0
+    error_count = 0
+
+    for certificate in queryset:
+        if not certificate.file:
+            continue
+
+        user = certificate.user
+        subject = "Seu Certificado - III Festival da Economia Criativa"
+        body = f"""
+Olá, {user.name}!
+
+É com grande alegria que enviamos o seu certificado de participação no III Festival da Economia Criativa.
+Ele está em anexo neste e-mail.
+
+Agradecemos imensamente a sua presença!
+
+Atenciosamente,
+Equipe do Festival da Economia Criativa
+"""
+        
+        try:
+            email = EmailMessage(
+                subject=subject,
+                body=body,
+                from_email=None,  #
+                to=[user.email]
+            )
+
+            email.attach(
+                certificate.file.name.split('/')[-1],
+                certificate.file.read(),
+                'application/pdf'
+            )
+            
+            email.send()
+            success_count += 1
+
+        except Exception as e:
+            messages.error(request, f"Falha ao enviar e-mail para {user.email}: {e}")
+            error_count += 1
+            
+    if success_count > 0:
+        messages.success(request, f"{success_count} certificado(s) foram enviados com sucesso.")
+    if error_count > 0:
+        messages.warning(request, f"{error_count} e-mail(s) não puderam ser enviados.")
+
 
 @admin.register(Certificate)
 class CertificateAdmin(admin.ModelAdmin):
@@ -13,6 +67,8 @@ class CertificateAdmin(admin.ModelAdmin):
     list_filter = ('created_at', 'type')
     search_fields = ('uuid', 'user__name', 'activity__title')
     readonly_fields = ('uuid', 'user', 'activity', 'file', 'created_at', 'type')
+    
+    actions = [send_certificate_email] 
 
     @admin.display(description='Usuário', ordering='user__name')
     def get_user_name(self, obj):
