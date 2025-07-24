@@ -11,6 +11,7 @@ import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import Scanner from './pages/Scanner'
 import CertificateValidationPage from './pages/CertificateValidationPage'
+import AboutSite from './pages/AboutSite';
 import { ToastContainer } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/account" element={<MainLayout><Account /></MainLayout>} />
         <Route path="/subscription" element={<MainLayout><Subscription /></MainLayout>} />
         <Route path="/credentials-scanner" element={<MainLayout><Scanner /></MainLayout>} />
+        <Route path="/ficha-tecnica" element={<MainLayout><AboutSite /></MainLayout>} />
         <Route path="/certificates/validate/:uuid" element={<MainLayout><CertificateValidationPage /></MainLayout>} />
         <Route path="*" element={<MainLayout><NotFound /></MainLayout>} />
       </Routes>

@@ -1146,6 +1146,42 @@ O evento acontecerá no Campus Taguatinga da Universidade Católica de Brasília
                   </div>
         </div>
 
+          {/* FICHA TÉCNICA MOBILE */}
+          <div style={{ marginTop: 8, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div
+                style={{
+                  marginTop: 24,
+                  width: 'calc(100% - 28px)',
+                  height: 4,
+                  background: '#2B3722',
+                  borderRadius: 2,
+                  alignSelf: 'center',
+                  marginLeft: 14,
+                  marginRight: 14,
+                  maxWidth: 398,
+                }}
+              />
+              <Link
+                to="/ficha-tecnica"
+                style={{
+                  display: 'block',
+                  fontFamily: '"all-round-gothic", sans-serif',
+                  color: '#2B3722',
+                  fontWeight: 700,
+                  fontSize: '1.8rem', // Ajustado para o texto maior
+                  letterSpacing: '1px',
+                  textAlign: 'center',
+                  marginTop: 40,
+                  textDecoration: 'none', // Para remover o sublinhado do link
+                  cursor: 'pointer',
+                  paddingBottom:'120px',
+                }}
+              >
+                CLIQUE AQUI PARA A<br/>FICHA TÉCNICA
+              </Link>
+          </div>
+
+
       <style>{`
 
         @media (min-width: 1024px) {
